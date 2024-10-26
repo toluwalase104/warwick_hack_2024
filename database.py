@@ -1,31 +1,62 @@
 import sqlite3
 from collections import defaultdict
 
-# Function to connect to the SQLite database and initialize it with schema.sql
 def connect_and_initialize(db_path="database.db", schema_path="schema.sql"):
+    """
+    Connects to the SQLite database and initializes it using the schema provided in schema.sql.
+
+    Parameters:
+    - db_path: The path to the database file (default is "database.db").
+    - schema_path: The path to the schema SQL file to initialize tables (default is "schema.sql").
+
+    Returns:
+    - conn: SQLite database connection.
+    """
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row  # Allows row access by column name
-
     cursor = conn.cursor()
-    # Read schema from the file and execute it
     with open(schema_path, 'r') as f:
         schema = f.read()
     cursor.executescript(schema)
     conn.commit()
     return conn
 
-# Function to add a new victim
 def add_victim(conn, name, contact, postcode, address, country, description=""):
+    """
+    Adds a new victim entry to the database.
+
+    Parameters:
+    - conn: SQLite database connection.
+    - name: Victim's name.
+    - contact: Contact information of the victim.
+    - postcode: Victim's postal code.
+    - address: Victim's address.
+    - country: Victim's country.
+    - description: Additional information about the victim's needs.
+
+    Returns:
+    - The ID of the inserted victim row.
+    """
     cursor = conn.cursor()
     cursor.execute("""
         INSERT INTO victims (name, contact, postcode, address, country, description)
         VALUES (?, ?, ?, ?, ?, ?)
     """, (name, contact, postcode, address, country, description))
     conn.commit()
-    return cursor.lastrowid  # Returns the ID of the inserted row
+    return cursor.lastrowid
 
-# Function to add a requested resource for a victim
 def add_requested_resource(conn, victim_id, resource_type):
+    """
+    Adds a requested resource for a specific victim.
+
+    Parameters:
+    - conn: SQLite database connection.
+    - victim_id: The ID of the victim.
+    - resource_type: The type of resource requested by the victim.
+
+    Returns:
+    - The ID of the inserted requested resource row.
+    """
     cursor = conn.cursor()
     cursor.execute("""
         INSERT INTO requested_resources (victim_id, resource_type)
@@ -34,8 +65,22 @@ def add_requested_resource(conn, victim_id, resource_type):
     conn.commit()
     return cursor.lastrowid
 
-# Function to add a new donor
 def add_donor(conn, name, contact, postcode, address, country, description=""):
+    """
+    Adds a new donor entry to the database.
+
+    Parameters:
+    - conn: SQLite database connection.
+    - name: Donor's name.
+    - contact: Contact information of the donor.
+    - postcode: Donor's postal code.
+    - address: Donor's address.
+    - country: Donor's country.
+    - description: Additional information about the donor.
+
+    Returns:
+    - The ID of the inserted donor row.
+    """
     cursor = conn.cursor()
     cursor.execute("""
         INSERT INTO donors (name, contact, postcode, address, country, description)
@@ -44,8 +89,18 @@ def add_donor(conn, name, contact, postcode, address, country, description=""):
     conn.commit()
     return cursor.lastrowid
 
-# Function to add a resource that a donor can provide
 def add_donor_resource(conn, donor_id, resource_type):
+    """
+    Adds a resource that a donor can provide.
+
+    Parameters:
+    - conn: SQLite database connection.
+    - donor_id: The ID of the donor.
+    - resource_type: The type of resource the donor can provide.
+
+    Returns:
+    - The ID of the inserted donor resource row.
+    """
     cursor = conn.cursor()
     cursor.execute("""
         INSERT INTO donor_resources (donor_id, resource_type)
@@ -54,8 +109,18 @@ def add_donor_resource(conn, donor_id, resource_type):
     conn.commit()
     return cursor.lastrowid
 
-# Function to create a match between a requested resource and a donor's resource
 def add_match(conn, resource_id, donor_resource_id):
+    """
+    Creates a match between a requested resource and a donor's resource.
+
+    Parameters:
+    - conn: SQLite database connection.
+    - resource_id: The ID of the requested resource.
+    - donor_resource_id: The ID of the donor's resource.
+
+    Returns:
+    - The ID of the inserted match row.
+    """
     cursor = conn.cursor()
     cursor.execute("""
         INSERT INTO matches (resource_id, donor_resource_id)
@@ -64,43 +129,72 @@ def add_match(conn, resource_id, donor_resource_id):
     conn.commit()
     return cursor.lastrowid
 
-# Function to retrieve all victims
 def get_all_victims(conn):
+    """
+    Retrieves all victims from the database.
+
+    Parameters:
+    - conn: SQLite database connection.
+
+    Returns:
+    - List of all victims with their details.
+    """
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM victims")
     return cursor.fetchall()
 
-# Function to retrieve all donors
 def get_all_donors(conn):
+    """
+    Retrieves all donors from the database.
+
+    Parameters:
+    - conn: SQLite database connection.
+
+    Returns:
+    - List of all donors with their details.
+    """
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM donors")
     return cursor.fetchall()
 
 def mark_as_matched(conn, victim_id, donor_id):
+    """
+    Marks a victim and a donor as matched and updates their completion status.
+
+    Parameters:
+    - conn: SQLite database connection.
+    - victim_id: The ID of the victim.
+    - donor_id: The ID of the donor.
+
+    Returns:
+    - The ID of the created match entry.
+    """
     cursor = conn.cursor()
     try:
-        # Insert into matches table to mark as matched
         cursor.execute("""
             INSERT INTO matches (victim_id, donor_id)
             VALUES (?, ?)
         """, (victim_id, donor_id))
         conn.commit()
-        
-        # Retrieve the ID of the created match
         match_id = cursor.lastrowid
-
-        # Update the `completed` status for both the victim and the donor
         cursor.execute("UPDATE victims SET completed = 1 WHERE id = ?", (victim_id,))
         cursor.execute("UPDATE donors SET completed = 1 WHERE id = ?", (donor_id,))
         conn.commit()
-
         return match_id
-    
     except sqlite3.IntegrityError as e:
         print("Error marking as matched:", e)
         return None
 
 def get_unmatched_victims_with_resources(conn):
+    """
+    Retrieves all unmatched victims with their requested resources.
+
+    Parameters:
+    - conn: SQLite database connection.
+
+    Returns:
+    - List of dictionaries, where each dictionary represents an unmatched victim with all details and a list of their requested resources.
+    """
     cursor = conn.cursor()
     query = """
         SELECT victims.*, requested_resources.resource_type
@@ -109,8 +203,6 @@ def get_unmatched_victims_with_resources(conn):
         WHERE victims.completed = 0
     """
     cursor.execute(query)
-    
-    # Use a defaultdict to accumulate resources for each victim, with all victim fields included
     victim_dict = defaultdict(lambda: {
         "id": None,
         "name": "",
@@ -134,11 +226,18 @@ def get_unmatched_victims_with_resources(conn):
         victim_dict[victim_id]["completed"] = row["completed"]
         victim_dict[victim_id]["description"] = row["description"]
         victim_dict[victim_id]["resources"].append(row["resource_type"])
-
-    # Convert the dictionary to a list of dictionaries
     return list(victim_dict.values())
 
 def get_unmatched_donors_with_resources(conn):
+    """
+    Retrieves all unmatched donors with the resources they can provide.
+
+    Parameters:
+    - conn: SQLite database connection.
+
+    Returns:
+    - List of dictionaries, where each dictionary represents an unmatched donor with all details and a list of resources they can provide.
+    """
     cursor = conn.cursor()
     query = """
         SELECT donors.*, donor_resources.resource_type
@@ -147,8 +246,6 @@ def get_unmatched_donors_with_resources(conn):
         WHERE donors.completed = 0
     """
     cursor.execute(query)
-    
-    # Use a defaultdict to accumulate resources for each donor, including all donor fields
     donor_dict = defaultdict(lambda: {
         "id": None,
         "name": "",
@@ -172,8 +269,6 @@ def get_unmatched_donors_with_resources(conn):
         donor_dict[donor_id]["completed"] = row["completed"]
         donor_dict[donor_id]["description"] = row["description"]
         donor_dict[donor_id]["resources"].append(row["resource_type"])
-
-    # Convert the dictionary to a list of dictionaries
     return list(donor_dict.values())
 
 def is_victim_matched(conn, victim_id):
@@ -185,7 +280,7 @@ def is_victim_matched(conn, victim_id):
     - victim_id: The ID of the victim to check
 
     Returns:
-    - True if the victim has been matched (completed = 1), False otherwise
+    - True if the victim has been matched (completed = 1), False otherwise.
     """
     cursor = conn.cursor()
     cursor.execute("SELECT completed FROM victims WHERE id = ?", (victim_id,))
@@ -201,15 +296,23 @@ def is_donor_matched(conn, donor_id):
     - donor_id: The ID of the donor to check
 
     Returns:
-    - True if the donor has been matched (completed = 1), False otherwise
+    - True if the donor has been matched (completed = 1), False otherwise.
     """
     cursor = conn.cursor()
     cursor.execute("SELECT completed FROM donors WHERE id = ?", (donor_id,))
     result = cursor.fetchone()
     return result is not None and result[0] == 1
 
-# Function to close the database connection
 def close_connection(conn):
+    """
+    Closes the SQLite database connection.
+
+    Parameters:
+    - conn: SQLite database connection to be closed.
+
+    Returns:
+    - None
+    """
     conn.close()
 
 if __name__ == "__main__":
