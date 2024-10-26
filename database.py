@@ -103,22 +103,36 @@ def mark_as_matched(conn, victim_id, donor_id):
 def get_unmatched_victims_with_resources(conn):
     cursor = conn.cursor()
     query = """
-        SELECT victims.id, victims.name, victims.contact, victims.country, requested_resources.resource_type
+        SELECT victims.*, requested_resources.resource_type
         FROM victims
         JOIN requested_resources ON victims.id = requested_resources.victim_id
         WHERE victims.completed = 0
     """
     cursor.execute(query)
     
-    # Use a defaultdict to accumulate resources for each victim
-    victim_dict = defaultdict(lambda: {"id": None, "name": "", "contact": "", "country": "", "resources": []})
+    # Use a defaultdict to accumulate resources for each victim, with all victim fields included
+    victim_dict = defaultdict(lambda: {
+        "id": None,
+        "name": "",
+        "contact": "",
+        "postcode": "",
+        "address": "",
+        "country": "",
+        "completed": 0,
+        "description": "",
+        "resources": []
+    })
     
     for row in cursor.fetchall():
         victim_id = row["id"]
-        victim_dict[victim_id]["id"] = victim_id
+        victim_dict[victim_id]["id"] = row["id"]
         victim_dict[victim_id]["name"] = row["name"]
         victim_dict[victim_id]["contact"] = row["contact"]
+        victim_dict[victim_id]["postcode"] = row["postcode"]
+        victim_dict[victim_id]["address"] = row["address"]
         victim_dict[victim_id]["country"] = row["country"]
+        victim_dict[victim_id]["completed"] = row["completed"]
+        victim_dict[victim_id]["description"] = row["description"]
         victim_dict[victim_id]["resources"].append(row["resource_type"])
 
     # Convert the dictionary to a list of dictionaries
@@ -127,22 +141,36 @@ def get_unmatched_victims_with_resources(conn):
 def get_unmatched_donors_with_resources(conn):
     cursor = conn.cursor()
     query = """
-        SELECT donors.id, donors.name, donors.contact, donors.country, donor_resources.resource_type
+        SELECT donors.*, donor_resources.resource_type
         FROM donors
         JOIN donor_resources ON donors.id = donor_resources.donor_id
         WHERE donors.completed = 0
     """
     cursor.execute(query)
     
-    # Use a defaultdict to accumulate resources for each donor
-    donor_dict = defaultdict(lambda: {"id": None, "name": "", "contact": "", "country": "", "resources": []})
+    # Use a defaultdict to accumulate resources for each donor, including all donor fields
+    donor_dict = defaultdict(lambda: {
+        "id": None,
+        "name": "",
+        "contact": "",
+        "postcode": "",
+        "address": "",
+        "country": "",
+        "completed": 0,
+        "description": "",
+        "resources": []
+    })
     
     for row in cursor.fetchall():
         donor_id = row["id"]
-        donor_dict[donor_id]["id"] = donor_id
+        donor_dict[donor_id]["id"] = row["id"]
         donor_dict[donor_id]["name"] = row["name"]
         donor_dict[donor_id]["contact"] = row["contact"]
+        donor_dict[donor_id]["postcode"] = row["postcode"]
+        donor_dict[donor_id]["address"] = row["address"]
         donor_dict[donor_id]["country"] = row["country"]
+        donor_dict[donor_id]["completed"] = row["completed"]
+        donor_dict[donor_id]["description"] = row["description"]
         donor_dict[donor_id]["resources"].append(row["resource_type"])
 
     # Convert the dictionary to a list of dictionaries
