@@ -19,7 +19,7 @@ def resourceRequests():
 
         # Extract common details
         name = data.get("name")
-        email = data.get("contact")
+        contact = data.get("contact")
         address = data.get("address")
         postcode = data.get("postcode")
         country = "UK"  # Assuming country is fixed in this example
@@ -32,7 +32,7 @@ def resourceRequests():
             # Check the role and process accordingly
             if data.get("role") == "applicant":
                 # Insert the applicant (victim) into the database
-                victim_id = database.add_victim(conn, name, email, None, postcode, address, country, description=description)
+                victim_id = database.add_victim(conn, name, contact, None, postcode, address, country, description=description)
 
                 # Insert each requested resource option for the applicant
                 options = data.get("options", [])
@@ -43,7 +43,7 @@ def resourceRequests():
 
             elif data.get("role") == "donor":
                 # Insert the donor into the database
-                donor_id = database.add_donor(conn, name, email, None, postcode, address, country, description=description)
+                donor_id = database.add_donor(conn, name, contact, None, postcode, address, country, description=description)
 
                 # Insert each offered resource type for the donor
                 options = data.get("options", [])

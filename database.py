@@ -12,12 +12,12 @@ def connect_and_initialize(db_path="database.db", schema_path="schema.sql"):
     return conn
 
 # Function to add a new victim
-def add_victim(conn, name, email, phone, postcode, address, country, completed=0, description=""):
+def add_victim(conn, name, contact, postcode, address, country, completed=0, description=""):
     cursor = conn.cursor()
     cursor.execute("""
-        INSERT INTO victims (name, email, phone, postcode, address, country, completed, description)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    """, (name, email, phone, postcode, address, country, completed, description))
+        INSERT INTO victims (name, contact, postcode, address, country, completed, description)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    """, (name, contact, postcode, address, country, completed, description))
     conn.commit()
     return cursor.lastrowid  # Returns the ID of the inserted row
 
@@ -32,12 +32,12 @@ def add_requested_resource(conn, victim_id, resource_type):
     return cursor.lastrowid
 
 # Function to add a new donor
-def add_donor(conn, name, email, phone, postcode, address, country, completed=0, description=""):
+def add_donor(conn, name, contact, postcode, address, country, completed=0, description=""):
     cursor = conn.cursor()
     cursor.execute("""
-        INSERT INTO donors (name, email, phone, postcode, address, country, completed, description)
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-    """, (name, email, phone, postcode, address, country, completed, description))
+        INSERT INTO donors (name, contact, postcode, address, country, completed, description)
+        VALUES (?, ?, ?, ?, ?, ?, ?)
+    """, (name, contact, postcode, address, country, completed, description))
     conn.commit()
     return cursor.lastrowid
 

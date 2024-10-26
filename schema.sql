@@ -2,8 +2,7 @@
 CREATE TABLE IF NOT EXISTS victims (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
-    email TEXT NOT NULL UNIQUE,       -- Email contact information
-    phone TEXT UNIQUE,                -- Phone contact information
+    contact TEXT NOT NULL,            -- contact contact information
     address TEXT NOT NULL,
     postcode TEXT,
     country TEXT NOT NULL,            -- Country field added
@@ -24,8 +23,7 @@ CREATE TABLE IF NOT EXISTS requested_resources (
 CREATE TABLE IF NOT EXISTS donors (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
-    email TEXT NOT NULL UNIQUE,       -- Email contact information
-    phone TEXT UNIQUE,                -- Phone contact information
+    contact TEXT NOT NULL,            -- contact contact information
     address TEXT NOT NULL,
     postcode TEXT,
     country TEXT NOT NULL,            -- Country field added
