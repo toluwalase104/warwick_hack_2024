@@ -10,6 +10,12 @@ def home():
 # Sending data page
 @app.route("/resourceRequests", methods=["POST", "GET"])
 def resourceRequests():
+    if request.method == "POST":
+        data = request.json  
+        print(data)  
+        return jsonify({"status": "success", "data": data}), 200
+    
+    # If it's a GET request, simply render the resourceRequests.html page
     return render_template("resourceRequests.html")
 
 # Live tracker
