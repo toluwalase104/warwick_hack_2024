@@ -7,47 +7,152 @@ Resource Submissions
 
 {% block content %}
 <div id="mainContent" style="height: 100%;">
+    <br><br>
 
-    <div>
-    <h1> Resource Submission </h1>
-        <form id="mainForm">
-            <div id="personalDetails">
-                <label for="name">Name:</label>
-                <input type="text" id="name" required>
-                
-                <label for="contact">Contact:</label>
-                <input type="text" id="contact" required>
-                
-                <label for="address">Home Address:</label>
-                <input type="text" id="address" required>
-                
-                <label for="postcode">Postcode:</label>
-                <input type="text" id="postcode" required>
-                
-                <button type="button" onclick="showRoleSelection()">Next</button>
-            </div>
+    <div class="jumbotron mx-5 jumbotron-fluid custom-jumbotron border-dark border rounded" 
+        style="background-image: url('/static/images/background.jpg');" 
+        data-aos="zoom-in"
+        data-aos-easing="ease-in-out"
+        data-aos-delay="100"
+        data-aos-offset="200">
+        
+        <div class="container">
+            <h1 class="display-4 text-center">Resource Submission</h1>
+            <p class="lead text-center">Please provide your information.</p>
 
-            <div id="roleSelection" style="display:none;">
-                <button type="button" onclick="showOptions('donor')">I am a Donor</button>
-                <button type="button" onclick="showOptions('applicant')">I am an Applicant</button>
-            </div>
+            <!-- Form starts here -->
+            <form id="mainForm" autocomplete="off">
+                <div id="personalDetails">
+                    <center>
+                        <div class="form-group col-md-6 mx-auto">
+                            <label for="name">Name:</label>
+                            <input type="text" class="form-control" id="name" required>
+                        </div>
+                        <br>
+                        <div class="form-group col-md-6 mx-auto">
+                            <label for="contact">Contact:</label>
+                            <input type="text" class="form-control" id="contact" required>
+                        </div>
+                        <br>
+                        <div class="form-group col-md-6 mx-auto">
+                            <label for="address">Home Address:</label>
+                            <input type="text" class="form-control" id="address" required>
+                        </div>
+                        <br>
+                        <div class="form-group col-md-6 mx-auto">
+                            <label for="postcode">Postcode:</label>
+                            <input type="text" class="form-control" id="postcode" required>
+                        </div>
+                        <br>
+                        <a class="btn btn-lg mt-4 mb-4 btn-outline-dark active hvr-glow hvr-pulse hvr-shutter-out-horizontal" 
+                           style="background:#f59120; border-width: 2px; border-color: #000000; border-radius: 10px;" 
+                           href="javascript:void(0);" 
+                           role="button"
+                           onclick="showRoleSelection()"
+                           data-aos="zoom-in-up"
+                           data-aos-delay="1000"
+                           data-aos-easing="ease-in-out">
+                           Next
+                        </a>
+                    </center>
+                </div>
 
-            <div id="options" style="display:none;">
-                <h2>Select Options</h2>
-                <label><input type="checkbox" value="Food"> Food</label><br>
-                <label><input type="checkbox" value="Medicine"> First Aid</label><br>
-                <label><input type="checkbox" value="Shelter"> Shelter</label><br>
-                <label><input type="checkbox" value="Clothes"> Clothes</label><br>
-                <label><input type="checkbox" value="Money"> Money</label><br>
-                <label><input type="checkbox" value="Transport"> Transport</label><br>
-            
-                <!-- New description input field -->
-                <label for="description">Description (up to 50 words):</label>
-                <textarea id="description" maxlength="300" rows="3" placeholder="Enter a description (max 50 words)"></textarea><br>
-            
-                <button type="submit">Submit</button>
-            </div>
-        </form>
+                <div id="roleSelection" style="display:none;">
+                    <center>
+                        <h2 class="text-center">Choose your role</h2>
+                        <br>
+
+                        <div class="d-flex justify-content-center">
+                            <a class="btn btn-lg mt-4 mb-4 btn-outline-dark active hvr-glow hvr-pulse hvr-shutter-out-horizontal" 
+                               style="background:#f59120; border-width: 2px; border-color: #000000; border-radius: 10px;" 
+                               href="javascript:void(0);" 
+                               role="button"
+                               onclick="showOptions('donor')"
+                               data-aos="zoom-in-up"
+                               data-aos-delay="1100"
+                               data-aos-easing="ease-in-out"
+                               class="mx-3"> <!-- Add horizontal margin -->
+                               I am a Donor
+                            </a>
+                        
+                            <a class="btn btn-lg mt-4 mb-4 btn-outline-dark active hvr-glow hvr-pulse hvr-shutter-out-horizontal" 
+                               style="background:#f59120; border-width: 2px; border-color: #000000; border-radius: 10px;" 
+                               href="javascript:void(0);" 
+                               role="button"
+                               onclick="showOptions('applicant')"
+                               data-aos="zoom-in-up"
+                               data-aos-delay="1100"
+                               data-aos-easing="ease-in-out"
+                               class="mx-3"> <!-- Add horizontal margin -->
+                               I am an Applicant
+                            </a>
+                        </div>
+                        
+                    </center>
+                </div>
+
+                <div id="options" style="display:none;">
+                    <center>
+                        <h2 class="text-center">Select Options</h2>
+                    
+                        <div class="form-check text-left mx-auto" style="max-width: 400px;"> 
+                            <!-- Align checkboxes left and center in a max-width container -->
+                            <div class="form-check d-flex align-items-center"> <!-- Use flexbox for alignment -->
+                                <input type="checkbox" class="form-check-input" id="food" value="Food">
+                                <label class="form-check-label ms-2" for="food">Food</label> <!-- Add margin start -->
+                            </div>
+                            <div class="form-check d-flex align-items-center">
+                                <input type="checkbox" class="form-check-input" id="medicine" value="Medicine">
+                                <label class="form-check-label ms-2" for="medicine">First Aid</label>
+                            </div>
+                            <div class="form-check d-flex align-items-center">
+                                <input type="checkbox" class="form-check-input" id="shelter" value="Shelter">
+                                <label class="form-check-label ms-2" for="shelter">Shelter</label>
+                            </div>
+                            <div class="form-check d-flex align-items-center">
+                                <input type="checkbox" class="form-check-input" id="clothes" value="Clothes">
+                                <label class="form-check-label ms-2" for="clothes">Clothes</label>
+                            </div>
+                            <div class="form-check d-flex align-items-center">
+                                <input type="checkbox" class="form-check-input" id="money" value="Money">
+                                <label class="form-check-label ms-2" for="money">Money</label>
+                            </div>
+                            <div class="form-check d-flex align-items-center">
+                                <input type="checkbox" class="form-check-input" id="transport" value="Transport">
+                                <label class="form-check-label ms-2" for="transport">Transport</label>
+                            </div>
+                        </div>
+                    
+                        <br>
+                    
+                        <!-- Description input field with a custom width -->
+                        <div class="form-group mx-auto" style="max-width: 400px;"> <!-- Center and limit width -->
+                            <label for="description">Description (up to 50 words):</label>
+                            <textarea id="description" class="form-control" maxlength="300" rows="3" placeholder="Enter a description (max 50 words)" style="resize: none;"></textarea>
+                        </div>
+                    
+                        <br>
+                    
+                        <a class="btn btn-lg mt-4 mb-4 btn-outline-dark active hvr-glow hvr-pulse hvr-shutter-out-horizontal" 
+                           style="background:#f59120; border-width: 2px; border-color: #000000; border-radius: 10px;" 
+                           href="javascript:void(0);" 
+                           role="button"
+                           onclick="document.getElementById('mainForm').submit();"
+                           data-aos="zoom-in-up"
+                           data-aos-delay="1300"
+                           data-aos-easing="ease-in-out">
+                           Submit
+                        </a>
+                    </center>                                     
+                </div>
+
+            </form>
+        </div>
     </div>
+
+
+    <br><br><br><br><br><br>
+
+
 </div>
 {% endblock %}

@@ -57,13 +57,12 @@ document.getElementById('mainForm').onsubmit = function (event) {
     })
     .then(data => {
         console.log(data); // Log the response data for debugging
-        alert('Form submitted successfully!');
-        document.getElementById('mainForm').reset(); // Reset the form
+        window.location.href = '/resourceRequests'; // Redirect to the home page
     })
     .catch(error => {
         console.error('Error:', error);
-        alert('There was a problem submitting the form.');
     });
 };
+
 
 
