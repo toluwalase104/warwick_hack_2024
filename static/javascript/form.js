@@ -57,12 +57,18 @@ document.getElementById('mainForm').onsubmit = function (event) {
     })
     .then(data => {
         console.log(data); // Log the response data for debugging
-        window.location.href = '/resourceRequests'; // Redirect to the home page
+        window.location.href = '/liveTracker'; // Redirect to the live tracker page after successful submission
     })
     .catch(error => {
         console.error('Error:', error);
     });
 };
+
+// Attach event listener to the submit button for handling submission
+document.getElementById('submitButton').addEventListener('click', function() {
+    document.getElementById('mainForm').dispatchEvent(new Event('submit'));
+});
+
 
 
 
