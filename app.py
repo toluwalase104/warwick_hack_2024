@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify 
 import database
-import matplotlib
+import matplotlib.pyplot as plt
 
 app = Flask(__name__)
 
@@ -84,7 +84,28 @@ def liveTracker():
     allOfResources = database.get_resource_counts(conn)
     conn.close()
 
-    print(allOfResources)
+    labels = list(allOfResources.keys())
+    sizes = list(allOfResources.values())
+    colors = plt.cm.tab20.colors[:len(labels)]
+    fig, ax = plt.subplots()
+    wedges, texts, autotexts = ax.pie(
+    sizes, 
+    labels=labels, 
+    autopct='%1.1f%%',  # shows percentage on hover
+    startangle=140, 
+    colors=colors, 
+    pctdistance=0.85,   # distance of text from center
+    wedgeprops=dict(width=0.4)  # makes the pie chart have a donut shape
+    )
+
+    plt.legend(wedges, [f"{label} ({size})" for label, size in zip(labels, sizes)], 
+           title="Items Needed", 
+           loc="center left", 
+           bbox_to_anchor=(1, 0, 0.5, 1))
+    
+    plt.title("Items Needed for Donation")
+
+    plt.show()
 
     return render_template("liveTracker.html", victimData=victimData, donorData=donorData, helped_people_count=helped_people_count,
         helped_countries_count=helped_countries_count,
