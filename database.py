@@ -1,8 +1,11 @@
 import sqlite3
+from collections import defaultdict
 
 # Function to connect to the SQLite database and initialize it with schema.sql
 def connect_and_initialize(db_path="database.db", schema_path="schema.sql"):
     conn = sqlite3.connect(db_path)
+    conn.row_factory = sqlite3.Row  # Allows row access by column name
+
     cursor = conn.cursor()
     # Read schema from the file and execute it
     with open(schema_path, 'r') as f:
@@ -137,3 +140,63 @@ if __name__ == "__main__":
 
     # Close the connection
     close_connection(conn)
+
+
+def get_unmatched_donors_with_resources(conn):
+    cursor = conn.cursor()
+    query = """
+        SELECT 
+            d.id AS donor_id,
+            d.name AS donor_name,
+            d.contact AS donor_contact,      -- Single contact field
+            d.address AS donor_address,
+            d.postcode AS donor_postcode,
+            d.country AS donor_country,
+            d.description AS donor_description,
+            dr.id AS resource_id,
+            dr.resource_type AS resource_type
+        FROM donors d
+        JOIN donor_resources dr ON d.id = dr.donor_id
+        LEFT JOIN matches m ON dr.id = m.donor_resource_id
+        WHERE m.id IS NULL  -- Only select resources that have not been matched
+    """
+    cursor.execute(query)
+    results = cursor.fetchall()
+
+    # Dictionary to store donors and their resources
+    donors_dict = defaultdict(lambda: {
+        "donor_id": None,
+        "name": None,
+        "contact": None,  # Updated to single contact field
+        "address": None,
+        "postcode": None,
+        "country": None,
+        "description": None,
+        "resources": []  # List to store resources for each donor
+    })
+
+    for row in results:
+        donor_id = row["donor_id"]
+
+        # Populate donor information if it's the first time we encounter this donor
+        if donors_dict[donor_id]["donor_id"] is None:
+            donors_dict[donor_id].update({
+                "donor_id": donor_id,
+                "name": row["donor_name"],
+                "contact": row["donor_contact"],  # Using contact field
+                "address": row["donor_address"],
+                "postcode": row["donor_postcode"],
+                "country": row["donor_country"],
+                "description": row["donor_description"]
+            })
+
+        # Add the unmatched resource to the donor's list of resources
+        donors_dict[donor_id]["resources"].append({
+            "resource_id": row["resource_id"],
+            "resource_type": row["resource_type"]
+        })
+
+    # Convert the defaultdict to a list of dictionaries
+    unmatched_donors = list(donors_dict.values())
+
+    return unmatched_donors
