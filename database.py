@@ -76,33 +76,6 @@ def get_all_donors(conn):
     cursor.execute("SELECT * FROM donors")
     return cursor.fetchall()
 
-# Function to find all matches for a specific victim
-def get_matches_for_victim(conn, victim_id):
-    cursor = conn.cursor()
-    query = """
-        SELECT m.id, rr.resource_type, dr.resource_type
-        FROM matches m
-        JOIN requested_resources rr ON m.resource_id = rr.id
-        JOIN donor_resources dr ON m.donor_resource_id = dr.id
-        WHERE rr.victim_id = ?
-    """
-    cursor.execute(query, (victim_id,))
-    return cursor.fetchall()
-
-# Function to find all matches for a specific donor
-def get_matches_for_donor(conn, donor_id):
-    cursor = conn.cursor()
-    query = """
-        SELECT m.id, rr.resource_type AS requested_resource_type,
-               dr.resource_type AS donor_resource_type
-        FROM matches m
-        JOIN requested_resources rr ON m.resource_id = rr.id
-        JOIN donor_resources dr ON m.donor_resource_id = dr.id
-        WHERE dr.donor_id = ?
-    """
-    cursor.execute(query, (donor_id,))
-    return cursor.fetchall()
-
 def mark_as_matched(conn, victim_id, donor_id):
     cursor = conn.cursor()
     try:
@@ -215,40 +188,69 @@ if __name__ == "__main__":
     # Initialize and connect to the database
     conn = connect_and_initialize()
 
-    # Add test data for victims
-    victim_id = add_victim(conn, "John Doe", "john@example.com", "12345", "123 Main St", "USA", "Needs food and shelter")
-    add_requested_resource(conn, victim_id, "Food")
-    add_requested_resource(conn, victim_id, "Shelter")
+    # 1. Add victims and requested resources
+    print("Adding victims and their requested resources:")
+    victim_id1 = add_victim(conn, "John Doe", "john@example.com", "12345", "123 Main St", "USA", "Needs food and shelter")
+    add_requested_resource(conn, victim_id1, "Food")
+    add_requested_resource(conn, victim_id1, "Shelter")
+    print(f"Added victim John Doe with ID: {victim_id1}")
 
-    victim_id = add_victim(conn, "Alice Brown", "alice@example.com", "10001", "789 Maple St", "USA", "Needs food and clothes")
-    add_requested_resource(conn, victim_id, "Food")
-    add_requested_resource(conn, victim_id, "Clothes")
+    victim_id2 = add_victim(conn, "Alice Brown", "alice@example.com", "10001", "789 Maple St", "USA", "Needs food and clothes")
+    add_requested_resource(conn, victim_id2, "Food")
+    add_requested_resource(conn, victim_id2, "Clothes")
+    print(f"Added victim Alice Brown with ID: {victim_id2}\n")
 
-    # Add test data for donors
+    # 2. Add donors and their available resources
+    print("Adding donors and their available resources:")
     donor_id1 = add_donor(conn, "Bob White", "bob@example.com", "10002", "101 Pine St", "USA", "Can provide food and clothes")
     add_donor_resource(conn, donor_id1, "Food")
     add_donor_resource(conn, donor_id1, "Clothes")
+    print(f"Added donor Bob White with ID: {donor_id1}")
 
     donor_id2 = add_donor(conn, "Carol Green", "carol@example.com", "10003", "202 Cedar St", "USA", "Can provide shelter and first aid")
     add_donor_resource(conn, donor_id2, "Shelter")
     add_donor_resource(conn, donor_id2, "First Aid")
+    print(f"Added donor Carol Green with ID: {donor_id2}\n")
 
-    # Mark the first donor as matched to check filtering of unmatched donors
-    mark_as_matched(conn, victim_id, donor_id1)
-
-    # Retrieve and print unmatched donors with resources
-    unmatched_donors = get_unmatched_donors_with_resources(conn)
-    print("Unmatched Donors with Resources:")
-    for donor in unmatched_donors:
-        print(donor)
+    # 3. Create a match between John Doe and Bob White
+    print("Creating match between John Doe and Bob White:")
+    match_id1 = mark_as_matched(conn, victim_id1, donor_id1)
+    if match_id1:
+        print(f"Match created with ID: {match_id1}")
+    else:
+        print("Failed to create match.")
     
-    # Retrieve and print unmatched victims with resources
+    # 4. Check match status for victims and donors
+    print("\nChecking match statuses:")
+    print(f"Is John Doe matched? {is_victim_matched(conn, victim_id1)}")  # Expected: True
+    print(f"Is Alice Brown matched? {is_victim_matched(conn, victim_id2)}")  # Expected: False
+    print(f"Is Bob White matched? {is_donor_matched(conn, donor_id1)}")  # Expected: True
+    print(f"Is Carol Green matched? {is_donor_matched(conn, donor_id2)}\n")  # Expected: False
+
+    # 5. Retrieve all victims
+    print("Retrieving all victims:")
+    all_victims = get_all_victims(conn)
+    for victim in all_victims:
+        print(dict(victim))
+
+    # 6. Retrieve all donors
+    print("\nRetrieving all donors:")
+    all_donors = get_all_donors(conn)
+    for donor in all_donors:
+        print(dict(donor))
+
+    # 7. Retrieve unmatched victims with resources
+    print("\nRetrieving unmatched victims with resources:")
     unmatched_victims = get_unmatched_victims_with_resources(conn)
-    print("Unmatched Victims with Resources:")
     for victim in unmatched_victims:
         print(victim)
 
-    # Expected output should include only Carol Green and her resources (Shelter and First Aid)
-    
-    # Close the connection
+    # 8. Retrieve unmatched donors with resources
+    print("\nRetrieving unmatched donors with resources:")
+    unmatched_donors = get_unmatched_donors_with_resources(conn)
+    for donor in unmatched_donors:
+        print(donor)
+
+    # Close the database connection
     close_connection(conn)
+    print("\nDatabase connection closed.")
