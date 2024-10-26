@@ -32,7 +32,7 @@
   /* Border below hero image */
   .border-bottom {
     height: 8px; 
-    background-color: #080e30; 
+    background-color: #103f0e; 
     width: 100vw; 
     position: relative;
     margin: 0; 
@@ -211,7 +211,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    background: #080e30; 
+    background: #103f0e; 
     -webkit-transform: scaleX(0);
     transform: scaleX(0);
     -webkit-transform-origin: 50%;
@@ -692,3 +692,9 @@
   .text-hover-orange:hover {
     color: #f59120 !important;
   }
+
+.carousel-caption {
+    background-color: rgba(0, 0, 0, 0.5); /* Black with 50% transparency */
+    padding: 15px; /* Optional: Add padding to improve readability */
+    border-radius: 5px; /* Optional: Add rounded corners */
+}
