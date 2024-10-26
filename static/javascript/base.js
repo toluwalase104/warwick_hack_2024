@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
             // Use requestAnimationFrame to ensure proper initialization
             window.requestAnimationFrame(function() {
-                window.vantaEffect = VANTA.WAVES({
+                window.vantaEffect = VANTA.GLOBE({
                     el: fullPage,
                     mouseControls: true,
                     touchControls: true,
@@ -26,15 +26,14 @@ document.addEventListener('DOMContentLoaded', function () {
                     minWidth: width,
                     scale: 1.00,
                     scaleMobile: 1.00,
-                    color: 0x43d54,
-                    shininess: 150.00,
-                    waveHeight: 25.00,
-                    waveSpeed: 1.35,
-                    zoom: 0.65
+                    color: 0x20dbdb,
+                    color2: 0xededed,
+                    size: 2.00,
+                    backgroundColor: 0x5e7c4c
                 });
             });
         } else {
-            fullPage.style.backgroundColor = '#243282';
+            fullPage.style.backgroundColor = '#5e7c4c';
             if (window.vantaEffect) {
                 window.vantaEffect.destroy();
             }
