@@ -1,5 +1,5 @@
 -- Table to store basic information about victims and their resource needs
-CREATE TABLE victims (
+CREATE TABLE IF NOT EXISTS victims (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,       -- Email contact information
@@ -12,7 +12,7 @@ CREATE TABLE victims (
 );
 
 -- Table to store the types of resources requested by victims, with specific details if needed
-CREATE TABLE requested_resources (
+CREATE TABLE IF NOT EXISTS requested_resources (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     victim_id INTEGER NOT NULL,
     resource_type TEXT CHECK(resource_type IN ('Food', 'First Aid', 'Shelter', 'Clothes', 'Money', 'Transport', 'Other')) NOT NULL,
@@ -21,7 +21,7 @@ CREATE TABLE requested_resources (
 );
 
 -- Table to store available resources from donors
-CREATE TABLE donors (
+CREATE TABLE IF NOT EXISTS donors (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name TEXT NOT NULL,
     email TEXT NOT NULL UNIQUE,       -- Email contact information
@@ -34,7 +34,7 @@ CREATE TABLE donors (
 );
 
 -- Table to link donor offers with specific resources they can provide
-CREATE TABLE donor_resources (
+CREATE TABLE IF NOT EXISTS donor_resources(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     donor_id INTEGER NOT NULL,
     resource_type TEXT CHECK(resource_type IN ('Food', 'Medicine', 'Shelter', 'Clothes', 'Money', 'Transport', 'Other')) NOT NULL,
@@ -43,7 +43,7 @@ CREATE TABLE donor_resources (
 );
 
 -- Table to manage matches between requested resources and available resources from donors
-CREATE TABLE matches (
+CREATE TABLE IF NOT EXISTS matches (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     resource_id INTEGER NOT NULL,     -- Refers to a specific entry in the requested_resources table
     donor_resource_id INTEGER NOT NULL, -- Refers to a specific entry in the donor_resources table
