@@ -22,6 +22,7 @@ document.getElementById('mainForm').onsubmit = function (event) {
     const contact = document.getElementById('contact').value;
     const address = document.getElementById('address').value;
     const postcode = document.getElementById('postcode').value;
+    const country = document.getElementById('country').value; // Capture country
     const role = this.getAttribute('data-role'); // Get selected role
 
     // Capture selected options
@@ -36,6 +37,7 @@ document.getElementById('mainForm').onsubmit = function (event) {
         contact: contact,
         address: address,
         postcode: postcode,
+        country: country, // Include country in the data object
         role: role,
         options: options,
         description: description // Include description as a separate field
@@ -68,6 +70,7 @@ document.getElementById('mainForm').onsubmit = function (event) {
 document.getElementById('submitButton').addEventListener('click', function() {
     document.getElementById('mainForm').dispatchEvent(new Event('submit'));
 });
+
 
 
 
