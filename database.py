@@ -325,6 +325,30 @@ def get_resource_counts(conn):
     resource_counts = {row["resource_type"]: row["count"] for row in cursor.fetchall()}
     return resource_counts
 
+def get_helped_countries_counts(conn):
+    """
+    Retrieves the count of resources received by each country that has received aid.
+
+    Parameters:
+    - conn: SQLite database connection.
+
+    Returns:
+    - A dictionary where keys are country names and values are the count of resources received by that country.
+    """
+    cursor = conn.cursor()
+    query = """
+        SELECT victims.country, COUNT(requested_resources.id) AS resources_count
+        FROM victims
+        JOIN requested_resources ON victims.id = requested_resources.victim_id
+        WHERE victims.completed = 1
+        GROUP BY victims.country
+    """
+    cursor.execute(query)
+    
+    # Convert the result to a dictionary
+    country_counts = {row["country"]: row["resources_count"] for row in cursor.fetchall()}
+    return country_counts
+
 def get_helped_people_count(conn):
     """
     Retrieves the count of victims who have been marked as completed (i.e., helped).
@@ -469,6 +493,70 @@ def close_connection(conn):
     """
     conn.close()
 
+import pandas as pd
+import matplotlib.pyplot as plt
+import geopandas as gpd
+
+def plot_helped_countries_heatmap(conn):
+    # Step 1: Get the count of resources distributed by country
+    country_counts = get_helped_countries_counts(conn)
+    
+    # Step 2: Convert to DataFrame and filter for valid country names
+    df = pd.DataFrame(list(country_counts.items()), columns=["country", "count"])
+    
+    # Load the world map from the downloaded Natural Earth data
+    world = gpd.read_file("./data/ne_110m_admin_0_countries.shp")
+
+    # Step 3: Merge the world map with the data on country names
+    merged = world.set_index("NAME").join(df.set_index("country"))
+
+    # Step 4: Plot the data on a heatmap
+    fig, ax = plt.subplots(1, 1, figsize=(15, 10))
+    merged.plot(column="count", cmap="OrRd", linewidth=0.8, ax=ax, edgecolor="0.8", legend=True)
+    
+    ax.set_title("Resources Distributed by Country")
+    
+    fig, ax = plt.subplots(1, 1, figsize=(15, 10))
+    merged.plot(column="count", cmap="OrRd", linewidth=0.8, ax=ax, edgecolor="0.8", legend=True)
+    ax.set_title("Resources Distributed by Country")
+    plt.savefig("helped_countries_heatmap.png")
+
+
+if __name__ == "__main__":
+    # Connect to the database and initialize schema (assuming connect_and_initialize is defined)
+    conn = connect_and_initialize()
+    
+    # Add victims from different countries
+    victim_id1 = add_victim(conn, "Alice", "alice@example.com", "12345", "123 Street", "USA", "Needs food")
+    victim_id2 = add_victim(conn, "Bob", "bob@example.com", "54321", "456 Avenue", "Canada", "Needs shelter")
+    victim_id3 = add_victim(conn, "Carlos", "carlos@example.com", "67890", "789 Boulevard", "Mexico", "Needs clothes")
+    victim_id4 = add_victim(conn, "Diana", "diana@example.com", "13579", "101 Road", "USA", "Needs food and shelter")
+
+    # Add requested resources for each victim
+    add_requested_resource(conn, victim_id1, "Food")
+    add_requested_resource(conn, victim_id2, "Shelter")
+    add_requested_resource(conn, victim_id3, "Clothes")
+    add_requested_resource(conn, victim_id4, "Food")
+    add_requested_resource(conn, victim_id4, "Shelter")
+
+    # Mark some victims as helped (completed)
+    mark_as_matched(conn, victim_id1, donor_id=1)  # Assuming donor_id=1 is available
+    mark_as_matched(conn, victim_id2, donor_id=2)  # Assuming donor_id=2 is available
+    mark_as_matched(conn, victim_id4, donor_id=3)  # Assuming donor_id=3 is available
+
+    # Run the function to get helped countries' counts
+    result = get_helped_countries_counts(conn)
+
+    # Expected result should be:
+    # USA -> 3 (Alice's Food + Diana's Food + Diana's Shelter)
+    # Canada -> 1 (Bob's Shelter)
+    print("Helped Countries Counts:", result)
+
+    plot_helped_countries_heatmap(conn)
+
+    # Close the connection
+    close_connection(conn)
+"""
 if __name__ == "__main__":
     # Initialize and connect to the database
     conn = connect_and_initialize()
@@ -539,3 +627,4 @@ if __name__ == "__main__":
     # Close the database connection
     close_connection(conn)
     print("\nDatabase connection closed.")
+"""
