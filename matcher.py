@@ -80,12 +80,14 @@ if __name__ == "__main__":
 
 
     print(f"Requests\n {requests}")
+    print()
     print(f"Provisions\n {provisions}")
     print()
     print("Sample prompts: ")
-    ai_handler.run_query(0, requests, provisions)
+    print()
+    # ai_handler.run_query(0, requests, provisions)
     # ai_handler.run_query(1, requests, provisions)
-    # ai_handler.run_query(2, requests, provisions)
+    ai_handler.run_query(2, requests, provisions)
 
     # Close the database connection
     db.close_connection(conn)
