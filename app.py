@@ -72,7 +72,6 @@ def liveTracker():
     conn = database.connect_and_initialize()
     victimData = database.get_unmatched_victims_with_resources(conn)
     donorData = database.get_unmatched_donors_with_resources(conn)
-    conn.close()
 
     print(victimData)
     print(donorData)
@@ -83,7 +82,10 @@ def liveTracker():
     total_donated_items_count = database.get_helped_countries_count(conn)
     people_needing_help_count = database.get_total_donated_items_count(conn)
     countries_needing_help_count = database.get_countries_needing_help_count(conn)
-    resource_counts = database.get_resource_counts(conn)
+    resource_counts = sum(database.get_resource_counts(conn).values())
+
+    conn.close()
+
 
     return render_template("liveTracker.html", victimData=victimData, donorData=donorData, helped_people_count=helped_people_count,
         helped_countries_count=helped_countries_count,
