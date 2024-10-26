@@ -72,6 +72,8 @@ def liveTracker():
     conn = database.connect_and_initialize()
     res = database.get_unmatched_donors_with_resources(conn)
     conn.close()
+
+    
     return res
     #return render_template("liveTracker.html")
 
