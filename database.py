@@ -175,8 +175,6 @@ def get_unmatched_donors_with_resources(conn):
     # Convert the dictionary to a list of dictionaries
     return list(donor_dict.values())
 
-
-
 def is_victim_matched(conn, victim_id):
     """
     Checks if a victim has been matched by examining their `completed` status.
@@ -218,6 +216,10 @@ if __name__ == "__main__":
     conn = connect_and_initialize()
 
     # Add test data for victims
+    victim_id = add_victim(conn, "John Doe", "john@example.com", "12345", "123 Main St", "USA", "Needs food and shelter")
+    add_requested_resource(conn, victim_id, "Food")
+    add_requested_resource(conn, victim_id, "Shelter")
+
     victim_id = add_victim(conn, "Alice Brown", "alice@example.com", "10001", "789 Maple St", "USA", "Needs food and clothes")
     add_requested_resource(conn, victim_id, "Food")
     add_requested_resource(conn, victim_id, "Clothes")
