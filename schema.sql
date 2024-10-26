@@ -27,7 +27,7 @@ CREATE TABLE IF NOT EXISTS donors (
     address TEXT NOT NULL,
     postcode TEXT,
     country TEXT NOT NULL,            -- Country field added
-    completed BOOLEAN DEFAULT 0,      -- 0 for False, 1 for True (indicating if all resources from this donor have been matched)
+    completed BOOLEAN DEFAULT 0,      -- 0 for False, 1 for True (indicating if all needs have been fulfilled)
     description TEXT DEFAULT ""       -- Optional field for specific details
 );
 
@@ -35,17 +35,17 @@ CREATE TABLE IF NOT EXISTS donors (
 CREATE TABLE IF NOT EXISTS donor_resources(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     donor_id INTEGER NOT NULL,
-    resource_type TEXT CHECK(resource_type IN ('Food', 'Medicine', 'Shelter', 'Clothes', 'Money', 'Transport', 'Other')) NOT NULL,
+    resource_type TEXT CHECK(resource_type IN ('Food', 'First Aid', 'Shelter', 'Clothes', 'Money', 'Transport', 'Other')) NOT NULL,
     FOREIGN KEY (donor_id) REFERENCES donors (id) ON DELETE CASCADE,
     UNIQUE (donor_id, resource_type)  -- Prevent duplicate entries of the same resource type for a donor
 );
 
--- Table to manage matches between requested resources and available resources from donors
+-- Table to manage matches between victims and donors
 CREATE TABLE IF NOT EXISTS matches (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
-    resource_id INTEGER NOT NULL,     -- Refers to a specific entry in the requested_resources table
-    donor_resource_id INTEGER NOT NULL, -- Refers to a specific entry in the donor_resources table
+    victim_id INTEGER NOT NULL,       -- Refers to a specific entry in the victims table
+    donor_id INTEGER NOT NULL,        -- Refers to a specific entry in the donors table
     matched_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    FOREIGN KEY (resource_id) REFERENCES requested_resources (id) ON DELETE CASCADE,
-    FOREIGN KEY (donor_resource_id) REFERENCES donor_resources (id) ON DELETE CASCADE
+    FOREIGN KEY (victim_id) REFERENCES victims (id) ON DELETE CASCADE,
+    FOREIGN KEY (donor_id) REFERENCES donors (id) ON DELETE CASCADE
 );

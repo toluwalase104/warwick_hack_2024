@@ -15,12 +15,12 @@ def connect_and_initialize(db_path="database.db", schema_path="schema.sql"):
     return conn
 
 # Function to add a new victim
-def add_victim(conn, name, contact, postcode, address, country, completed=0, description=""):
+def add_victim(conn, name, contact, postcode, address, country, description=""):
     cursor = conn.cursor()
     cursor.execute("""
-        INSERT INTO victims (name, contact, postcode, address, country, completed, description)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-    """, (name, contact, postcode, address, country, completed, description))
+        INSERT INTO victims (name, contact, postcode, address, country, description)
+        VALUES (?, ?, ?, ?, ?, ?)
+    """, (name, contact, postcode, address, country, description))
     conn.commit()
     return cursor.lastrowid  # Returns the ID of the inserted row
 
@@ -35,12 +35,12 @@ def add_requested_resource(conn, victim_id, resource_type):
     return cursor.lastrowid
 
 # Function to add a new donor
-def add_donor(conn, name, contact, postcode, address, country, completed=0, description=""):
+def add_donor(conn, name, contact, postcode, address, country, description=""):
     cursor = conn.cursor()
     cursor.execute("""
-        INSERT INTO donors (name, contact, postcode, address, country, completed, description)
-        VALUES (?, ?, ?, ?, ?, ?, ?)
-    """, (name, contact, postcode, address, country, completed, description))
+        INSERT INTO donors (name, contact, postcode, address, country, description)
+        VALUES (?, ?, ?, ?, ?, ?)
+    """, (name, contact, postcode, address, country, description))
     conn.commit()
     return cursor.lastrowid
 
@@ -103,6 +103,110 @@ def get_matches_for_donor(conn, donor_id):
     cursor.execute(query, (donor_id,))
     return cursor.fetchall()
 
+def mark_as_matched(conn, victim_id, donor_id):
+    cursor = conn.cursor()
+    try:
+        # Insert into matches table to mark as matched
+        cursor.execute("""
+            INSERT INTO matches (victim_id, donor_id)
+            VALUES (?, ?)
+        """, (victim_id, donor_id))
+        conn.commit()
+        
+        # Retrieve the ID of the created match
+        match_id = cursor.lastrowid
+
+        # Update the `completed` status for both the victim and the donor
+        cursor.execute("UPDATE victims SET completed = 1 WHERE id = ?", (victim_id,))
+        cursor.execute("UPDATE donors SET completed = 1 WHERE id = ?", (donor_id,))
+        conn.commit()
+
+        return match_id
+    
+    except sqlite3.IntegrityError as e:
+        print("Error marking as matched:", e)
+        return None
+
+def get_unmatched_victims_with_resources(conn):
+    cursor = conn.cursor()
+    query = """
+        SELECT victims.id, victims.name, victims.contact, victims.country, requested_resources.resource_type
+        FROM victims
+        JOIN requested_resources ON victims.id = requested_resources.victim_id
+        WHERE victims.completed = 0
+    """
+    cursor.execute(query)
+    
+    # Use a defaultdict to accumulate resources for each victim
+    victim_dict = defaultdict(lambda: {"id": None, "name": "", "contact": "", "country": "", "resources": []})
+    
+    for row in cursor.fetchall():
+        victim_id = row["id"]
+        victim_dict[victim_id]["id"] = victim_id
+        victim_dict[victim_id]["name"] = row["name"]
+        victim_dict[victim_id]["contact"] = row["contact"]
+        victim_dict[victim_id]["country"] = row["country"]
+        victim_dict[victim_id]["resources"].append(row["resource_type"])
+
+    # Convert the dictionary to a list of dictionaries
+    return list(victim_dict.values())
+
+def get_unmatched_donors_with_resources(conn):
+    cursor = conn.cursor()
+    query = """
+        SELECT donors.id, donors.name, donors.contact, donors.country, donor_resources.resource_type
+        FROM donors
+        JOIN donor_resources ON donors.id = donor_resources.donor_id
+        WHERE donors.completed = 0
+    """
+    cursor.execute(query)
+    
+    # Use a defaultdict to accumulate resources for each donor
+    donor_dict = defaultdict(lambda: {"id": None, "name": "", "contact": "", "country": "", "resources": []})
+    
+    for row in cursor.fetchall():
+        donor_id = row["id"]
+        donor_dict[donor_id]["id"] = donor_id
+        donor_dict[donor_id]["name"] = row["name"]
+        donor_dict[donor_id]["contact"] = row["contact"]
+        donor_dict[donor_id]["country"] = row["country"]
+        donor_dict[donor_id]["resources"].append(row["resource_type"])
+
+    # Convert the dictionary to a list of dictionaries
+    return list(donor_dict.values())
+
+def is_victim_matched(conn, victim_id):
+    """
+    Checks if a victim has been matched by examining their `completed` status.
+
+    Parameters:
+    - conn: SQLite database connection
+    - victim_id: The ID of the victim to check
+
+    Returns:
+    - True if the victim has been matched (completed = 1), False otherwise
+    """
+    cursor = conn.cursor()
+    cursor.execute("SELECT completed FROM victims WHERE id = ?", (victim_id,))
+    result = cursor.fetchone()
+    return result is not None and result[0] == 1
+
+def is_donor_matched(conn, donor_id):
+    """
+    Checks if a donor has been matched by examining their `completed` status.
+
+    Parameters:
+    - conn: SQLite database connection
+    - donor_id: The ID of the donor to check
+
+    Returns:
+    - True if the donor has been matched (completed = 1), False otherwise
+    """
+    cursor = conn.cursor()
+    cursor.execute("SELECT completed FROM donors WHERE id = ?", (donor_id,))
+    result = cursor.fetchone()
+    return result is not None and result[0] == 1
+
 # Function to close the database connection
 def close_connection(conn):
     conn.close()
@@ -111,92 +215,40 @@ if __name__ == "__main__":
     # Initialize and connect to the database
     conn = connect_and_initialize()
 
-    # Add a victim
-    victim_id = add_victim(conn, "John Doe", "john@example.com", "1234567890", "12345", "123 Main St", "USA")
+    # Add test data for victims
+    victim_id = add_victim(conn, "John Doe", "john@example.com", "12345", "123 Main St", "USA", "Needs food and shelter")
+    add_requested_resource(conn, victim_id, "Food")
+    add_requested_resource(conn, victim_id, "Shelter")
 
-    # Add a requested resource for the victim
-    requested_resource_id = add_requested_resource(conn, victim_id, "Food")
+    victim_id = add_victim(conn, "Alice Brown", "alice@example.com", "10001", "789 Maple St", "USA", "Needs food and clothes")
+    add_requested_resource(conn, victim_id, "Food")
+    add_requested_resource(conn, victim_id, "Clothes")
 
-    # Add a donor
-    donor_id = add_donor(conn, "Jane Smith", "jane@example.com", "0987654321", "54321", "456 Elm St", "USA")
+    # Add test data for donors
+    donor_id1 = add_donor(conn, "Bob White", "bob@example.com", "10002", "101 Pine St", "USA", "Can provide food and clothes")
+    add_donor_resource(conn, donor_id1, "Food")
+    add_donor_resource(conn, donor_id1, "Clothes")
 
-    # Add a resource that the donor can provide
-    donor_resource_id = add_donor_resource(conn, donor_id, "Food")
+    donor_id2 = add_donor(conn, "Carol Green", "carol@example.com", "10003", "202 Cedar St", "USA", "Can provide shelter and first aid")
+    add_donor_resource(conn, donor_id2, "Shelter")
+    add_donor_resource(conn, donor_id2, "First Aid")
 
-    # Create a match between the requested resource and the donor's resource
-    match_id = add_match(conn, requested_resource_id, donor_resource_id)
+    # Mark the first donor as matched to check filtering of unmatched donors
+    mark_as_matched(conn, victim_id, donor_id1)
 
-    # Retrieve and print all victims
-    print("Victims:", get_all_victims(conn))
+    # Retrieve and print unmatched donors with resources
+    unmatched_donors = get_unmatched_donors_with_resources(conn)
+    print("Unmatched Donors with Resources:")
+    for donor in unmatched_donors:
+        print(donor)
+    
+    # Retrieve and print unmatched victims with resources
+    unmatched_victims = get_unmatched_victims_with_resources(conn)
+    print("Unmatched Victims with Resources:")
+    for victim in unmatched_victims:
+        print(victim)
 
-    # Retrieve and print all donors
-    print("Donors:", get_all_donors(conn))
-
-    # Retrieve and print matches for the victim
-    print("Matches for victim:", get_matches_for_victim(conn, victim_id))
-
-    # Retrieve and print matches for the donor
-    print("Matches for donor:", get_matches_for_donor(conn, donor_id))
-
+    # Expected output should include only Carol Green and her resources (Shelter and First Aid)
+    
     # Close the connection
     close_connection(conn)
-
-
-def get_unmatched_donors_with_resources(conn):
-    cursor = conn.cursor()
-    query = """
-        SELECT 
-            d.id AS donor_id,
-            d.name AS donor_name,
-            d.contact AS donor_contact,      -- Single contact field
-            d.address AS donor_address,
-            d.postcode AS donor_postcode,
-            d.country AS donor_country,
-            d.description AS donor_description,
-            dr.id AS resource_id,
-            dr.resource_type AS resource_type
-        FROM donors d
-        JOIN donor_resources dr ON d.id = dr.donor_id
-        LEFT JOIN matches m ON dr.id = m.donor_resource_id
-        WHERE m.id IS NULL  -- Only select resources that have not been matched
-    """
-    cursor.execute(query)
-    results = cursor.fetchall()
-
-    # Dictionary to store donors and their resources
-    donors_dict = defaultdict(lambda: {
-        "donor_id": None,
-        "name": None,
-        "contact": None,  # Updated to single contact field
-        "address": None,
-        "postcode": None,
-        "country": None,
-        "description": None,
-        "resources": []  # List to store resources for each donor
-    })
-
-    for row in results:
-        donor_id = row["donor_id"]
-
-        # Populate donor information if it's the first time we encounter this donor
-        if donors_dict[donor_id]["donor_id"] is None:
-            donors_dict[donor_id].update({
-                "donor_id": donor_id,
-                "name": row["donor_name"],
-                "contact": row["donor_contact"],  # Using contact field
-                "address": row["donor_address"],
-                "postcode": row["donor_postcode"],
-                "country": row["donor_country"],
-                "description": row["donor_description"]
-            })
-
-        # Add the unmatched resource to the donor's list of resources
-        donors_dict[donor_id]["resources"].append({
-            "resource_id": row["resource_id"],
-            "resource_type": row["resource_type"]
-        })
-
-    # Convert the defaultdict to a list of dictionaries
-    unmatched_donors = list(donors_dict.values())
-
-    return unmatched_donors
