@@ -530,7 +530,8 @@ def plot_helped_countries_heatmap(conn):
     fig, ax = plt.subplots(1, 1, figsize=(15, 10))
     merged.plot(column="count", cmap="OrRd", linewidth=0.8, ax=ax, edgecolor="0.8", legend=True)
     ax.set_title("Resources Distributed by Country")
-    plt.savefig("helped_countries_heatmap.png")
+    plt.savefig("./static/images/helped_countries_heatmap.png", format='png', dpi=300, transparent=True)
+    plt.close()
 
 if __name__ == "__main__":
     # Connect to the database and initialize schema (assuming connect_and_initialize is defined)
