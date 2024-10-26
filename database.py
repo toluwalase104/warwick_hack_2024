@@ -3,6 +3,9 @@ from collections import defaultdict
 import pandas as pd
 import matplotlib.pyplot as plt
 import geopandas as gpd
+from flask import Flask
+
+app = Flask(__name__)
 
 def connect_and_initialize(db_path="database.db", schema_path="schema.sql"):
     """
@@ -18,8 +21,10 @@ def connect_and_initialize(db_path="database.db", schema_path="schema.sql"):
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row  # Allows row access by column name
     cursor = conn.cursor()
-    with open(schema_path, 'r') as f:
+    with app.open_resource(schema_path) as f:
         schema = f.read()
+        if isinstance(schema, bytes):
+            schema = schema.decode('utf-8')  # Decode to string if it's bytes
     cursor.executescript(schema)
     conn.commit()
     return conn
