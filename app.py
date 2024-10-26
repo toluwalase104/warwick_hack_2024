@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify 
 import database
+import matplotlib
 
 app = Flask(__name__)
 
@@ -73,9 +74,6 @@ def liveTracker():
     victimData = database.get_unmatched_victims_with_resources(conn)
     donorData = database.get_unmatched_donors_with_resources(conn)
 
-    print(victimData)
-    print(donorData)
-
     # Retrieve all counts
     helped_people_count = database.get_helped_countries_count(conn)
     helped_countries_count = database.get_helped_people_count(conn)
@@ -83,9 +81,10 @@ def liveTracker():
     people_needing_help_count = database.get_total_donated_items_count(conn)
     countries_needing_help_count = database.get_countries_needing_help_count(conn)
     resource_counts = sum(database.get_resource_counts(conn).values())
-
+    allOfResources = database.get_resource_counts(conn)
     conn.close()
 
+    print(allOfResources)
 
     return render_template("liveTracker.html", victimData=victimData, donorData=donorData, helped_people_count=helped_people_count,
         helped_countries_count=helped_countries_count,
