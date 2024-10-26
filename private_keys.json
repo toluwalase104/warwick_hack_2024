@@ -2,5 +2,17 @@
     "user": {
         "identity_key": "866d866e9104804c2e577dfbc7a0c731083220a8c35a80ba50a8b05390a90f3c",
         "wallet_key": "0BrV25/F5ILAAh3jyLj2LwSjOVdi7qeUQ7O9yldO22Q="
+    },
+    "consumer": {
+        "identity_key": "763dac8d42b0a2b711f46b77aec6246118d5cf95a81234ac480c413b83901985",
+        "wallet_key": "cYPBH42XGHQHQyOwwOYMYXYE+mpDYfkoJpXtrq3duXY="
+    },
+    "website_receiver": {
+        "identity_key": "fd898d3376b6414ad7d4763882416b05208809ae82ebc62625f894e30af1dce1",
+        "wallet_key": "ToIJAD0vZtwrf02zgT/C0Oh6Cor8JxkRXVODJlPyowo="
+    },
+    "gemini-handler": {
+        "identity_key": "c2f2f2b315d6b18cc48e633da883bfccc50bb27fb68d023bb2bbb7c80f16f560",
+        "wallet_key": "HX43VC9iahvD5w7pY7BqGdZVkH47se/hnsGTrcgUdnY="
     }
 }
