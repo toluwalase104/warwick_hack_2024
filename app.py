@@ -22,3 +22,5 @@ def liveTracker():
 def charities():
     return render_template("charities.html")
 
+if __name__ == "__main__":
+    app.run(debug=True)

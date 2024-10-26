@@ -1,0 +1,694 @@
+/* For all */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  /* For hero image */
+  .hero-image {
+    background-size: cover; 
+    background-position: center; 
+    height: 400px; 
+    width: 100vw; 
+    position: relative; 
+    margin-bottom: 0; 
+  }
+  
+  .hero-image .mask {
+    background-color: rgba(0, 0, 0, 0.6); 
+    height: 100%; 
+    width: 100%; 
+    position: absolute; 
+    top: 0; 
+    left: 0; 
+  }
+  
+  .hero-image .d-flex {
+    position: relative; 
+    z-index: 1; 
+  }
+  
+  /* Border below hero image */
+  .border-bottom {
+    height: 8px; 
+    background-color: #080e30; 
+    width: 100vw; 
+    position: relative;
+    margin: 0; 
+  }
+  
+  /* Stops banner image from overflowing */
+  body {
+    overflow-x: hidden; 
+    overflow-y: auto;   
+  }
+  
+  /* For sticky navbar */
+  .navbar.fixed-top {
+    position: sticky;
+    top: 0;
+    z-index: 1030;
+  }
+  
+  /* Shrink hover effect */
+  .hvr-shrink {
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: transform;
+    transition-property: transform;
+  }
+  
+  .hvr-shrink:hover, .hvr-shrink:focus, .hvr-shrink:active {
+    -webkit-transform: scale(0.9);
+    transform: scale(0.9);
+  }
+  
+  /* Bounce in hover effect */
+  .hvr-bounce-in {
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-transition-duration: 0.5s;
+    transition-duration: 0.5s;
+  }
+  
+  .hvr-bounce-in:hover, .hvr-bounce-in:focus, .hvr-bounce-in:active {
+    -webkit-transform: scale(1.2);
+    transform: scale(1.2);
+    -webkit-transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36);
+    transition-timing-function: cubic-bezier(0.47, 2.02, 0.31, -0.36);
+  }
+  
+  /* Glow hover effect for exec */
+  .hvr-glow-exec {
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: box-shadow;
+    transition-property: box-shadow;
+  }
+  .hvr-glow-exec:hover, .hvr-glow-exec:focus, .hvr-glow-exec:active {
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+  }
+  
+  /* Glow hover effect */
+  .hvr-glow {
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: box-shadow;
+    transition-property: box-shadow;
+  }
+  .hvr-glow:hover, .hvr-glow:focus, .hvr-glow:active {
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+  }
+  
+  /* Grow shadow hover effect */
+  .hvr-grow-shadow {
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: box-shadow, transform;
+    transition-property: box-shadow, transform;
+  }
+  .hvr-grow-shadow:hover, .hvr-grow-shadow:focus, .hvr-grow-shadow:active {
+    box-shadow: 0 10px 10px -10px rgba(0, 0, 0, 0.5);
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+  }
+  
+  /* Shutter out vertical hover effect */
+  .hvr-shutter-out-vertical {
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    position: relative;
+    background: #0c154a;
+    -webkit-transition-property: background-color, color;
+    transition-property: background-color, color;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-timing-function: ease-out;
+    transition-timing-function: ease-out;
+  }
+  
+  .hvr-shutter-out-vertical:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #f59120;
+    -webkit-transform: scaleY(0);
+    transform: scaleY(0);
+    -webkit-transform-origin: 50%;
+    transform-origin: 50%;
+    -webkit-transition-property: transform;
+    transition-property: transform;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-timing-function: ease-out;
+    transition-timing-function: ease-out;
+  }
+  
+  .hvr-shutter-out-vertical:hover, .hvr-shutter-out-vertical:focus, .hvr-shutter-out-vertical:active {
+    color: #f59120;
+    background: #f59120; 
+  }
+  
+  .hvr-shutter-out-vertical:hover:before, .hvr-shutter-out-vertical:focus:before, .hvr-shutter-out-vertical:active:before {
+    -webkit-transform: scaleY(1);
+    transform: scaleY(1);
+  }
+  
+  /* Shutter out horizontal hover effect */
+  .hvr-shutter-out-horizontal {
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    background: #f59120; 
+    border-width: 2px;
+    border-radius: 10px; 
+    border-color: #000000; 
+    color: #fff; 
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    -webkit-transition-property: color, transform, border-radius;
+    transition-property: color, transform, border-radius;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+  }
+  
+  .hvr-shutter-out-horizontal:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: #080e30; 
+    -webkit-transform: scaleX(0);
+    transform: scaleX(0);
+    -webkit-transform-origin: 50%;
+    transform-origin: 50%;
+    -webkit-transition-property: transform;
+    transition-property: transform;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-timing-function: ease-out;
+    transition-timing-function: ease-out;
+    border-radius: inherit; 
+  }
+  
+  .hvr-shutter-out-horizontal:hover, .hvr-shutter-out-horizontal:focus, .hvr-shutter-out-horizontal:active {
+    color: white; 
+  }
+  
+  .hvr-shutter-out-horizontal:hover:before, .hvr-shutter-out-horizontal:focus:before, .hvr-shutter-out-horizontal:active:before {
+    -webkit-transform: scaleX(1);
+    transform: scaleX(1);
+  }
+  
+  
+  /* Pulse hover effect */
+  @-webkit-keyframes hvr-pulse {
+    25% {
+      -webkit-transform: scale(1.1);
+      transform: scale(1.1);
+    }
+    75% {
+      -webkit-transform: scale(0.9);
+      transform: scale(0.9);
+    }
+  }
+  @keyframes hvr-pulse {
+    25% {
+      -webkit-transform: scale(1.1);
+      transform: scale(1.1);
+    }
+    75% {
+      -webkit-transform: scale(0.9);
+      transform: scale(0.9);
+    }
+  }
+  .hvr-pulse {
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  }
+  .hvr-pulse:hover, .hvr-pulse:focus, .hvr-pulse:active {
+    -webkit-animation-name: hvr-pulse;
+    animation-name: hvr-pulse;
+    -webkit-animation-duration: 1s;
+    animation-duration: 1s;
+    -webkit-animation-timing-function: linear;
+    animation-timing-function: linear;
+    -webkit-animation-iteration-count: infinite;
+    animation-iteration-count: infinite;
+  }
+  
+  /* Bob hover effect */
+  @-webkit-keyframes hvr-bob {
+    0% {
+      -webkit-transform: translateY(-8px);
+      transform: translateY(-8px);
+    }
+    50% {
+      -webkit-transform: translateY(-4px);
+      transform: translateY(-4px);
+    }
+    100% {
+      -webkit-transform: translateY(-8px);
+      transform: translateY(-8px);
+    }
+  }
+  @keyframes hvr-bob {
+    0% {
+      -webkit-transform: translateY(-8px);
+      transform: translateY(-8px);
+    }
+    50% {
+      -webkit-transform: translateY(-4px);
+      transform: translateY(-4px);
+    }
+    100% {
+      -webkit-transform: translateY(-8px);
+      transform: translateY(-8px);
+    }
+  }
+  @-webkit-keyframes hvr-bob-float {
+    100% {
+      -webkit-transform: translateY(-8px);
+      transform: translateY(-8px);
+    }
+  }
+  @keyframes hvr-bob-float {
+    100% {
+      -webkit-transform: translateY(-8px);
+      transform: translateY(-8px);
+    }
+  }
+  .hvr-bob {
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  }
+  .hvr-bob:hover, .hvr-bob:focus, .hvr-bob:active {
+    -webkit-animation-name: hvr-bob-float, hvr-bob;
+    animation-name: hvr-bob-float, hvr-bob;
+    -webkit-animation-duration: .3s, 1.5s;
+    animation-duration: .3s, 1.5s;
+    -webkit-animation-delay: 0s, .3s;
+    animation-delay: 0s, .3s;
+    -webkit-animation-timing-function: ease-out, ease-in-out;
+    animation-timing-function: ease-out, ease-in-out;
+    -webkit-animation-iteration-count: 1, infinite;
+    animation-iteration-count: 1, infinite;
+    -webkit-animation-fill-mode: forwards;
+    animation-fill-mode: forwards;
+    -webkit-animation-direction: normal, alternate;
+    animation-direction: normal, alternate;
+  }
+  
+  /* Grow hover effect */
+  .hvr-grow {
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: transform;
+    transition-property: transform;
+  }
+  
+  .hvr-grow:hover,
+  .hvr-grow:focus,
+  .hvr-grow:active {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+  }
+  
+  /* Grow hover effect for execs */
+  .hvr-grow-exec {
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-property: transform;
+    transition-property: transform;
+  }
+  
+  .hvr-grow-exec:hover,
+  .hvr-grow-exec:focus,
+  .hvr-grow-exec:active {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+  }
+  
+  /* Underline From Center */
+  .hvr-underline-from-center {
+    display: inline-block;
+    vertical-align: middle;
+    -webkit-transform: perspective(1px) translateZ(0);
+    transform: perspective(1px) translateZ(0);
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    position: relative;
+    overflow: hidden;
+  }
+  .hvr-underline-from-center:before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    left: 51%;
+    right: 51%;
+    bottom: 0;
+    background: #f59120;
+    height: 4px;
+    -webkit-transition-property: left, right;
+    transition-property: left, right;
+    -webkit-transition-duration: 0.3s;
+    transition-duration: 0.3s;
+    -webkit-transition-timing-function: ease-out;
+    transition-timing-function: ease-out;
+  }
+  .hvr-underline-from-center:hover:before, .hvr-underline-from-center:focus:before, .hvr-underline-from-center:active:before {
+    left: 0;
+    right: 0;
+  }
+  
+  /* For drop menu responsiveness */ 
+  .dropdown-menu {
+    background-color: #0c154a; 
+  }
+  
+  .dropdown-item {
+    font-size: 14px; 
+    padding: 8px 12px; 
+    color: #ffffff; 
+  }
+  
+  .dropdown-item:hover,
+  .dropdown-item:focus {
+    background-color: #f59120;
+    color: #ffffff; 
+  }
+  
+  /* If screen size is too small, make adjustments to hover effects and icons */
+  @media (max-width: 768px) {
+  
+    .dropdown-menu {
+      font-size: 14px; 
+    }
+  
+    .dropdown-item {
+        font-size: 14px; 
+        padding: 8px 10px; 
+    }
+  
+    /* Hover and focus states for dropdown items */
+    .dropdown-item:hover,
+    .dropdown-item:focus {
+        background-color: #f59120; 
+        color: #ffffff; 
+    }
+  
+  
+    .navbar-nav .nav-item {
+        margin: 0; 
+    }
+    
+    .navbar-nav .nav-link {
+        font-size: 14px; 
+        padding: 8px 10px; 
+    }
+  
+    .hvr-underline-from-center:before,
+    .hvr-glow,
+    .hvr-bob,
+    .hvr-shutter-out-vertical {
+        box-shadow: none;
+        transition-property: none;
+        animation: none;
+        color: inherit;
+        background: inherit;
+    }
+  
+    .hvr-underline-from-center:hover:before,
+    .hvr-glow:hover,
+    .hvr-bob:hover,
+    .hvr-shutter-out-vertical:hover,
+    .hvr-underline-from-center:focus:before,
+    .hvr-glow:focus,
+    .hvr-bob:focus,
+    .hvr-shutter-out-vertical:focus {
+        box-shadow: none;
+        animation: none;
+        transition-property: none;
+        color: inherit;
+        background: inherit;
+    }
+  
+    .hvr-shutter-out-vertical {
+      background: transparent !important; 
+      color: #ffffff; 
+    }
+  
+    .hvr-shutter-out-vertical:before {
+      display: none !important; 
+    }
+  
+    .hvr-shutter-out-vertical:hover,
+    .hvr-shutter-out-vertical:focus,
+    .hvr-shutter-out-vertical:active {
+      color: #ffffff; 
+      background: transparent !important; 
+    }
+  }
+  
+  /* For text backgrounds */
+  .custom-jumbotron {
+    border-width: 2px;
+    border-radius: 10px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white; 
+    padding: 20px;
+  }
+  
+  /* Optional hover or focus effects */
+  .custom-jumbotron:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); 
+  }
+  
+  
+  /* For divisions */
+  .img-fluid-divisions {
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+  }
+  
+  .division-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+  } 
+  
+  /* Image slider container */
+  .logoSlider-container {
+    position: relative;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Slider */
+  .logoSlider {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+  }
+  
+  /* Style for each logo item */
+  .logoItem {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+    overflow: hidden;
+    transition: transform 0.5s, filter 0.5s, opacity 0.5s;
+    z-index: 1;
+    background: none;
+    border: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Style for images within logo items */
+  .logoItem img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Navigation buttons */
+  .logoNavBtn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #fff;
+    background-color: transparent;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 10;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    outline: none;
+  }
+  
+  #logoNextSponsor {
+    right: 20px;
+  }
+  
+  #logoPrevSponsor {
+    left: 20px;
+  }
+  
+  #logoNextCollab {
+    right: 20px;
+  }
+  
+  #logoPrevCollab {
+    left: 20px;
+  }
+  
+  /* To ensure navbar is responsive */
+  .navbar-nav .nav-item .nav-link {
+    white-space: nowrap; 
+    font-size: 16px;
+    padding: 8px 12px; 
+  }
+  
+  @media (max-width: 1200px) {
+    .navbar-nav .nav-item .nav-link {
+        font-size: 15px; 
+        padding: 7px 10px; 
+    }
+  }
+  
+  @media (max-width: 992px) {
+    .navbar-nav .nav-item .nav-link {
+        font-size: 14px; 
+        padding: 6px 8px; 
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .navbar-nav .nav-item .nav-link {
+        font-size: 13px;
+        padding: 5px 7px; 
+    }
+  }
+  
+  @media (max-width: 576px) {
+    .navbar-nav .nav-item .nav-link {
+        font-size: 12px; 
+        padding: 4px 5px; 
+    }
+  }
+  
+  /* Ensure footer icons are responsive */
+  .footer-icons {
+    display: flex;
+    justify-content: flex-end;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .footer-icons li {
+    margin-left: 15px;
+  }
+  
+  .footer-icons i {
+    font-size: 2rem; 
+  }
+  
+  /* Hover feature for icons */
+  .footer-icons li a:hover .fa-map-marker-alt,
+  .footer-icons li a:hover .fa-envelope,
+  .footer-icons li a:hover .fa-instagram,
+  .footer-icons li a:hover .fa-whatsapp,
+  .footer-icons li a:hover .fa-linkedin,
+  .footer-icons li a:hover .fa-facebook {
+    color: #f59120;
+  }
+  
+  /* Responsiveness to change background when smaller screen */
+  #mainContent {
+    width: 100vw;
+    height: 100vh; 
+    transition: background-color 0.3s ease;
+  }
+  
+  @media (max-width: 576px) {
+    #mainContent {
+        background-color: #243282; 
+    }
+  }
+  
+  /* Hover text to orange */
+  .text-hover-orange {
+    color: inherit; 
+    transition: color 0.3s ease; 
+  }
+  
+  .text-hover-orange:hover {
+    color: #f59120 !important;
+  }

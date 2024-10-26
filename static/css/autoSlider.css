@@ -1,0 +1,53 @@
+.wrapper {
+	background-color: transparent;
+	overflow: hidden;
+	position: relative;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	padding: 0 20px;
+}
+
+.wrapper:before, .wrapper:after {
+	content: "";
+	position: absolute;
+	height: 100%;
+	width: 150px;
+	z-index: 2;
+}
+
+.wrapper:after {
+	right: 0;
+	top: 0;
+	transform: rotateZ(180deg);
+}
+
+.wrapper:before {
+	left: 0;
+	top: 0;
+}
+
+.wrapper .track {
+	display: flex;
+	animation: scroll 15s linear infinite;
+}
+
+.wrapper .logo {
+	flex: 0 0 20%;
+	margin: 0 10px;
+	box-sizing: border-box;
+}
+
+.wrapper .logo img {
+	width: 100%;
+	height: auto;
+}
+
+@keyframes scroll {
+	from {
+		transform: translateX(0);
+	}
+	to {
+		transform: translateX(-100%);
+	}
+}
