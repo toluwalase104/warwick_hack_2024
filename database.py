@@ -330,6 +330,30 @@ def get_resource_counts(conn):
     resource_counts = {row["resource_type"]: row["count"] for row in cursor.fetchall()}
     return resource_counts
 
+def get_to_help_countries_counts(conn):
+    """
+    Retrieves the count of resources in waiting list to be received by each country that has received aid.
+
+    Parameters:
+    - conn: SQLite database connection.
+
+    Returns:
+    - A dictionary where keys are country names and values are the count of resources received by that country.
+    """
+    cursor = conn.cursor()
+    query = """
+        SELECT victims.country, COUNT(requested_resources.id) AS resources_count
+        FROM victims
+        JOIN requested_resources ON victims.id = requested_resources.victim_id
+        WHERE victims.completed = 0
+        GROUP BY victims.country
+    """
+    cursor.execute(query)
+    
+    # Convert the result to a dictionary
+    country_counts = {row["country"]: row["resources_count"] for row in cursor.fetchall()}
+    return country_counts
+
 def get_helped_countries_counts(conn):
     """
     Retrieves the count of resources received by each country that has received aid.
@@ -498,6 +522,41 @@ def close_connection(conn):
     """
     conn.close()
 
+def plot_to_help_countries_heatmap(conn):
+    # Step 1: Get the count of resources distributed by country
+    country_counts = get_to_help_countries_counts(conn)
+    
+    # Step 2: Convert to DataFrame
+    df = pd.DataFrame(list(country_counts.items()), columns=["country", "count"])
+
+    # Optional: Standardize country names to match shapefile names
+    country_rename_map = {
+        "United States": "United States of America",
+        "Russia": "Russian Federation",
+        # Add any other necessary mappings here
+    }
+    df["country"] = df["country"].replace(country_rename_map)
+
+    # Load the world map shapefile
+    world = gpd.read_file("./data/ne_110m_admin_0_countries.shp")
+
+    # Merge the world map with the data on country names
+    merged = world.set_index("NAME").join(df.set_index("country"), how="left")
+
+    # Fill NaN values in 'count' with 0 for countries with no data
+    merged["count"] = merged["count"].fillna(0)
+
+    # Check for unmatched countries to identify potential mismatches
+    unmatched = merged[merged["count"] == 0]
+    print("Unmatched countries with no data:", unmatched.index.tolist())
+
+    # Save the plot to a file instead of showing it
+    fig, ax = plt.subplots(1, 1, figsize=(15, 10))
+    merged.plot(column="count", cmap="OrRd", linewidth=0.8, ax=ax, edgecolor="0.8", legend=True)
+    ax.set_title("Resources to be Distributed by Country")
+    plt.savefig("./static/images/to_help_countries_heatmap.png", format='png', dpi=300, transparent=True)
+    plt.close()
+
 def plot_helped_countries_heatmap(conn):
     # Step 1: Get the count of resources distributed by country
     country_counts = get_helped_countries_counts(conn)
@@ -564,6 +623,8 @@ if __name__ == "__main__":
     print("Helped Countries Counts:", result)
 
     plot_helped_countries_heatmap(conn)
+    plot_to_help_countries_heatmap(conn)
+
 
     # Close the connection
     close_connection(conn)
