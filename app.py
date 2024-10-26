@@ -70,12 +70,15 @@ def resourceRequests():
 @app.route("/liveTracker", methods=["POST", "GET"])
 def liveTracker():
     conn = database.connect_and_initialize()
-    res = database.get_unmatched_victims_with_resources(conn)
+    victimData = database.get_unmatched_victims_with_resources(conn)
+    donorData = database.get_unmatched_donors_with_resources(conn)
     conn.close()
 
-    
-    return res
-    #return render_template("liveTracker.html")
+    print(victimData)
+    print(donorData)
+
+
+    return render_template("liveTracker.html", victimData=victimData, donorData=donorData)
 
 # Charities to donate
 @app.route("/charities", methods=["POST", "GET"])

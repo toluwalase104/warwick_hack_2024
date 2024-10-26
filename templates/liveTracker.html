@@ -6,5 +6,43 @@ Resource Live Tracker
 {% endblock %}
 
 {% block content %}
+<div class="container mt-5">
+    <div class="row">
+        <!-- Donor Column -->
+        <div class="col-md-6">
+            <h2 class="text-center">Donors</h2>
+            <div class="scrollable-box">
+                {% for donor in donorData %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ donor.name }}</h5>
+                        <p class="card-text">Country: {{ donor.country }}</p>
+                        <p class="card-text">Resources: 
+                            {{ donor.resources | join(', ') }}
+                        </p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
 
+        <!-- Victim Column -->
+        <div class="col-md-6">
+            <h2 class="text-center">Victims</h2>
+            <div class="scrollable-box">
+                {% for victim in victimData %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ victim.name }}</h5>
+                        <p class="card-text">Country: {{ victim.country }}</p>
+                        <p class="card-text">Resources: 
+                            {{ victim.resources | join(', ') }}
+                        </p>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}
