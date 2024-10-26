@@ -1,5 +1,8 @@
 import sqlite3
 from collections import defaultdict
+import pandas as pd
+import matplotlib.pyplot as plt
+import geopandas as gpd
 
 def connect_and_initialize(db_path="database.db", schema_path="schema.sql"):
     """
@@ -493,34 +496,39 @@ def close_connection(conn):
     """
     conn.close()
 
-import pandas as pd
-import matplotlib.pyplot as plt
-import geopandas as gpd
-
 def plot_helped_countries_heatmap(conn):
     # Step 1: Get the count of resources distributed by country
     country_counts = get_helped_countries_counts(conn)
     
-    # Step 2: Convert to DataFrame and filter for valid country names
+    # Step 2: Convert to DataFrame
     df = pd.DataFrame(list(country_counts.items()), columns=["country", "count"])
-    
-    # Load the world map from the downloaded Natural Earth data
+
+    # Optional: Standardize country names to match shapefile names
+    country_rename_map = {
+        "United States": "United States of America",
+        "Russia": "Russian Federation",
+        # Add any other necessary mappings here
+    }
+    df["country"] = df["country"].replace(country_rename_map)
+
+    # Load the world map shapefile
     world = gpd.read_file("./data/ne_110m_admin_0_countries.shp")
 
-    # Step 3: Merge the world map with the data on country names
-    merged = world.set_index("NAME").join(df.set_index("country"))
+    # Merge the world map with the data on country names
+    merged = world.set_index("NAME").join(df.set_index("country"), how="left")
 
-    # Step 4: Plot the data on a heatmap
-    fig, ax = plt.subplots(1, 1, figsize=(15, 10))
-    merged.plot(column="count", cmap="OrRd", linewidth=0.8, ax=ax, edgecolor="0.8", legend=True)
-    
-    ax.set_title("Resources Distributed by Country")
-    
+    # Fill NaN values in 'count' with 0 for countries with no data
+    merged["count"] = merged["count"].fillna(0)
+
+    # Check for unmatched countries to identify potential mismatches
+    unmatched = merged[merged["count"] == 0]
+    print("Unmatched countries with no data:", unmatched.index.tolist())
+
+    # Save the plot to a file instead of showing it
     fig, ax = plt.subplots(1, 1, figsize=(15, 10))
     merged.plot(column="count", cmap="OrRd", linewidth=0.8, ax=ax, edgecolor="0.8", legend=True)
     ax.set_title("Resources Distributed by Country")
     plt.savefig("helped_countries_heatmap.png")
-
 
 if __name__ == "__main__":
     # Connect to the database and initialize schema (assuming connect_and_initialize is defined)
