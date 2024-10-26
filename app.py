@@ -84,3 +84,8 @@ def charities():
 
 if __name__ == "__main__":
     app.run(debug=True)
+
+
+@app.route("/scraper", methods=["POST", "GET"])
+def scraper():
+    pass

@@ -22,5 +22,9 @@
     "claude-handler": {
         "identity_key": "36d21690b9269854692ecdab514de9c9aac495bd2447c1c9ec5002a0a658fca6",
         "wallet_key": "1it846m9OoPTvYoNJ6v6FE1QLYgYBHj3Qbwp1GCwcpY="
+    },
+    "geolocation": {
+        "identity_key": "9e3d72c8f60aa83e1b04b75c78826af819544e09bb2b2d218ec9a32f14946350",
+        "wallet_key": "Xyqdp4JL189KAnFB5nEBqynd5ELhgxvPeZNBZasVFNA="
     }
 }
