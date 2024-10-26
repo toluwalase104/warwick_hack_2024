@@ -82,7 +82,6 @@ def liveTracker():
     countries_needing_help_count = database.get_countries_needing_help_count(conn)
     resource_counts = sum(database.get_resource_counts(conn).values())
     allOfResources = database.get_resource_counts(conn)
-    conn.close()
 
     labels = list(allOfResources.keys())
     sizes = list(allOfResources.values())
@@ -102,10 +101,12 @@ def liveTracker():
            title="Items Needed", 
            loc="center left", 
            bbox_to_anchor=(1, 0, 0.5, 1))
-    
-    plt.title("Items Needed for Donation")
 
-    plt.show()
+    plt.savefig('./static/images/donations.png', format='png', dpi=300, transparent=True, bbox_inches='tight', pad_inches=0.1)
+    plt.close()
+
+    createHeatmap = database.plot_helped_countries_heatmap(conn)
+    conn.close()    
 
     return render_template("liveTracker.html", victimData=victimData, donorData=donorData, helped_people_count=helped_people_count,
         helped_countries_count=helped_countries_count,
