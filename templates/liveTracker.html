@@ -10,8 +10,20 @@ Resource Live Tracker
     <div class="row">
         <!-- Donor Column -->
         <div class="col-md-6">
-            <h2 class="text-center">Donors</h2>
-            <div class="scrollable-box">
+            <h2 class="text-center">
+                <p class="h2 mt-5 mb-5 text-white"
+                data-aos="fade-right"
+                data-aos-easing="ease-in-out"
+                data-aos-offset="250"
+                data-aos-delay="100">
+                    Donors
+                </p>
+            </h2>
+            <div class="scrollable-box"
+            data-aos="fade-right"
+            data-aos-easing="ease-in-out"
+            data-aos-offset="250"
+            data-aos-delay="100">
                 {% for donor in donorData %}
                 <div class="card mb-3">
                     <div class="card-body">
@@ -28,8 +40,20 @@ Resource Live Tracker
 
         <!-- Victim Column -->
         <div class="col-md-6">
-            <h2 class="text-center">Victims</h2>
-            <div class="scrollable-box">
+            <h2 class="text-center">
+                <p class="h2 mt-5 mb-5 text-white"
+                data-aos="fade-left"
+                data-aos-easing="ease-in-out"
+                data-aos-offset="250"
+                data-aos-delay="100">
+                    Requests
+                </p>
+            </h2>
+            <div class="scrollable-box"
+            data-aos="fade-left"
+            data-aos-easing="ease-in-out"
+            data-aos-offset="250"
+            data-aos-delay="100">
                 {% for victim in victimData %}
                 <div class="card mb-3">
                     <div class="card-body">
