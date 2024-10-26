@@ -1,5 +1,6 @@
 import database as db
 import ai_handler
+import time
 
 if __name__ == "__main__":
     # Initialize and connect to the database
@@ -37,12 +38,6 @@ if __name__ == "__main__":
     # else:
     #     print("Failed to create match.")
     
-    # 4. Check match status for victims and donors
-    # print("\nChecking match statuses:")
-    # print(f"Is John Doe matched? {db.is_victim_matched(conn, victim_id1)}")  # Expected: True
-    # print(f"Is Alice Brown matched? {db.is_victim_matched(conn, victim_id2)}")  # Expected: False
-    # print(f"Is Bob White matched? {db.is_donor_matched(conn, donor_id1)}")  # Expected: True
-    # print(f"Is Carol Green matched? {db.is_donor_matched(conn, donor_id2)}\n")  # Expected: False
 
     # 5. Retrieve all victims
     print("Retrieving all victims:")
@@ -70,7 +65,6 @@ if __name__ == "__main__":
         print(victim)
         requests.append((victim["id"], ", ".join(victim["resources"]), victim["description"]))
 
-
     # 8. Retrieve unmatched donors with resources
     print("\nRetrieving unmatched donors with resources:")
     unmatched_donors = db.get_unmatched_donors_with_resources(conn)
@@ -85,9 +79,50 @@ if __name__ == "__main__":
     print()
     print("Sample prompts: ")
     print()
-    # ai_handler.run_query(0, requests, provisions)
-    # ai_handler.run_query(1, requests, provisions)
-    ai_handler.run_query(2, requests, provisions)
+    for i in range( min(2, len(requests)) ):
+        # ai_handler.run_query(0, requests, provisions) # Trying claude
+        ai_handler.run_query(1, [requests[i]], provisions) # Trying openai
+        
+        # Gives api some time to rest
+        time.sleep(3)
+    
+    matches : tuple[int, int] = []
+
+    used = set()
+
+    with open("response.txt", "r") as f:
+        lines = f.readlines()
+        print(lines)
+        line_count = 0
+        for line in lines:
+            line = line.replace("Donor", "").replace("[", "").replace("]", "")
+            line = line.split(",")
+            try:
+                line = list(map(lambda x: int(x), line))
+
+                while len(line) > 0 and line[0] in used:
+                    line.pop(0)
+
+                if len(line) > 0:
+                    # Map the user id with the matching 
+                    matches.append((requests[line_count][0], line[0]))
+                    used.add(line[0])
+
+            except Exception as e:
+                print(f"Exception {e} occurred whilst reading from file")
+                pass
+
+            line_count += 1
+    
+    for match in matches:
+        db.mark_as_matched(conn, match[0], match[1])
+
+    # 4. Check match status for victims and donors
+    print("\nChecking match statuses:")
+    print(f"Is John Doe matched? {db.is_victim_matched(conn, 1)}")  # Expected: True
+    print(f"Is Alice Brown matched? {db.is_victim_matched(conn, 2)}")  # Expected: False
+    print(f"Is Bob White matched? {db.is_donor_matched(conn, 3)}")  # Expected: True
+    print(f"Is Carol Green matched? {db.is_donor_matched(conn, 4)}\n")  # Expected: False
 
     # Close the database connection
     db.close_connection(conn)
