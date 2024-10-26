@@ -68,3 +68,5 @@ This project proposes a solution to enhance the effectiveness of community-drive
 
 This platform is designed to empower communities in times of crisis by facilitating resource sharing, connecting people in need with those able to help, and enhancing the efficiency and transparency of relief efforts. With AI-driven matching and live tracking, we aim to bridge the gap between needs and resources, ensuring swift and effective disaster response.
 
+
+TEST BY HOWARD
