@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS victims (
 CREATE TABLE IF NOT EXISTS requested_resources (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     victim_id INTEGER NOT NULL,
-    resource_type TEXT CHECK(resource_type IN ('Food', 'First Aid', 'Shelter', 'Clothes', 'Money', 'Transport', 'Other')) NOT NULL,
+    resource_type TEXT NOT NULL,
     FOREIGN KEY (victim_id) REFERENCES victims (id) ON DELETE CASCADE,
     UNIQUE (victim_id, resource_type) -- Prevent duplicate entries of the same resource type for a victim
 );
@@ -35,7 +35,7 @@ CREATE TABLE IF NOT EXISTS donors (
 CREATE TABLE IF NOT EXISTS donor_resources(
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     donor_id INTEGER NOT NULL,
-    resource_type TEXT CHECK(resource_type IN ('Food', 'First Aid', 'Shelter', 'Clothes', 'Money', 'Transport', 'Other')) NOT NULL,
+    resource_type TEXT NOT NULL,
     FOREIGN KEY (donor_id) REFERENCES donors (id) ON DELETE CASCADE,
     UNIQUE (donor_id, resource_type)  -- Prevent duplicate entries of the same resource type for a donor
 );
