@@ -32,7 +32,7 @@ def resourceRequests():
             # Check the role and process accordingly
             if data.get("role") == "applicant":
                 # Insert the applicant (victim) into the database
-                victim_id = database.add_victim(conn, name, contact, None, postcode, address, country, description=description)
+                victim_id = database.add_victim(conn, name, contact, postcode, address, country, description=description)
 
                 # Insert each requested resource option for the applicant
                 options = data.get("options", [])
@@ -43,7 +43,7 @@ def resourceRequests():
 
             elif data.get("role") == "donor":
                 # Insert the donor into the database
-                donor_id = database.add_donor(conn, name, contact, None, postcode, address, country, description=description)
+                donor_id = database.add_donor(conn, name, contact, postcode, address, country, description=description)
 
                 # Insert each offered resource type for the donor
                 options = data.get("options", [])
@@ -70,8 +70,10 @@ def resourceRequests():
 @app.route("/liveTracker", methods=["POST", "GET"])
 def liveTracker():
     conn = database.connect_and_initialize()
-    res = database.get_unmatched_donors_with_resources(conn)
+    res = database.get_unmatched_victims_with_resources(conn)
     conn.close()
+
+    
     return res
     #return render_template("liveTracker.html")
 
