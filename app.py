@@ -77,8 +77,20 @@ def liveTracker():
     print(victimData)
     print(donorData)
 
+    # Retrieve all counts
+    helped_people_count = database.get_helped_countries_count(conn)
+    helped_countries_count = database.get_helped_people_count(conn)
+    total_donated_items_count = database.get_helped_countries_count(conn)
+    people_needing_help_count = database.get_total_donated_items_count(conn)
+    countries_needing_help_count = database.get_countries_needing_help_count(conn)
+    resource_counts = database.get_resource_counts(conn)
 
-    return render_template("liveTracker.html", victimData=victimData, donorData=donorData)
+    return render_template("liveTracker.html", victimData=victimData, donorData=donorData, helped_people_count=helped_people_count,
+        helped_countries_count=helped_countries_count,
+        total_donated_items_count=total_donated_items_count,
+        people_needing_help_count=people_needing_help_count,
+        countries_needing_help_count=countries_needing_help_count,
+        resource_counts=resource_counts)
 
 # Charities to donate
 @app.route("/charities", methods=["POST", "GET"])
