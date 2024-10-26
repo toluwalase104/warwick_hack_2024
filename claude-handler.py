@@ -8,6 +8,7 @@ class TextPrompt(Model):
 class TextResponse(Model):
     text: str
 
+# Define agent name and mailbox (offline storage area)
 agent = Agent(
     name="claude-handler",
     mailbox="4cbe7a24-2ace-4777-afd6-2cb4ebda67b1"
@@ -15,7 +16,9 @@ agent = Agent(
 
 fund_agent_if_low(agent.wallet.address())
 
+# Address of the claude ai being used under the hood
 AI_AGENT_ADDRESS = "agent1qvk7q2av3e2y5gf5s90nfzkc8a48q3wdqeevwrtgqfdl0k78rspd6f2l4dx"
+
 
 prompts = [
     "Benefactor - I need transport, food, shelter. Additionally: I have a family of four\
@@ -28,7 +31,7 @@ prompts = [
             Sort the donors in order of who best matches the benefactor.",            
 ]
 
-
+# When the fetch agent starts up it sends a prompt
 @agent.on_event("startup")
 async def send_message(ctx: Context):
     for prompt in prompts:
@@ -36,7 +39,7 @@ async def send_message(ctx: Context):
         ctx.logger.info(f"Sending from agent address:{agent.address}")
         ctx.logger.info(f"[Sent prompt to AI agent]: {prompt}")
 
-
+# Outputs the message received from the offline agent
 @agent.on_message(TextResponse)
 async def handle_response(ctx: Context, sender: str, msg: TextResponse):
     ctx.logger.info(f"[Received response from ...{sender[-8:]}]:")
