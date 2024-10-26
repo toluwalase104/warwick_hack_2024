@@ -7,11 +7,159 @@ Resource Live Tracker
 
 {% block content %}
 <div class="container mt-5">
+
+    <center>
+        <p class="h2 mt-5 mb-5 text-white"
+        data-aos="flip-down"
+        data-aos-easing="ease-in-out"
+        data-aos-offset="150"
+        data-aos-delay="100">Our Impact</p>
+
+        <p class="h2 mt-5 mb-5 text-white"
+        data-aos="fade-right"
+        data-aos-easing="ease-in-out"
+        data-aos-offset="150"
+        data-aos-delay="200">So far we have...</p>
+    </center>
+
+    <div class="container mb-5">
+        <div class="row justify-content-center">
+            <!-- Column 1 -->
+            <div class="col-12 col-md-4 col-lg-3 mb-4"
+                data-aos="fade-up"
+                data-aos-easing="ease-in-out"
+                data-aos-delay="100"
+                data-aos-offset="250">
+                <div class="card border-dark rounded h-100 d-flex flex-column" style="border-width: 2px; border-radius: 10px;">
+                    <div class="card-header text-center fw-bold" style="font-size: calc(1rem + 0.3vw);">
+                        Aided...
+                    </div>
+                    <div class="card-body text-center d-flex align-items-center justify-content-center">
+                        <p class="card-text">{{ helped_people_count }} people </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Column 2 -->
+            <div class="col-12 col-md-4 col-lg-3 mb-4"
+                data-aos="fade-up"
+                data-aos-easing="ease-in-out"
+                data-aos-delay="100"
+                data-aos-offset="250">
+                <div class="card border-dark rounded h-100 d-flex flex-column" style="border-width: 2px; border-radius: 10px;">
+                    <div class="card-header text-center fw-bold" style="font-size: calc(1rem + 0.3vw);">
+                        Supported...
+                    </div>
+                    <div class="card-body text-center d-flex align-items-center justify-content-center">
+                        <p class="card-text">{{ helped_countries_count }} countries</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Column 3 -->
+            <div class="col-12 col-md-4 col-lg-3 mb-4"
+                data-aos="fade-up"
+                data-aos-easing="ease-in-out"
+                data-aos-delay="100"
+                data-aos-offset="250">
+                <div class="card border-dark rounded h-100 d-flex flex-column" style="border-width: 2px; border-radius: 10px;">
+                    <div class="card-header text-center fw-bold" style="font-size: calc(1rem + 0.3vw);">
+                        Donated...
+                    </div>
+                    <div class="card-body text-center d-flex align-items-center justify-content-center">
+                        <p class="card-text">{{ total_donated_items_count }} items</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <center>
+        <p class="h2 mt-5 mb-5 text-white"
+        data-aos="fade-right"
+        data-aos-easing="ease-in-out"
+        data-aos-offset="150"
+        data-aos-delay="300">However we still need to...</p>
+    </center>
+
+    <div class="container mb-5">
+        <div class="row justify-content-center">
+            <!-- Column 1 -->
+            <div class="col-12 col-md-4 col-lg-3 mb-4"
+                data-aos="fade-up"
+                data-aos-easing="ease-in-out"
+                data-aos-delay="100"
+                data-aos-offset="250">
+                <div class="card border-dark rounded h-100 d-flex flex-column" style="border-width: 2px; border-radius: 10px;">
+                    <div class="card-header text-center fw-bold" style="font-size: calc(1rem + 0.3vw);">
+                        Save...
+                    </div>
+                    <div class="card-body text-center d-flex align-items-center justify-content-center">
+                        <p class="card-text">{{ people_needing_help_count }} more people!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Column 2 -->
+            <div class="col-12 col-md-4 col-lg-3 mb-4"
+                data-aos="fade-up"
+                data-aos-easing="ease-in-out"
+                data-aos-delay="100"
+                data-aos-offset="250">
+                <div class="card border-dark rounded h-100 d-flex flex-column" style="border-width: 2px; border-radius: 10px;">
+                    <div class="card-header text-center fw-bold" style="font-size: calc(1rem + 0.3vw);">
+                        Reach to...
+                    </div>
+                    <div class="card-body text-center d-flex align-items-center justify-content-center">
+                        <p class="card-text">{{ countries_needing_help_count }} more countries!</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Column 3 -->
+            <div class="col-12 col-md-4 col-lg-3 mb-4"
+                data-aos="fade-up"
+                data-aos-easing="ease-in-out"
+                data-aos-delay="100"
+                data-aos-offset="250">
+                <div class="card border-dark rounded h-100 d-flex flex-column" style="border-width: 2px; border-radius: 10px;">
+                    <div class="card-header text-center fw-bold" style="font-size: calc(1rem + 0.3vw);">
+                        Deliver...
+                    </div>
+                    <div class="card-body text-center d-flex align-items-center justify-content-center">
+                        <p class="card-text">{{ resource_counts }} more items!</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <center>
+        <p class="h2 mt-3 mb-3 text-white"
+        data-aos="fade-right"
+        data-aos-easing="ease-in-out"
+        data-aos-offset="150"
+        data-aos-delay="100">Live Tracker</p>
+    </center>
+
+
     <div class="row">
         <!-- Donor Column -->
         <div class="col-md-6">
-            <h2 class="text-center">Donors</h2>
-            <div class="scrollable-box">
+            <h2 class="text-center">
+                <p class="h2 mt-5 mb-5 text-white"
+                data-aos="fade-right"
+                data-aos-easing="ease-in-out"
+                data-aos-offset="250"
+                data-aos-delay="100">
+                    Donors
+                </p>
+            </h2>
+            <div class="scrollable-box"
+            data-aos="fade-right"
+            data-aos-easing="ease-in-out"
+            data-aos-offset="250"
+            data-aos-delay="100">
                 {% for donor in donorData %}
                 <div class="card mb-3">
                     <div class="card-body">
@@ -28,8 +176,20 @@ Resource Live Tracker
 
         <!-- Victim Column -->
         <div class="col-md-6">
-            <h2 class="text-center">Victims</h2>
-            <div class="scrollable-box">
+            <h2 class="text-center">
+                <p class="h2 mt-5 mb-5 text-white"
+                data-aos="fade-left"
+                data-aos-easing="ease-in-out"
+                data-aos-offset="250"
+                data-aos-delay="100">
+                    Requests
+                </p>
+            </h2>
+            <div class="scrollable-box"
+            data-aos="fade-left"
+            data-aos-easing="ease-in-out"
+            data-aos-offset="250"
+            data-aos-delay="100">
                 {% for victim in victimData %}
                 <div class="card mb-3">
                     <div class="card-body">
@@ -44,5 +204,7 @@ Resource Live Tracker
             </div>
         </div>
     </div>
+
+    <br><br><br><br><br>
 </div>
 {% endblock %}
