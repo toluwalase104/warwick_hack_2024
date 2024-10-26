@@ -65,10 +65,15 @@ def resourceRequests():
     # If it's a GET request, simply render the resourceRequests.html page
     return render_template("resourceRequests.html")
 
+
 # Live tracker
 @app.route("/liveTracker", methods=["POST", "GET"])
 def liveTracker():
-    return render_template("liveTracker.html")
+    conn = database.connect_and_initialize()
+    res = database.get_unmatched_donors_with_resources(conn)
+    conn.close()
+    return res
+    #return render_template("liveTracker.html")
 
 # Charities to donate
 @app.route("/charities", methods=["POST", "GET"])
