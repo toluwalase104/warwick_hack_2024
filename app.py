@@ -84,6 +84,8 @@ def liveTracker():
     allOfResources = database.get_resource_counts(conn)
     conn.close()
 
+    print(allOfResources)
+
     return render_template("liveTracker.html", victimData=victimData, donorData=donorData, helped_people_count=helped_people_count,
         helped_countries_count=helped_countries_count,
         total_donated_items_count=total_donated_items_count,
