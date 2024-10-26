@@ -12,7 +12,7 @@ def connect_and_initialize(db_path="database.db", schema_path="schema.sql"):
     return conn
 
 # Function to add a new victim
-def add_victim(conn, name, email, phone, country, region=None, completed=0):
+def add_victim(conn, name, email, phone, country, region=None, completed=0, description=""):
     cursor = conn.cursor()
     cursor.execute("""
         INSERT INTO victims (name, email, phone, country, region, completed)
@@ -32,7 +32,7 @@ def add_requested_resource(conn, victim_id, resource_type, description=None, com
     return cursor.lastrowid
 
 # Function to add a new donor
-def add_donor(conn, name, email, phone, country, region=None, completed=0):
+def add_donor(conn, name, email, phone, country, region=None, completed=0, description=""):
     cursor = conn.cursor()
     cursor.execute("""
         INSERT INTO donors (name, email, phone, country, region, completed)
