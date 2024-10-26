@@ -6,5 +6,181 @@ Disaster Charities
 {% endblock %}
 
 {% block content %}
+<!-- Hero image -->
+<div class="hero-image position-relative" style="width: 100vw; height: 50vh;">
+    <!-- The image -->
+    <img src="/static/images/background.jpg" alt="Hero Image" style="object-fit: cover; width: 100%; height: 100%; filter: grayscale(100%); position: absolute; top: 0; left: 0;">
 
+    <!-- Semi-transparent grayscale overlay -->
+    <div class="position-absolute top-0 start-0 w-100 h-100" style="background-color: rgba(255, 255, 255, 0.3);"></div>
+
+    <!-- Text and button on top of the image and overlay -->
+    <div class="mask position-absolute top-0 start-0 w-100 h-100" style="z-index: 1;">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div class="container text-center">
+                <h1 class="display-4 mb-2 text-white" data-aos="fade-down" data-aos-delay="1000" data-aos-easing="ease-in-out">
+                  Crisis Compass <br> Charity Donations
+                </h1>
+                <div class="row mt-2 mb-5">
+                    <div class="col text-left lead mb-0 text-white" data-aos="fade-down" data-aos-delay="100" data-aos-easing="ease-in-out">
+                        Every donation, no matter the size, can make a difference and help restore hope to those in dire circumstances.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Border below hero image -->
+<div class="border-bottom"></div>
+
+<!-- Main content -->
+<div id="mainContent" style="height: 100%;">
+    <br><br>
+    <!-- Society description -->
+    <div class="jumbotron mx-5 jumbotron-fluid custom-jumbotron border-dark border rounded" 
+    style="background-image: url('/static/images/background.jpg');"
+    data-aos="zoom-in"
+    data-aos-easing="ease-in-out"
+    data-aos-delay="100"
+    data-aos-offset="200">
+        <div class="container">
+            <h1 class="display-4 text-center">Crisis Compass</h1>
+            <p class="lead text-center">
+                Donating to disaster relief charities is a powerful way to make a meaningful impact in the lives of those affected by natural disasters and humanitarian crises. These organizations, such as the American Red Cross, Doctors Without Borders, and the World Food Programme, work tirelessly to provide essential resources—ranging from food and shelter to medical care and emotional support—during times of urgent need.
+                <br><br>
+                Your contributions can help deliver immediate assistance and long-term recovery solutions to vulnerable communities. By supporting these charities, you not only contribute to vital relief efforts but also join a global movement of compassion and solidarity, empowering individuals and families to rebuild their lives after devastating events.
+            </p>
+        </div>
+    </div>
+
+    <br><br>
+
+    <div class="container mt-4">
+        <!-- Row 2 -->
+        <div class="row mb-4">
+            <div class="col-md-3 col-sm-6 mb-4 hvr-shrink">
+                <div class="card card-container-exec hvr-glow tilting-div floating-3d"
+                   data-aos="zoom-in"
+                   data-aos-easing="ease-in-out"
+                   data-aos-delay="100"
+                   data-aos-offset="150"
+                   style="cursor: pointer;"
+                   onclick="window.location.href='https://www.redcross.org';"> <!-- Redirect to American Red Cross -->
+                  <img src="/static/images/ARC.jpg" class="card-img-exec img-fluid" alt="American Red Cross">
+                  <div class="card-overlay-exec">
+                      <h3 class="card-title-exec">American Red Cross</h3>
+                  </div>
+                </div>
+            </div>
+          
+            <div class="col-md-3 col-sm-6 mb-4 hvr-shrink">
+                <div class="card card-container-exec hvr-glow tilting-div floating-3d"
+                data-aos="zoom-in"
+                data-aos-easing="ease-in-out"
+                data-aos-delay="100"
+                data-aos-offset="150"
+                style="cursor: pointer;"
+                onclick="window.location.href='https://www.doctorswithoutborders.org';"> <!-- Redirect to Doctors Without Borders -->
+                    <img src="/static/images/DWB.jpg" class="card-img-exec img-fluid" alt="Doctors Without Borders">
+                    <div class="card-overlay-exec">
+                        <h3 class="card-title-exec">Doctors Without Borders</h3>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="col-md-3 col-sm-6 mb-4 hvr-shrink">
+                <div class="card card-container-exec hvr-glow tilting-div floating-3d"
+                data-aos="zoom-in"
+                data-aos-easing="ease-in-out"
+                data-aos-delay="100"
+                data-aos-offset="150"
+                style="cursor: pointer;"
+                onclick="window.location.href='https://www.globalgiving.org';"> <!-- Redirect to GlobalGiving -->
+                    <img src="/static/images/GG.jpg" class="card-img-exec img-fluid" alt="GlobalGiving">
+                    <div class="card-overlay-exec">
+                        <h3 class="card-title-exec">GlobalGiving</h3>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="col-md-3 col-sm-6 mb-4 hvr-shrink">
+                <div class="card card-container-exec hvr-glow tilting-div floating-3d"
+                data-aos="zoom-in"
+                data-aos-easing="ease-in-out"
+                data-aos-delay="100"
+                data-aos-offset="150"
+                style="cursor: pointer;"
+                onclick="window.location.href='https://www.shelterbox.org';"> <!-- Redirect to ShelterBox -->
+                    <img src="/static/images/SB.jpg" class="card-img-exec img-fluid" alt="ShelterBox">
+                    <div class="card-overlay-exec">
+                        <h3 class="card-title-exec">ShelterBox</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Row 3 -->
+        <div class="row mb-4">
+            <div class="col-md-3 col-sm-6 mb-4 hvr-shrink">
+                <div class="card card-container-exec hvr-glow tilting-div floating-3d"
+                data-aos="zoom-in"
+                data-aos-easing="ease-in-out"
+                data-aos-delay="100"
+                data-aos-offset="150"
+                style="cursor: pointer;"
+                onclick="window.location.href='https://teamrubiconusa.org';"> <!-- Redirect to Team Rubicon -->
+                    <img src="/static/images/TR.jpg" class="card-img-exec img-fluid" alt="Team Rubicon">
+                    <div class="card-overlay-exec">
+                        <h3 class="card-title-exec">Team Rubicon</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-4 hvr-shrink">
+                <div class="card card-container-exec hvr-glow tilting-div floating-3d"
+                data-aos="zoom-in"
+                data-aos-easing="ease-in-out"
+                data-aos-delay="100"
+                data-aos-offset="150"
+                style="cursor: pointer;"
+                onclick="window.location.href='https://www.wfp.org';"> <!-- Redirect to World Food Programme -->
+                    <img src="/static/images/WFP.jpg" class="card-img-exec img-fluid" alt="World Food Programme">
+                    <div class="card-overlay-exec">
+                        <h3 class="card-title-exec">World Food Programme</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-4 hvr-shrink">
+                <div class="card card-container-exec hvr-glow tilting-div floating-3d"
+                data-aos="zoom-in"
+                data-aos-easing="ease-in-out"
+                data-aos-delay="100"
+                data-aos-offset="150"
+                style="cursor: pointer;"
+                onclick="window.location.href='https://www.mercycorps.org';"> <!-- Redirect to Mercy Corps -->
+                    <img src="/static/images/MC.jpg" class="card-img-exec img-fluid" alt="Mercy Corps">
+                    <div class="card-overlay-exec">
+                        <h3 class="card-title-exec">Mercy Corps</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-4 hvr-shrink">
+                <div class="card card-container-exec hvr-glow tilting-div floating-3d"
+                data-aos="zoom-in"
+                data-aos-easing="ease-in-out"
+                data-aos-delay="100"
+                data-aos-offset="150"
+                style="cursor: pointer;"
+                onclick="window.location.href='https://www.savethechildren.org';"> <!-- Redirect to Save the Children -->
+                    <img src="/static/images/STC.jpg" class="card-img-exec img-fluid" alt="Save the Children">
+                    <div class="card-overlay-exec">
+                        <h3 class="card-title-exec">Save the Children</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <br><br><br><br><br><br>
+</div>
 {% endblock %}
