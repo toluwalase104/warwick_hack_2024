@@ -31,8 +31,8 @@
         <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
         <!-- Background -->
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.waves.min.js"></script> 
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r121/three.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/vanta@latest/dist/vanta.globe.min.js"></script>
 
         <!-- Favicon --> 
         <link rel="apple-touch-icon" sizes="180x180" href="/static/favicon/apple-touch-icon.png">
@@ -76,6 +76,10 @@
                         
                         <li class="nav-item mx-3 mx-md-3 mx-lg-4">
                             <a class="btn active nav-link text-white hvr-underline-from-center hvr-glow hvr-grow hvr-bob" href="{{ url_for('charities') }}">Disaster Charities</a>
+                        </li>
+
+                        <li class="nav-item mx-3 mx-md-3 mx-lg-4">
+                            <a class="btn active nav-link text-white hvr-underline-from-center hvr-glow hvr-grow hvr-bob" href="{{ url_for('GPS') }}">Request Aid</a>
                         </li>
 
                         <li class="nav-item mx-3 mx-md-3 mx-lg-4">
@@ -136,6 +140,9 @@
 
     <!-- Form JS -->
     <script src="/static/javascript/form.js"></script>
+
+    <!-- GPS JS -->
+    <script src="/static/javascript/GPS.js"></script>
 
     <!-- Countries JS -->
     <script src="/static/javascript/countries.js"></script>

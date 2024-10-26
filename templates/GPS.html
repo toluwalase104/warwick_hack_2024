@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+<!-- Title -->
+{% block title %}
+Resource Submissions
+{% endblock %}
+
+{% block content %}
+<div id="mainContent" style="height: 100%;">
+    <br><br>
+
+    <div class="jumbotron mx-5 jumbotron-fluid custom-jumbotron border-dark border rounded" 
+        style="background-image: url('/static/images/background.jpg');" 
+        data-aos="zoom-in"
+        data-aos-easing="ease-in-out"
+        data-aos-delay="100"
+        data-aos-offset="200">
+        
+        <div class="container">
+            <h1 class="display-4 text-center">Request Aid</h1>
+            <p class="lead text-center">Provide details to find immediate local help</p>
+
+            <!-- Form for GPS -->
+            <form id="gpsForm" autocomplete="off">
+                <div id="locationDetails">
+                    <center>
+                        <div class="form-group col-md-6 mx-auto">
+                            <label for="country">Country:</label>
+                            <div class="dropdown">
+                                <input 
+                                    type="text" 
+                                    class="form-control" 
+                                    id="country" 
+                                    placeholder="Select Country" 
+                                    onkeyup="filterCountries()" 
+                                    required
+                                    autocomplete="off"
+                                >
+                                <div id="countryDropdown" class="dropdown-menu" style="display: none; max-height: 200px; overflow-y: auto;">
+                                    <!-- Country options will be populated here -->
+                                </div>
+                            </div>
+                        </div>
+                        <br>
+                        
+                        <div class="form-group col-md-6 mx-auto">
+                            <label for="address">Home Address:</label>
+                            <input type="text" class="form-control" id="address" placeholder="Enter Your Address" required>
+                        </div>
+                        <br>
+
+                        <div class="form-check text-left mx-auto" style="max-width: 400px;"> 
+                            <h5>Select items you may need:</h5>
+                            <div class="form-check d-flex align-items-center">
+                                <input type="checkbox" class="form-check-input" id="food" value="Food">
+                                <label class="form-check-label ms-2" for="food">Food</label>
+                            </div>
+                            <div class="form-check d-flex align-items-center">
+                                <input type="checkbox" class="form-check-input" id="medicine" value="Medicine">
+                                <label class="form-check-label ms-2" for="medicine">First Aid</label>
+                            </div>
+                            <div class="form-check d-flex align-items-center">
+                                <input type="checkbox" class="form-check-input" id="shelter" value="Shelter">
+                                <label class="form-check-label ms-2" for="shelter">Shelter</label>
+                            </div>
+                            <div class="form-check d-flex align-items-center">
+                                <input type="checkbox" class="form-check-input" id="clothes" value="Clothes">
+                                <label class="form-check-label ms-2" for="clothes">Clothes</label>
+                            </div>
+                            <div class="form-check d-flex align-items-center">
+                                <input type="checkbox" class="form-check-input" id="money" value="Money">
+                                <label class="form-check-label ms-2" for="money">Money</label>
+                            </div>
+                            <div class="form-check d-flex align-items-center">
+                                <input type="checkbox" class="form-check-input" id="transport" value="Transport">
+                                <label class="form-check-label ms-2" for="transport">Transport</label>
+                            </div>
+                        </div>
+
+                        <br>
+                        <a class="btn btn-lg mt-4 mb-4 btn-outline-dark active hvr-glow hvr-pulse hvr-shutter-out-horizontal" 
+                           style="background:#f59120; border-width: 2px; border-color: #000000; border-radius: 10px;" 
+                           href="javascript:void(0);" 
+                           role="button"
+                           onclick="submitGPSForm()"
+                           data-aos="zoom-in-up"
+                           data-aos-delay="200"
+                           data-aos-easing="ease-in-out">
+                           Submit
+                        </a>
+                    </center>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <br><br><br><br><br><br>
+</div>
+{% endblock %}
+
+

@@ -10,6 +10,17 @@ app = Flask(__name__)
 def home():
     return render_template("home.html")
 
+@app.route("/GPS", methods=["POST","GET"])
+def GPS():
+    if request.method == "POST":
+        data = request.json  # Get the JSON data sent in the request
+        # Process the received data as needed
+        print(data)
+
+        return jsonify({"message": "Data received successfully!"}), 200
+    return render_template("GPS.html")
+
+
 # Sending data page
 @app.route("/resourceRequests", methods=["POST", "GET"])
 def resourceRequests():
