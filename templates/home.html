@@ -6,5 +6,266 @@ Home
 {% endblock %}
 
 {% block content %}
+<!-- Hero image -->
+<div class="hero-image position-relative" style="width: 100vw; height: 50vh;">
+    <!-- The image -->
+    <img src="/static/images/background.jpg" alt="Hero Image" style="object-fit: cover; width: 100%; height: 100%; filter: grayscale(100%); position: absolute; top: 0; left: 0;">
 
+    <!-- Semi-transparent grayscale overlay -->
+    <div class="position-absolute top-0 start-0 w-100 h-100" style="background-color: rgba(255, 255, 255, 0.3);"></div>
+
+    <!-- Text and button on top of the image and overlay -->
+    <div class="mask position-absolute top-0 start-0 w-100 h-100" style="z-index: 1;">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div class="container text-center">
+                <h1 class="display-4 mb-2 text-white" data-aos="fade-down" data-aos-delay="1000" data-aos-easing="ease-in-out">
+                  Welcome to <br> Crisis Compass
+                </h1>
+                <div class="row mt-2 mb-5">
+                    <div class="col text-left lead mb-0 text-white" data-aos="fade-down" data-aos-delay="100" data-aos-easing="ease-in-out">
+                        Resource Allocation
+                    </div>
+
+                    <div class="col text-center lead mb-0 text-white" data-aos="fade-down" data-aos-delay="400" data-aos-easing="ease-in-out">
+                        Disaster Relief
+                    </div>
+
+                    <div class="col text-right lead mb-0 text-white" data-aos="fade-down" data-aos-delay="700" data-aos-easing="ease-in-out">
+                        AI Agent Powered
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Border below hero image -->
+<div class="border-bottom"></div>
+
+<div id="mainContent" style="height: 100%;">
+    <br><br>
+  
+      <!-- Society description -->
+      <div class="jumbotron mx-5 jumbotron-fluid custom-jumbotron border-dark border rounded" 
+      style="background-image: url('/static/images/background.jpg');"
+      data-aos="zoom-in"
+      data-aos-easing="ease-in-out"
+      data-aos-delay="100"
+      data-aos-offset="200">
+          <div class="container">
+              <h1 class="display-4 text-center">Crisis Compass</h1>
+              <p class="lead text-center">
+                In the wake of natural disasters and crises, affected communities often face challenges in securing immediate and reliable resources such as food, shelter, medical assistance, and essential supplies. Government resources, while helpful, may be limited in scope and response time, leaving gaps that are often filled by charities and community-driven efforts. However, without proper organization and coordination, these grassroots efforts can be fragmented and inefficient.
+                <br>
+                Our platform addresses this issue by leveraging AI to curate, sort, and present community-driven resources and requests, streamlining support efforts for disaster management.
+              </p>
+          </div>
+      </div>
+  
+  
+    
+    <!-- For facts and figures about the society -->
+    <br><br>
+      <div class="container mb-5">
+          <div class="row justify-content-center">
+              <!-- Column 1 -->
+              <div class="col-12 col-md-4 col-lg-3 mb-4"
+                  data-aos="fade-up"
+                  data-aos-easing="ease-in-out"
+                  data-aos-delay="100"
+                  data-aos-offset="250">
+                  <div class="card border-dark rounded h-100 d-flex flex-column" style="border-width: 2px; border-radius: 10px;">
+                      <div class="card-header text-center fw-bold" style="font-size: calc(1rem + 0.3vw);">
+                        200 million affected by disasters
+                      </div>
+                  </div>
+              </div>
+  
+              <!-- Column 2 -->
+              <div class="col-12 col-md-4 col-lg-3 mb-4"
+                  data-aos="fade-up"
+                  data-aos-easing="ease-in-out"
+                  data-aos-delay="100"
+                  data-aos-offset="250">
+                  <div class="card border-dark rounded h-100 d-flex flex-column" style="border-width: 2px; border-radius: 10px;">
+                      <div class="card-header text-center fw-bold" style="font-size: calc(1rem + 0.3vw);">
+                        Only 50% of disaster relief requests are met
+                      </div>
+                  </div>
+              </div>
+  
+              <!-- Column 3 -->
+              <div class="col-12 col-md-4 col-lg-3 mb-4"
+                  data-aos="fade-up"
+                  data-aos-easing="ease-in-out"
+                  data-aos-delay="100"
+                  data-aos-offset="250">
+                  <div class="card border-dark rounded h-100 d-flex flex-column" style="border-width: 2px; border-radius: 10px;">
+                      <div class="card-header text-center fw-bold" style="font-size: calc(1rem + 0.3vw);">
+                        50% increase in extreme weather since 1970
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+  
+  
+    <!-- Automatic gallery -->
+    <div class="container my-3">
+        <div
+          id="carouselWFS"
+          class="carousel slide carousel-fade"
+          data-bs-ride="carousel"
+          data-aos-easing="ease-in-out"
+          data-aos-delay="100"
+          data-aos="flip-up"
+          data-aos-offset="200"
+        >
+          <div class="carousel-indicators">
+            <button
+              type="button"
+              data-bs-target="#carouselWFS"
+              data-bs-slide-to="0"
+              class="active"
+              aria-current="true"
+              aria-label="Slide 1"
+            ></button>
+            <button
+              type="button"
+              data-bs-target="#carouselWFS"
+              data-bs-slide-to="1"
+              aria-label="Slide 2"
+            ></button>
+            <button
+              type="button"
+              data-bs-target="#carouselWFS"
+              data-bs-slide-to="2"
+              aria-label="Slide 3"
+            ></button>
+            <button
+              type="button"
+              data-bs-target="#carouselWFS"
+              data-bs-slide-to="3"
+              aria-label="Slide 4"
+            ></button>
+            <button
+              type="button"
+              data-bs-target="#carouselWFS"
+              data-bs-slide-to="4"
+              aria-label="Slide 5"
+            ></button>
+            <button
+              type="button"
+              data-bs-target="#carouselWFS"
+              data-bs-slide-to="5"
+              aria-label="Slide 6"
+            ></button>
+          </div>
+      
+          <div class="carousel-inner border border-dark rounded" style="border-width: 2px; border-radius: 10px;">
+            <div class="carousel-item active" style="height: 400px;">
+              <img
+                src="/static/images/1.jpg"
+                class="d-block w-100 img-fluid"
+                alt="Warwick University Warwick Finance Societies WFS Speaker Division Holiwise"
+                style="height: 100%; object-fit: cover;"
+              />
+              <div class="carousel-caption d-none d-md-block">
+                <h5> 2010 Haiti Earthquake </h5>
+                <p> 230,000 dead | 300,000 injured | 1.5 million displaced </p>
+              </div>
+            </div>
+      
+            <div class="carousel-item" style="height: 400px;">
+              <img
+                src="/static/images/2.jpg"
+                class="d-block w-100 img-fluid"
+                alt="Warwick University Warwick Finance Societies WFS Speaker Division CVC Capital"
+                style="height: 100%; object-fit: cover;"
+              />
+              <div class="carousel-caption d-none d-md-block">
+                <h5> 2005 Hurricane Katrina </h5>
+                <p> 1,800 dead | 1,000 injured | 1 million displaced </p>
+              </div>
+            </div>
+      
+            <div class="carousel-item" style="height: 400px;">
+              <img
+                src="/static/images/3.jpg"
+                class="d-block w-100 img-fluid"
+                alt="Warwick University Warwick Finance Societies WFS Speaker Divisions Sprints Growth"
+                style="height: 100%; object-fit: cover;"
+              />
+              <div class="carousel-caption d-none d-md-block">
+                <h5> 2004 Indian Ocean Tsunami</h5>
+                <p> 227,898 dead | 500,000 injured | 1.7 million displaced </p>
+              </div>
+            </div>
+      
+            <div class="carousel-item" style="height: 400px;">
+              <img
+                src="/static/images/4.jpg"
+                class="d-block w-100 img-fluid"
+                alt="Warwick University Warwick Finance Societies WFS Speaker Division Dare Energy"
+                style="height: 100%; object-fit: cover;"
+              />
+              <div class="carousel-caption d-none d-md-block">
+                <h5> 2019-2020 Australian Bushfires </h5>
+                <p> 33 dead | 400 injured | 46 million acres burnt </p>
+              </div>
+            </div>
+
+            <div class="carousel-item" style="height: 400px;">
+                <img
+                  src="/static/images/5.jpg"
+                  class="d-block w-100 img-fluid"
+                  alt="Warwick University Warwick Finance Societies WFS Speaker Divisions Sprints Growth"
+                  style="height: 100%; object-fit: cover;"
+                />
+                <div class="carousel-caption d-none d-md-block">
+                  <h5> 2011 East Africa Drought </h5>
+                  <p> 13 million starved | 8.3 million livestock dead | 2.3 million children malnourished  </p>
+                </div>
+            </div>
+
+            <div class="carousel-item" style="height: 400px;">
+                <img
+                  src="/static/images/6.jpg"
+                  class="d-block w-100 img-fluid"
+                  alt="Warwick University Warwick Finance Societies WFS Speaker Divisions Sprints Growth"
+                  style="height: 100%; object-fit: cover;"
+                />
+                <div class="carousel-caption d-none d-md-block">
+                  <h5> 2011 - Joplin Tornado </h5>
+                  <p> 158 dead | 1,100 injured | 1,000 homes destroyed </p>
+                </div>
+            </div>
+
+
+          </div>
+      
+          <button
+            class="carousel-control-prev"
+            type="button"
+            data-bs-target="#carouselWFS"
+            data-bs-slide="prev"
+          >
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+          </button>
+          <button
+            class="carousel-control-next"
+            type="button"
+            data-bs-target="#carouselWFS"
+            data-bs-slide="next"
+          >
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+          </button>
+        </div>
+    </div>
+    
+    <br><br><br><br>
+    
+</div>
 {% endblock %}
