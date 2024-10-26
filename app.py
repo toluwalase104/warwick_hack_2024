@@ -86,7 +86,6 @@ def liveTracker():
 
     conn.close()
 
-
     return render_template("liveTracker.html", victimData=victimData, donorData=donorData, helped_people_count=helped_people_count,
         helped_countries_count=helped_countries_count,
         total_donated_items_count=total_donated_items_count,
