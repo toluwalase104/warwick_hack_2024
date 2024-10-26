@@ -1,0 +1,70 @@
+/* Flex grid for cards */
+.card-container-exec {
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    transition: all 0.3s ease; 
+}
+
+/* Hover effect for card */
+.card-container-exec:hover {
+    transform: translateY(4px); 
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); 
+}
+
+/* Active state for deeper press effect */
+.card-container-exec:active {
+    transform: translateY(8px); 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); 
+}
+
+/* Size for cards */
+.card-img-exec {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+/* Ensures words over image */
+.card-overlay-exec {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+    font-size: calc(0.8rem + 0.5vw); 
+    overflow: hidden; 
+}
+
+/* CSS for words over division image */
+.card-title-exec {
+    margin: 0;
+    font-size: inherit;
+    font-weight: bold;
+}
+
+/* Custom styles for maintaining 2 columns on very small screens */
+@media (max-width: 576px) {
+    .row > [class^="col-"] {
+        flex: 0 0 50%;
+        max-width: 50%;
+    }
+}
+
+/* For board */
+.circle-img-board {
+    width: 100%;
+    height: auto;
+    border-radius: 50%;
+    border: 2px solid #000;
+}
