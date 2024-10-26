@@ -68,20 +68,24 @@ if __name__ == "__main__":
     unmatched_victims = db.get_unmatched_victims_with_resources(conn)
     for victim in unmatched_victims:
         print(victim)
-        requests.append((victim["id"], victim["resources"], victim["description"]))
+        requests.append((victim["id"], ", ".join(victim["resources"]), victim["description"]))
+
 
     # 8. Retrieve unmatched donors with resources
     print("\nRetrieving unmatched donors with resources:")
     unmatched_donors = db.get_unmatched_donors_with_resources(conn)
     for donor in unmatched_donors:
         print(donor)
-        provisions.append((donor["id"], donor["resources"], donor["description"]))
+        provisions.append((donor["id"], ", ".join(donor["resources"]), donor["description"]))
+
 
     print(f"Requests\n {requests}")
     print(f"Provisions\n {provisions}")
     print()
     print("Sample prompts: ")
-    ai_handler.run_query(requests, provisions)
+    ai_handler.run_query(0, requests, provisions)
+    # ai_handler.run_query(1, requests, provisions)
+    # ai_handler.run_query(2, requests, provisions)
 
     # Close the database connection
     db.close_connection(conn)

@@ -22,5 +22,9 @@
     "claude-handler": {
         "identity_key": "36d21690b9269854692ecdab514de9c9aac495bd2447c1c9ec5002a0a658fca6",
         "wallet_key": "1it846m9OoPTvYoNJ6v6FE1QLYgYBHj3Qbwp1GCwcpY="
+    },
+    "openai-handler": {
+        "identity_key": "50ee20cfaf2037201813b78065dea0a101d64956c1ceecb97f6c5216485217a7",
+        "wallet_key": "qJfUQQBB80fajHYymv7RoQA3ttzKGYUsHKTZbhrn1LM="
     }
 }

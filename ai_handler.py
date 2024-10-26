@@ -1,6 +1,10 @@
 from uagents import Agent, Context, Model
 from uagents.setup import fund_agent_if_low
 
+class ContextPrompt(Model):
+    context: str
+    text: str
+
 class TextPrompt(Model):
     text: str
 
@@ -8,40 +12,81 @@ class TextPrompt(Model):
 class TextResponse(Model):
     text: str
 
-def run_query(recipient_information: list[tuple[int, str, str]], donor_information: list[tuple[int, str, str]]):
-    # Define agent name and mailbox (offline storage area)
-    agent = Agent(
-        name="claude-handler",
-        mailbox="1d104283-0bba-401d-abdb-221c671399f4"
-    )
+def run_query(ai_id: int, recipient_information: list[tuple[int, str, str]], donor_information: list[tuple[int, str, str]]):
+    
+    if ai_id == 0: # 0 is the identifier for Claude
+        print("Working with Claude")
+        # Define agent name and mailbox (offline storage area)
+        agent = Agent(
+            name="claude-handler",
+            mailbox="1d104283-0bba-401d-abdb-221c671399f4"
+        )
+
+
+        # Address of the claude ai being used under the hood
+        AI_AGENT_ADDRESS = "agent1qvk7q2av3e2y5gf5s90nfzkc8a48q3wdqeevwrtgqfdl0k78rspd6f2l4dx"
+
+        prompts = [
+            f"Benefactor - I need {required_resources}. Additionally: {extra_information}\
+                {". ".join([f"Donor {id} offers {resources}. Additionally {extra}" for id, resources, extra in donor_information])}\
+                List the ids of the donors in order of who best matches the benefactor, with no additional information."
+            for _, required_resources, extra_information in recipient_information   
+        ]
+    elif ai_id == 1: # 1 is the identifier for Gemini
+        print("Working with Gemini")
+        # Define agent name and mailbox (offline storage area)
+        agent = Agent(
+            name="gemini-handler",
+            mailbox="f7daec4e-dc3e-4c40-980f-b404cee37d75"
+        )
+
+
+        # Address of the claude ai being used under the hood
+        AI_AGENT_ADDRESS = "agent1qt70gnyr355uhlrxk68ralyhq2tx9xqj0d6a07r4twvvrtjgrmzjkgpgvq2"
+
+        # Split prompts into context and text, for open-ai
+        prompts = [
+            f"Benefactor - I need {required_resources}. Additionally: {extra_information}\
+                {". ".join([f"Donor {id} offers {resources}. Additionally {extra}" for id, resources, extra in donor_information])}\
+                List the ids of the donors in order of who best matches the benefactor, with no additional information."
+            for _, required_resources, extra_information in recipient_information   
+        ]
+    else: # 2 is the identifier for OpenAI
+        print("Working with OpenAI")
+        # Define agent name and mailbox (offline storage area)
+        agent = Agent(
+            name="openai-handler",
+            mailbox="dc51a5d9-ce2a-460c-8be7-a26105a2a098"
+        )
+
+
+        # Address of the claude ai being used under the hood
+        AI_AGENT_ADDRESS = "agent1q0h70caed8ax769shpemapzkyk65uscw4xwk6dc4t3emvp5jdcvqs9xs32y"
+
+        # Split prompts into context and text, for open-ai
+        prompts = [
+            ("List the ids of the donors in order of who best matches the benefactor, with no additional information.",
+             f"Benefactor - I need {required_resources}. Additionally: {extra_information}\
+                {". ".join([f"Donor {id} offers {resources}. Additionally {extra}" for id, resources, extra in donor_information])}"
+            )
+            for _, required_resources, extra_information in recipient_information   
+        ]
+        
+    # for prompt in prompts:
+    #     print(prompt)
 
     fund_agent_if_low(agent.wallet.address())
-
-    # Address of the claude ai being used under the hood
-    AI_AGENT_ADDRESS = "agent1qvk7q2av3e2y5gf5s90nfzkc8a48q3wdqeevwrtgqfdl0k78rspd6f2l4dx"
-
-    prompts = [
-        f"Benefactor - I need {required_resources}. Additionally: {extra_information}\n\
-            {[f"Donor {id} offers {resources}. Additionally {extra}" for id, resources, extra in donor_information]}\n\
-            List the donors in order of who best matches the benefactor, with no additional information."
-        for _, required_resources, extra_information in recipient_information   
-    ]
-
-    # for prompt in prompts:
-    #     print(prompts)
-    # prompts = [
-    #     f"Benefactor - I need {required_resources}. Additionally: {extra_information}\n\
-    #         {donor_information}\n\
-    #         Sort the donors in order of who best matches the benefactor.",       
-    # ]
 
     # When the fetch agent starts up it sends a prompt
     @agent.on_event("startup")
     async def send_message(ctx: Context):
         for prompt in prompts:
-            await ctx.send(AI_AGENT_ADDRESS, TextPrompt(text=prompt))
+            formatted_prompt = TextPrompt(text=prompt) if ai_id <= 1 else ContextPrompt(context=prompt[0], text=prompt[1])
+
+            await ctx.send(AI_AGENT_ADDRESS, formatted_prompt)
+
             ctx.logger.info(f"Sending from agent address:{agent.address}")
-            ctx.logger.info(f"[Sent prompt to AI agent]: {prompt}")
+            ctx.logger.info(f"[Sent prompt to AI agent]: {formatted_prompt}")
 
     # Outputs the message received from the offline agent
     @agent.on_message(TextResponse)

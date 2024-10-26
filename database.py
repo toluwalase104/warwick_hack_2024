@@ -241,6 +241,7 @@ def get_unmatched_donors_with_resources(conn):
     Returns:
     - List of dictionaries, where each dictionary represents an unmatched donor with all details and a list of resources they can provide.
     """
+
     cursor = conn.cursor()
     query = """
         SELECT donors.*, donor_resources.resource_type
@@ -248,6 +249,7 @@ def get_unmatched_donors_with_resources(conn):
         JOIN donor_resources ON donors.id = donor_resources.donor_id
         WHERE donors.completed = 0
     """
+    
     cursor.execute(query)
     donor_dict = defaultdict(lambda: {
         "id": None,
