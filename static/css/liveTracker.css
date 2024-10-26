@@ -2,9 +2,9 @@
     max-height: 400px; /* Limit the height */
     overflow-y: auto;  /* Enable vertical scrolling */
     padding: 15px;
-    border: 1px solid #080e30;
+    border: 1px solid #103f0e;
     border-radius: 5px;
-    background-color: #080e30;
+    background-color: #103f0e;
 }
 
 .resource-list {
