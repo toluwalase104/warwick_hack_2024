@@ -14,5 +14,9 @@
     "gemini-handler": {
         "identity_key": "c2f2f2b315d6b18cc48e633da883bfccc50bb27fb68d023bb2bbb7c80f16f560",
         "wallet_key": "HX43VC9iahvD5w7pY7BqGdZVkH47se/hnsGTrcgUdnY="
+    },
+    "scraper": {
+        "identity_key": "aeb3d148f6d3378b753c6887f883083e8d74a345b66931cf51074835259c7b1d",
+        "wallet_key": "SxNJ0JFnJHnrUYx3iIwj2lGXcJcvWKAskGzO9ZGQW8s="
     }
 }
