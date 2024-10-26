@@ -3,9 +3,6 @@ from collections import defaultdict
 import pandas as pd
 import matplotlib.pyplot as plt
 import geopandas as gpd
-from flask import Flask
-
-app = Flask(__name__)
 
 def connect_and_initialize(db_path="database.db", schema_path="schema.sql"):
     """
@@ -21,10 +18,8 @@ def connect_and_initialize(db_path="database.db", schema_path="schema.sql"):
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row  # Allows row access by column name
     cursor = conn.cursor()
-    with app.open_resource(schema_path) as f:
+    with open(schema_path, 'r') as f:
         schema = f.read()
-        if isinstance(schema, bytes):
-            schema = schema.decode('utf-8')  # Decode to string if it's bytes
     cursor.executescript(schema)
     conn.commit()
     return conn
@@ -612,36 +607,23 @@ if __name__ == "__main__":
     add_requested_resource(conn, victim_id2, "Shelter")
     add_requested_resource(conn, victim_id3, "Clothes")
     add_requested_resource(conn, victim_id4, "Food")
-    # add_requested_resource(conn, victim_id4, "Shelter")
-
-    # Add donors from different countries
-    donor_id1 = add_donor(conn, "Earnest", "earnest@example.com", "12345", "123 Street", "USA", "Offers food for 8")
-    donor_id2 = add_donor(conn, "Fiona", "fiona@example.com", "54321", "456 Avenue", "Canada", "Offers shelter for 5")
-    donor_id3 = add_donor(conn, "George", "george@example.com", "67890", "789 Boulevard", "Mexico", "Offers medium-sized clothes")
-    donor_id4 = add_donor(conn, "Helen", "helen@example.com", "13579", "101 Road", "USA", "Offers canned-foods and shelter")
-
-    # Add requested resources for each victim
-    add_donor_resource(conn, donor_id1, "Food")
-    add_donor_resource(conn, donor_id2, "Shelter")
-    add_donor_resource(conn, donor_id3, "Clothes")
-    add_donor_resource(conn, donor_id4, "Food")
-    # add_donor_resource(conn, victim_id4, "Shelter")
+    add_requested_resource(conn, victim_id4, "Shelter")
 
     # Mark some victims as helped (completed)
-    # mark_as_matched(conn, victim_id1, donor_id1)  # Assuming donor_id=1 is available
-    # mark_as_matched(conn, victim_id2, donor_id2)  # Assuming donor_id=2 is available
-    # mark_as_matched(conn, victim_id4, donor_id=3)  # Assuming donor_id=3 is available
+    mark_as_matched(conn, victim_id1, donor_id=1)  # Assuming donor_id=1 is available
+    mark_as_matched(conn, victim_id2, donor_id=2)  # Assuming donor_id=2 is available
+    mark_as_matched(conn, victim_id4, donor_id=3)  # Assuming donor_id=3 is available
 
     # Run the function to get helped countries' counts
-    # result = get_helped_countries_counts(conn)
+    result = get_helped_countries_counts(conn)
 
     # Expected result should be:
     # USA -> 3 (Alice's Food + Diana's Food + Diana's Shelter)
     # Canada -> 1 (Bob's Shelter)
-    # print("Helped Countries Counts:", result)
+    print("Helped Countries Counts:", result)
 
-    # plot_helped_countries_heatmap(conn)
-    # plot_to_help_countries_heatmap(conn)
+    plot_helped_countries_heatmap(conn)
+    plot_to_help_countries_heatmap(conn)
 
 
     # Close the connection
