@@ -303,6 +303,160 @@ def is_donor_matched(conn, donor_id):
     result = cursor.fetchone()
     return result is not None and result[0] == 1
 
+def get_resource_counts(conn):
+    """
+    Retrieves the count of each type of resource requested by victims.
+
+    Parameters:
+    - conn: SQLite database connection.
+
+    Returns:
+    - A dictionary with resource types as keys and the count of each resource as values.
+    """
+    cursor = conn.cursor()
+    query = """
+        SELECT resource_type, COUNT(*) AS count
+        FROM requested_resources
+        GROUP BY resource_type
+    """
+    cursor.execute(query)
+    
+    # Convert the result to a dictionary
+    resource_counts = {row["resource_type"]: row["count"] for row in cursor.fetchall()}
+    return resource_counts
+
+def get_helped_people_count(conn):
+    """
+    Retrieves the count of victims who have been marked as completed (i.e., helped).
+
+    Parameters:
+    - conn: SQLite database connection.
+
+    Returns:
+    - An integer representing the count of people who have been helped.
+    """
+    cursor = conn.cursor()
+    query = """
+        SELECT COUNT(*) AS helped_count
+        FROM victims
+        WHERE completed = 1
+    """
+    cursor.execute(query)
+    
+    # Fetch the count result
+    result = cursor.fetchone()
+    return result["helped_count"] if result else 0
+
+def get_helped_countries_count(conn):
+    """
+    Retrieves the count of unique countries where people have been helped.
+
+    Parameters:
+    - conn: SQLite database connection.
+
+    Returns:
+    - An integer representing the count of unique countries where people have been helped.
+    """
+    cursor = conn.cursor()
+    query = """
+        SELECT COUNT(DISTINCT country) AS country_count
+        FROM victims
+        WHERE completed = 1
+    """
+    cursor.execute(query)
+    
+    # Fetch the country count result
+    result = cursor.fetchone()
+    return result["country_count"] if result else 0
+
+def get_total_donated_items_count(conn):
+    """
+    Retrieves the total count of items donated across all resource types.
+
+    Parameters:
+    - conn: SQLite database connection.
+
+    Returns:
+    - An integer representing the total count of items donated.
+    """
+    cursor = conn.cursor()
+    query = """
+        SELECT COUNT(*) AS total_donated_items
+        FROM donor_resources
+    """
+    cursor.execute(query)
+    
+    # Fetch the total count of donated items
+    result = cursor.fetchone()
+    return result["total_donated_items"] if result else 0
+
+def get_people_needing_help_count(conn):
+    """
+    Retrieves the count of victims who still need help (i.e., not marked as completed).
+
+    Parameters:
+    - conn: SQLite database connection.
+
+    Returns:
+    - An integer representing the count of people who still need help.
+    """
+    cursor = conn.cursor()
+    query = """
+        SELECT COUNT(*) AS needing_help_count
+        FROM victims
+        WHERE completed = 0
+    """
+    cursor.execute(query)
+    
+    # Fetch the count of people who still need help
+    result = cursor.fetchone()
+    return result["needing_help_count"] if result else 0
+
+def get_countries_needing_help_count(conn):
+    """
+    Retrieves the count of unique countries where people still need help.
+
+    Parameters:
+    - conn: SQLite database connection.
+
+    Returns:
+    - An integer representing the count of unique countries where people still need help.
+    """
+    cursor = conn.cursor()
+    query = """
+        SELECT COUNT(DISTINCT country) AS countries_needing_help_count
+        FROM victims
+        WHERE completed = 0
+    """
+    cursor.execute(query)
+    
+    # Fetch the count of countries where help is still needed
+    result = cursor.fetchone()
+    return result["countries_needing_help_count"] if result else 0
+
+def get_people_needing_help_count(conn):
+    """
+    Retrieves the count of victims who still need help (i.e., not marked as completed).
+
+    Parameters:
+    - conn: SQLite database connection.
+
+    Returns:
+    - An integer representing the count of people who still need help.
+    """
+    cursor = conn.cursor()
+    query = """
+        SELECT COUNT(*) AS needing_help_count
+        FROM victims
+        WHERE completed = 0
+    """
+    cursor.execute(query)
+    
+    # Fetch the count of people who still need help
+    result = cursor.fetchone()
+    return result["needing_help_count"] if result else 0
+
+
 def close_connection(conn):
     """
     Closes the SQLite database connection.

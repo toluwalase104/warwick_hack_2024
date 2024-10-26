@@ -18,5 +18,9 @@
     "scraper": {
         "identity_key": "aeb3d148f6d3378b753c6887f883083e8d74a345b66931cf51074835259c7b1d",
         "wallet_key": "SxNJ0JFnJHnrUYx3iIwj2lGXcJcvWKAskGzO9ZGQW8s="
+    },
+    "claude-handler": {
+        "identity_key": "36d21690b9269854692ecdab514de9c9aac495bd2447c1c9ec5002a0a658fca6",
+        "wallet_key": "1it846m9OoPTvYoNJ6v6FE1QLYgYBHj3Qbwp1GCwcpY="
     }
 }
