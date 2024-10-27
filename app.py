@@ -102,7 +102,9 @@ def liveTracker():
     conn = database.connect_and_initialize()
     victimData = database.get_unmatched_victims_with_resources(conn)
     donorData = database.get_unmatched_donors_with_resources(conn)
-
+    print(victimData)
+    print(donorData)
+    
     # Retrieve all counts
     helped_people_count = database.get_helped_countries_count(conn)
     helped_countries_count = database.get_helped_people_count(conn)
