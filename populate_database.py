@@ -140,9 +140,9 @@ def populate_database():
     conn.row_factory = sqlite3.Row  # Allows access by column name
 
     # Insert data into each table
-    create_victims(conn, num_victims=100)
+    create_victims(conn, num_victims=50)
     create_requested_resources(conn, num_resources_per_victim=2)
-    create_donors(conn, num_donors=50)
+    create_donors(conn, num_donors=25)
     create_donor_resources(conn, num_resources_per_donor=2)
 
     # Close the connection
