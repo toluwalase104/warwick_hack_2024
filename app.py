@@ -2,15 +2,32 @@ from flask import Flask, render_template, request, jsonify
 import database
 import matplotlib.pyplot as plt
 from matcher import match_donors_and_recipients
+import asyncio
+import subprocess, sys
 
-import time
+import time, os
 import multiprocessing
+
+
+try:
+    from google.protobuf import timestamp_pb2  # Try to import protobuf
+    print("Successfully imported protobuf")
+except ImportError:
+    # If not installed, install it
+    subprocess.check_call([sys.executable, "-m", "pip", "install", "protobuf"])
+    from google.protobuf import timestamp_pb2  # Import again after installing
+    print("Installed and imported protobuf")
+
 
 app = Flask(__name__)
 
 #importing the agents
 from geolocation import run_geolocation_agent
 from google_places import run_google_places_agent
+
+# Set the environment variables for each subprocess
+env = os.environ.copy()
+env["PYTHONPATH"] = os.pathsep.join(os.sys.path)
 
 # Home page
 @app.route("/", methods=["POST", "GET"])
@@ -164,6 +181,27 @@ def liveTracker():
 def charities():
     return render_template("charities.html")
 
+# Helper function to run the geolocation agent with an event loop in a separate process
+def geolocation_agent_process(full_address):
+    async def run():
+        await run_geolocation_agent(full_address)
+
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    loop.run_until_complete(run())
+    loop.close()
+
+# Helper function to run the google places agent with an event loop in a separate process
+def google_places_agent_process(latitude, longitude, item):
+    async def run():
+        await run_google_places_agent(latitude, longitude, item)
+
+    loop = asyncio.new_event_loop()
+    asyncio.set_event_loop(loop)
+    loop.run_until_complete(run())
+    loop.close()
+
+
 """
 -----------------------------------------------------
 GPS route to process geolocation and POI retrieval --
@@ -202,17 +240,19 @@ def GPS():
         # Call the geolocation agent TODO
         # run_geolocation_agent(full_address) # should show a message
 
-        proc = multiprocessing.Process(target=run_geolocation_agent, args=(full_address))
+        # Start geolocation agent in a separate process
+        geo_proc = multiprocessing.Process(target=geolocation_agent_process, args=(full_address,))
         print("Starting geolocation agent")
-        proc.start()
+        geo_proc.start()
         print("Sleeping for 20 seconds")
         time.sleep(20)
-        proc.terminate()
+        geo_proc.terminate()
         print("Terminated geolocation agent")
 
         # loop = asyncio.new_event_loop()
         # asyncio.set_event_loop(loop)  # Set the new loop as the current event loop
         # loop.run_until_complete(run_geolocation_agent(full_address))
+        # loop.close()
             
 
         # Extract latitude and longitude from geolocation.txt
@@ -227,12 +267,13 @@ def GPS():
         # loop.run_until_complete(run_google_places_agent(full_address))
         # loop.close()
 
-        proc = multiprocessing.Process(target=run_google_places_agent, args=(latitude, longitude, item))
+        # Start google places agent in a separate process
+        places_proc = multiprocessing.Process(target=google_places_agent_process, args=(latitude, longitude, item))
         print("Starting google places agent")
-        proc.start()
+        places_proc.start()
         print("Sleeping for 20 seconds")
         time.sleep(20)
-        proc.terminate()
+        places_proc.terminate()
         print("Terminated google places agent")
 
         # Extract the POIs from google_places.txt and convert to list of dictionaries
