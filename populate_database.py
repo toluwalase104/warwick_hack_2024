@@ -1,5 +1,6 @@
 import sqlite3
 import random
+import database
 from faker import Faker
 
 # Initialize Faker for generating realistic random data
@@ -116,7 +117,7 @@ def create_donor_resources(conn, num_resources_per_donor=2):
 def populate_database():
     """Main function to populate the database with realistic data using real countries."""
     # Connect to the SQLite database
-    conn = sqlite3.connect("database.db")
+    conn = database.connect_and_initialize()
     conn.row_factory = sqlite3.Row  # Allows access by column name
 
     # Insert data into each table
