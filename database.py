@@ -592,6 +592,74 @@ def plot_helped_countries_heatmap(conn):
     plt.savefig("./static/images/helped_countries_heatmap.png", format='png', dpi=300, transparent=True)
     plt.close()
 
+def get_victim_email(conn, victim_id):
+    """
+    Retrieves the contact email of a victim based on the victim ID.
+
+    Parameters:
+    - conn: SQLite database connection.
+    - victim_id: The ID of the victim.
+
+    Returns:
+    - The contact email of the victim if found, otherwise None.
+    """
+    cursor = conn.cursor()
+    query = "SELECT contact FROM victims WHERE id = ?"
+    cursor.execute(query, (victim_id,))
+    result = cursor.fetchone()
+    
+    return result["contact"] if result else None
+
+def get_donor_email(conn, donor_id):
+    """
+    Retrieves the contact email of a donor based on the donor ID.
+
+    Parameters:
+    - conn: SQLite database connection.
+    - donor_id: The ID of the donor.
+
+    Returns:
+    - The contact email of the donor if found, otherwise None.
+    """
+    cursor = conn.cursor()
+    query = "SELECT contact FROM donors WHERE id = ?"
+    cursor.execute(query, (donor_id,))
+    result = cursor.fetchone()
+    
+    return result["contact"] if result else None
+
+if __name__ == "__main__":
+    # Step 1: Connect to the database
+    conn = connect_and_initialize()  # Initializes the database and creates tables if needed
+
+    # Step 2: Add test data for victims and donors
+    print("Adding test victims...")
+    victim_id_1 = add_victim(conn, "Alice Johnson", "alice@example.com", "12345", "123 Main St", "USA", "Needs shelter")
+    victim_id_2 = add_victim(conn, "Bob Smith", "bob@example.com", "54321", "456 Elm St", "Canada", "Needs food")
+
+    print("Adding test donors...")
+    donor_id_1 = add_donor(conn, "Charlie Brown", "charlie@example.com", "67890", "789 Oak St", "USA", "Provides shelter")
+    donor_id_2 = add_donor(conn, "Diana Prince", "diana@example.com", "13579", "101 Maple St", "Canada", "Provides food")
+
+    # Step 3: Test get_victim_email function
+    print("\nTesting get_victim_email function:")
+    email_victim_1 = get_victim_email(conn, victim_id_1)
+    email_victim_2 = get_victim_email(conn, victim_id_2)
+    print(f"Email for victim {victim_id_1} (Alice): {email_victim_1}")  # Expected: alice@example.com
+    print(f"Email for victim {victim_id_2} (Bob): {email_victim_2}")    # Expected: bob@example.com
+
+    # Step 4: Test get_donor_email function
+    print("\nTesting get_donor_email function:")
+    email_donor_1 = get_donor_email(conn, donor_id_1)
+    email_donor_2 = get_donor_email(conn, donor_id_2)
+    print(f"Email for donor {donor_id_1} (Charlie): {email_donor_1}")   # Expected: charlie@example.com
+    print(f"Email for donor {donor_id_2} (Diana): {email_donor_2}")     # Expected: diana@example.com
+
+    # Step 5: Close the connection
+    close_connection(conn)
+    print("\nDatabase connection closed.")
+
+"""
 if __name__ == "__main__":
     # Connect to the database and initialize schema (assuming connect_and_initialize is defined)
     conn = connect_and_initialize()
@@ -628,6 +696,7 @@ if __name__ == "__main__":
 
     # Close the connection
     close_connection(conn)
+"""
 """
 if __name__ == "__main__":
     # Initialize and connect to the database

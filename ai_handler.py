@@ -1,5 +1,6 @@
 from uagents import Agent, Context, Model
 from uagents.setup import fund_agent_if_low
+import time
 
 class ContextPrompt(Model):
     context: str
@@ -61,7 +62,7 @@ def run_query(ai_id: int, recipient_information: list[tuple[int, str, str]], don
 
         # Split prompts into context and text, for open-ai
         prompts = [
-            ("List the ids of the donors in order of who best matches the benefactor, with no additional information.",
+            ("List the ids of the donors in order of who best matches the benefactor, with no additional information, in the format [best_donor_match, second_best_donor_match, third_best_donor_match, ...]",
              f"Benefactor - I need {required_resources}. Additionally: {extra_information}. {". ".join([f"Donor {id} offers {resources}. Additionally {extra}" for id, resources, extra in donor_information])}"
             )
             for _, required_resources, extra_information in recipient_information   
@@ -71,8 +72,8 @@ def run_query(ai_id: int, recipient_information: list[tuple[int, str, str]], don
         print(prompt)
 
     print(agent.address)
-    """
 
+    """
     fund_agent_if_low(agent.wallet.address())
 
     # When the fetch agent starts up it sends a prompt
@@ -94,7 +95,8 @@ def run_query(ai_id: int, recipient_information: list[tuple[int, str, str]], don
             ctx.logger.info(msg.text)
 
             with open("response.txt", "a") as f:
-                f.write(msg.text)             
+                f.write(msg.text + "\n")   
+            time.sleep(5)          
     else:
         @agent.on_message(model = Response)
         async def handle_response(ctx: Context, sender: str, msg: Response):
@@ -102,7 +104,8 @@ def run_query(ai_id: int, recipient_information: list[tuple[int, str, str]], don
             ctx.logger.info(msg.text)
 
             with open("response.txt", "a") as f:
-                f.write(msg.text)
+                f.write(msg.text + "\n")       
+            time.sleep(5)
 
     agent.run()
     """
