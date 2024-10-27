@@ -102,22 +102,33 @@ def liveTracker():
     labels = list(allOfResources.keys())
     sizes = list(allOfResources.values())
     colors = plt.cm.tab20.colors[:len(labels)]
-    fig, ax = plt.subplots()
+
+    # Create a smaller figure for the PNG output
+    fig, ax = plt.subplots(figsize=(6, 6))  # Adjust size for a smaller PNG output
     wedges, texts, autotexts = ax.pie(
-    sizes, 
-    labels=labels, 
-    autopct='%1.1f%%',  # shows percentage on hover
-    startangle=140, 
-    colors=colors, 
-    pctdistance=0.85,   # distance of text from center
-    wedgeprops=dict(width=0.4)  # makes the pie chart have a donut shape
+        sizes, 
+        labels=labels, 
+        autopct='%1.1f%%',  
+        startangle=140, 
+        colors=colors, 
+        pctdistance=0.85,   
+        wedgeprops=dict(width=0.4)  
     )
 
-    plt.legend(wedges, [f"{label} ({size})" for label, size in zip(labels, sizes)], 
-           title="Items Needed", 
-           loc="center left", 
-           bbox_to_anchor=(1, 0, 0.5, 1))
+    # Create legend and move it below the chart
+    plt.legend(
+        wedges, [f"{label} ({size})" for label, size in zip(labels, sizes)], 
+        title="Items Needed", 
+        loc="upper center", 
+        bbox_to_anchor=(0.5, -0.1),  # Positions legend below the pie chart
+        ncol=2,  # Display in two columns if you have many items
+        frameon=False  # Optionally remove legend border for a cleaner look
+    )
 
+    # Adjust layout to make space for the legend below
+    fig.subplots_adjust(bottom=0.3)
+
+    # Save the figure
     plt.savefig('./static/images/donations.png', format='png', dpi=300, transparent=True, bbox_inches='tight', pad_inches=0.1)
     plt.close()
 
