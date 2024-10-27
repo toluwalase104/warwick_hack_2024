@@ -62,7 +62,7 @@ def run_query(ai_id: int, recipient_information: list[tuple[int, str, str]], don
 
         # Split prompts into context and text, for open-ai
         prompts = [
-            ("List the ids of the donors in order of who best matches the benefactor, with no additional information, in the format [best_donor_match, second_best_donor_match, third_best_donor_match, ...]",
+            ("List the ids of the donors in order of who best matches the benefactor, with no additional information, in the format [best_donor_match, ..., worst_donor_match]",
              f"Benefactor - I need {required_resources}. Additionally: {extra_information}. {". ".join([f"Donor {id} offers {resources}. Additionally {extra}" for id, resources, extra in donor_information])}"
             )
             for _, required_resources, extra_information in recipient_information   
