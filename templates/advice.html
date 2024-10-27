@@ -1,0 +1,166 @@
+{% extends 'base.html' %}
+
+<!-- Title -->
+{% block title %}
+Disaster Advice
+{% endblock %}
+
+{% block content %}
+<!-- Hero image -->
+<div class="hero-image position-relative" style="width: 100vw; height: 50vh;">
+    <!-- The image -->
+    <img src="/static/images/header.png" alt="Hero Image" style="object-fit: cover; width: 100%; height: 100%; filter: grayscale(100%); position: absolute; top: 0; left: 0;">
+
+    <!-- Semi-transparent grayscale overlay -->
+    <div class="position-absolute top-0 start-0 w-100 h-100" style="background-color: rgba(255, 255, 255, 0.3);"></div>
+
+    <!-- Text and button on top of the image and overlay -->
+    <div class="mask position-absolute top-0 start-0 w-100 h-100" style="z-index: 1;">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div class="container text-center">
+                <h1 class="display-4 mb-2 text-white" data-aos="fade-down" data-aos-delay="1000" data-aos-easing="ease-in-out">
+                  Crisis Compass <br> Disaster Advice
+                </h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Border below hero image -->
+<div class="border-bottom"></div>
+
+<!-- Main content -->
+<div id="mainContent" style="height: 100%;">
+    <br><br>
+    <!-- Society description -->
+
+    <br><br>
+
+    <div class="container mt-4">
+        <!-- Row 2 -->
+        <div class="row mb-4">
+            <div class="col-md-3 col-sm-6 mb-4 hvr-shrink">
+                <div class="card card-container-exec hvr-glow tilting-div floating-3d"
+                   data-aos="zoom-in"
+                   data-aos-easing="ease-in-out"
+                   data-aos-delay="100"
+                   data-aos-offset="150"
+                   style="cursor: pointer;"
+                   onclick="window.location.href='https://www.directrelief.org/';"> <!-- Redirect to American Red Cross -->
+                  <img src="/static/images/A1.jpg" class="card-img-exec img-fluid" alt="American Red Cross">
+                  <div class="card-overlay-exec">
+                      <h3 class="card-title-exec">First Aid</h3>
+                  </div>
+                </div>
+            </div>
+          
+            <div class="col-md-3 col-sm-6 mb-4 hvr-shrink">
+                <div class="card card-container-exec hvr-glow tilting-div floating-3d"
+                data-aos="zoom-in"
+                data-aos-easing="ease-in-out"
+                data-aos-delay="100"
+                data-aos-offset="150"
+                style="cursor: pointer;"
+                onclick="window.location.href='https://www.cdc.gov/disability-emergency-preparedness/people-with-disabilities/supporting-mental-health.html#:~:text=If%20you%20are%20in%20an,can%20be%20stressful%20for%20anyone.';"> <!-- Redirect to Doctors Without Borders -->
+                    <img src="/static/images/A2.jpg" class="card-img-exec img-fluid" alt="Doctors Without Borders">
+                    <div class="card-overlay-exec">
+                        <h3 class="card-title-exec">Mental Health</h3>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="col-md-3 col-sm-6 mb-4 hvr-shrink">
+                <div class="card card-container-exec hvr-glow tilting-div floating-3d"
+                data-aos="zoom-in"
+                data-aos-easing="ease-in-out"
+                data-aos-delay="100"
+                data-aos-offset="150"
+                style="cursor: pointer;"
+                onclick="window.location.href='https://shelterbox.org/';"> <!-- Redirect to GlobalGiving -->
+                    <img src="/static/images/A3.jpg" class="card-img-exec img-fluid" alt="GlobalGiving">
+                    <div class="card-overlay-exec">
+                        <h3 class="card-title-exec">Relocation</h3>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="col-md-3 col-sm-6 mb-4 hvr-shrink">
+                <div class="card card-container-exec hvr-glow tilting-div floating-3d"
+                data-aos="zoom-in"
+                data-aos-easing="ease-in-out"
+                data-aos-delay="100"
+                data-aos-offset="150"
+                style="cursor: pointer;"
+                onclick="window.location.href='https://www.charitywater.org/uk';"> <!-- Redirect to ShelterBox -->
+                    <img src="/static/images/A4.jpg" class="card-img-exec img-fluid" alt="ShelterBox">
+                    <div class="card-overlay-exec">
+                        <h3 class="card-title-exec">Water</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+        <!-- Row 3 -->
+        <div class="row mb-4">
+            <div class="col-md-3 col-sm-6 mb-4 hvr-shrink">
+                <div class="card card-container-exec hvr-glow tilting-div floating-3d"
+                data-aos="zoom-in"
+                data-aos-easing="ease-in-out"
+                data-aos-delay="100"
+                data-aos-offset="150"
+                style="cursor: pointer;"
+                onclick="window.location.href='https://wck.org/';"> <!-- Redirect to Team Rubicon -->
+                    <img src="/static/images/A5.jpg" class="card-img-exec img-fluid" alt="Team Rubicon">
+                    <div class="card-overlay-exec">
+                        <h3 class="card-title-exec">Nutrition</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-4 hvr-shrink">
+                <div class="card card-container-exec hvr-glow tilting-div floating-3d"
+                data-aos="zoom-in"
+                data-aos-easing="ease-in-out"
+                data-aos-delay="100"
+                data-aos-offset="150"
+                style="cursor: pointer;"
+                onclick="window.location.href='https://www.fema.gov/';"> <!-- Redirect to World Food Programme -->
+                    <img src="/static/images/A6.jpg" class="card-img-exec img-fluid" alt="World Food Programme">
+                    <div class="card-overlay-exec">
+                        <h3 class="card-title-exec">Financial Aid</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-4 hvr-shrink">
+                <div class="card card-container-exec hvr-glow tilting-div floating-3d"
+                data-aos="zoom-in"
+                data-aos-easing="ease-in-out"
+                data-aos-delay="100"
+                data-aos-offset="150"
+                style="cursor: pointer;"
+                onclick="window.location.href='Ready.gov';"> <!-- Redirect to Mercy Corps -->
+                    <img src="/static/images/A7.jpg" class="card-img-exec img-fluid" alt="Mercy Corps">
+                    <div class="card-overlay-exec">
+                        <h3 class="card-title-exec">Preparation</h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 col-sm-6 mb-4 hvr-shrink">
+                <div class="card card-container-exec hvr-glow tilting-div floating-3d"
+                data-aos="zoom-in"
+                data-aos-easing="ease-in-out"
+                data-aos-delay="100"
+                data-aos-offset="150"
+                style="cursor: pointer;"
+                onclick="window.location.href='https://www.nvoad.org/';"> <!-- Redirect to Save the Children -->
+                    <img src="/static/images/A8.jpg" class="card-img-exec img-fluid" alt="Save the Children">
+                    <div class="card-overlay-exec">
+                        <h3 class="card-title-exec">Volunteering</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <br><br><br><br><br><br>
+</div>
+{% endblock %}
