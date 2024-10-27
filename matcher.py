@@ -35,20 +35,23 @@ def send_match_email(conn, victim_id: int, donor_id: int):
 
         session.quit()
 
-def match_donors_and_recipients():
+def match_donors_and_recipients(conn = None):
+    opened_connection = False
     # Initialize and connect to the database
-    conn = db.connect_and_initialize()
+    if conn == None:
+        conn = db.connect_and_initialize()
+        opened_connection = True
 
-    print("Retrieving all victims:")
-    all_victims = db.get_all_victims(conn)
-    for victim in all_victims:
-        print(dict(victim))
+    # print("Retrieving all victims:")
+    # all_victims = db.get_all_victims(conn)
+    # for victim in all_victims:
+    #     print(dict(victim))
 
-    # 6. Retrieve all donors
-    print("\nRetrieving all donors:")
-    all_donors = db.get_all_donors(conn)
-    for donor in all_donors:
-        print(dict(donor))
+    # # 6. Retrieve all donors
+    # print("\nRetrieving all donors:")
+    # all_donors = db.get_all_donors(conn)
+    # for donor in all_donors:
+    #     print(dict(donor))
    
     # The variable ``requests`` holds the victim id, their requestewd resources and additional information about their circumstances
     requests : list[tuple[int, str, str]] = []
@@ -133,8 +136,9 @@ def match_donors_and_recipients():
     print(f"Is Bob White matched? {db.is_donor_matched(conn, 3)}")  # Expected: True
     print(f"Is Carol Green matched? {db.is_donor_matched(conn, 4)}\n")  # Expected: False
 
-    # Close the database connection
-    db.close_connection(conn)
+    # Close the database connection, only if you opened it
+    if opened_connection:
+        db.close_connection(conn)
     print("\nDatabase connection closed.")
 
 if __name__ == "__main__":
