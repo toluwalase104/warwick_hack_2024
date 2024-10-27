@@ -17,6 +17,10 @@ from google_places import run_google_places_agent
 def home():
     return render_template("home.html")
 
+@app.route('/test')
+def test():
+    return render_template('test.html')
+
 # calendar page
 @app.route("/calendar", methods=["POST", "GET"])
 def calendar():

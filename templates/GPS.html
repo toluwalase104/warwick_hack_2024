@@ -1,6 +1,5 @@
 {% extends 'base.html' %}
 
-<!-- Title -->
 {% block title %}
 Resource Submissions
 {% endblock %}
@@ -32,13 +31,9 @@ Resource Submissions
                                     class="form-control" 
                                     id="country" 
                                     placeholder="Select Country" 
-                                    onkeyup="filterCountries()" 
                                     required
                                     autocomplete="off"
                                 >
-                                <div id="countryDropdown" class="dropdown-menu" style="display: none; max-height: 200px; overflow-y: auto;">
-                                    <!-- Country options will be populated here -->
-                                </div>
                             </div>
                         </div>
                         <br>
@@ -74,22 +69,42 @@ Resource Submissions
                         </div>
 
                         <br>
-                        <a class="btn btn-lg mt-4 mb-4 btn-outline-dark active hvr-glow hvr-pulse hvr-shutter-out-horizontal" 
+                        <button type="button" class="btn btn-lg mt-4 mb-4 btn-outline-dark active hvr-glow hvr-pulse hvr-shutter-out-horizontal" 
                            style="background:#f59120; border-width: 2px; border-color: #000000; border-radius: 10px;" 
-                           href="javascript:void(0);" 
-                           role="button"
-                           onclick="submitGPSForm()"
-                           data-aos="zoom-in-up"
-                           data-aos-delay="200"
-                           data-aos-easing="ease-in-out">
+                           onclick="submitGPSForm()">
                            Submit
-                        </a>
+                        </button>
                     </center>
                 </div>
             </form>
+            
+            <!-- Container to display locations (initially hidden) -->
+            <center>
+                <div id="locations" style="display: none; margin-top: 20px;">
+                    <h3>Nearby Places:</h3>
+                    <ul style="list-style-type: none; padding: 0; text-align: center;">
+                        <!-- This will be populated with the locations -->
+                        <li style="margin: 5px 0;">
+                            <span>Location Name Here</span>
+                        </li>
+                        <li style="margin: 5px 0;">
+                            <span>Another Location Name Here</span>
+                        </li>
+                        <li style="margin: 5px 0;">
+                            <span>Third Location Name Here</span>
+                        </li>
+                        <!-- Add more list items as needed -->
+                    </ul>
+                </div>
+            </center>
+            
+            
+            
         </div>
     </div>
 
-    <br><br><br><br><br><br>
+    <br><br><br><br><br>
 </div>
+
+<script src="GPS.js"></script>  <!-- Include your JS file -->
 {% endblock %}
