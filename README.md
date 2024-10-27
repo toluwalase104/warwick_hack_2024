@@ -44,9 +44,19 @@ This project proposes a solution to enhance the effectiveness of community-drive
   - To keep track of scheduled relief efforts, community events, and local support activities.
   - Helps victims and volunteers stay informed about upcoming events, such as distribution days or health camps.
 
-6. **Real-time GPS Resources**:
-   - User Location and Resource Query: Users input their address and desired resource type, which is geocoded and queried for nearby resources.
-   - Map Visualization: A map centers on the user’s location, displaying markers for available resources within a set radius.
+- **Advice Library**:
+  - A collection of guidance links to support you in preparing for and managing disasters.
+
+- **Disaster Charity Library**:
+  - A curated list of reputable charities and non-profits dedicated to disaster relief and recovery.
+
+- **Real-time GPS Resources**:
+   - Use a users address and required resource type, which is geocoded to find nearby resources.
+   - A map centers on the user's location, showing markers for available resources within a specified radius.
+
+- **Feedback Form**:
+  - A space for users to share their feedback to developers.
+  - Supports continuous improvement and builds user trust.
 
 ---
 
