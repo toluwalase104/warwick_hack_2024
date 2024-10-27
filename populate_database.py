@@ -14,6 +14,26 @@ real_countries = [
     "Norway", "Denmark", "Finland", "Netherlands", "Belgium", "Switzerland"
 ]
 
+def connect_and_initialize(db_path="database.db", schema_path="schema.sql"):
+    """
+    Connects to the SQLite database and initializes it using the schema provided in schema.sql.
+
+    Parameters:
+    - db_path: The path to the database file (default is "database.db").
+    - schema_path: The path to the schema SQL file to initialize tables (default is "schema.sql").
+
+    Returns:
+    - conn: SQLite database connection.
+    """
+    conn = sqlite3.connect(db_path)
+    conn.row_factory = sqlite3.Row  # Allows row access by column name
+    cursor = conn.cursor()
+    with open(schema_path, 'r') as f:
+        schema = f.read()
+    cursor.executescript(schema)
+    conn.commit()
+    return conn
+
 # List of possible resource types for victims and donors
 resource_types = ["Food", "First Aid", "Shelter", "Clothes", "Money", "Transport"]
 
@@ -116,13 +136,13 @@ def create_donor_resources(conn, num_resources_per_donor=2):
 def populate_database():
     """Main function to populate the database with realistic data using real countries."""
     # Connect to the SQLite database
-    conn = sqlite3.connect("database.db")
+    conn = connect_and_initialize()
     conn.row_factory = sqlite3.Row  # Allows access by column name
 
     # Insert data into each table
-    create_victims(conn, num_victims=100)
+    create_victims(conn, num_victims=50)
     create_requested_resources(conn, num_resources_per_victim=2)
-    create_donors(conn, num_donors=50)
+    create_donors(conn, num_donors=25)
     create_donor_resources(conn, num_resources_per_donor=2)
 
     # Close the connection

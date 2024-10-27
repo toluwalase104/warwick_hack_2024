@@ -202,7 +202,7 @@ def get_unmatched_victims_with_resources(conn):
     query = """
         SELECT victims.*, requested_resources.resource_type
         FROM victims
-        JOIN requested_resources ON victims.id = requested_resources.victim_id
+        LEFT JOIN requested_resources ON victims.id = requested_resources.victim_id
         WHERE victims.completed = 0
     """
     cursor.execute(query)
@@ -246,7 +246,7 @@ def get_unmatched_donors_with_resources(conn):
     query = """
         SELECT donors.*, donor_resources.resource_type
         FROM donors
-        JOIN donor_resources ON donors.id = donor_resources.donor_id
+        LEFT JOIN donor_resources ON donors.id = donor_resources.donor_id
         WHERE donors.completed = 0
     """
     
@@ -649,11 +649,19 @@ if __name__ == "__main__":
     print("Adding test victims...")
     victim_id_1 = add_victim(conn, "Alice Johnson", "alice@example.com", "12345", "123 Main St", "USA", "Needs shelter")
     victim_id_2 = add_victim(conn, "Bob Smith", "bob@example.com", "54321", "456 Elm St", "Canada", "Needs food")
+    
+
+    add_requested_resource(conn, victim_id_1, "Shelter")
+    add_requested_resource(conn, victim_id_2, "Food")
 
     print("Adding test donors...")
     donor_id_1 = add_donor(conn, "Charlie Brown", "charlie@example.com", "67890", "789 Oak St", "USA", "Provides shelter")
     donor_id_2 = add_donor(conn, "Diana Prince", "diana@example.com", "13579", "101 Maple St", "Canada", "Provides food")
 
+
+    add_donor_resource(conn, donor_id_1, "Shelter")
+    add_donor_resource(conn, donor_id_2, "Food")
+    
     # Step 3: Test get_victim_email function
     print("\nTesting get_victim_email function:")
     email_victim_1 = get_victim_email(conn, victim_id_1)
