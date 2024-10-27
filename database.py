@@ -202,7 +202,7 @@ def get_unmatched_victims_with_resources(conn):
     query = """
         SELECT victims.*, requested_resources.resource_type
         FROM victims
-        JOIN requested_resources ON victims.id = requested_resources.victim_id
+        LEFT JOIN requested_resources ON victims.id = requested_resources.victim_id
         WHERE victims.completed = 0
     """
     cursor.execute(query)
@@ -246,7 +246,7 @@ def get_unmatched_donors_with_resources(conn):
     query = """
         SELECT donors.*, donor_resources.resource_type
         FROM donors
-        JOIN donor_resources ON donors.id = donor_resources.donor_id
+        LEFT JOIN donor_resources ON donors.id = donor_resources.donor_id
         WHERE donors.completed = 0
     """
     
