@@ -1,9 +1,11 @@
+/* Calendar Container */
 #calendar-container {
     width: 80%;
     margin: auto;
     text-align: center;
 }
 
+/* Calendar Header */
 #calendar-header {
     display: flex;
     justify-content: space-between;
@@ -11,24 +13,29 @@
     margin-bottom: 10px;
 }
 
+/* Calendar Grid */
 #calendar {
     display: grid;
     grid-template-columns: repeat(7, 1fr);
     gap: 5px;
 }
 
+/* Day Cells */
 .day {
     padding: 20px;
     border: 1px solid #ccc;
     background-color: #fff;
     cursor: pointer;
     position: relative;
+    transition: background-color 0.3s;
 }
 
+/* Day Hover Effect */
 .day:hover {
     background-color: #e0e0e0;
 }
 
+/* Event Style */
 .event {
     background-color: #4caf50;
     color: white;
@@ -37,6 +44,7 @@
     font-size: 12px;
 }
 
+/* Modal Styles */
 .modal {
     display: none; /* Hidden by default */
     position: fixed;
@@ -46,18 +54,21 @@
     width: 100%;
     height: 100%;
     overflow: auto;
-    background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgba(0, 0, 0, 0.4);
 }
 
 .modal-content {
     background-color: #fefefe;
-    margin: 15% auto;
+    margin: 10% auto; /* Center the modal vertically */
     padding: 20px;
     border: 1px solid #888;
-    width: 300px;
+    width: 300px; /* Box-shaped width */
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    text-align: left; /* Align text to the left */
 }
 
+/* Close Button */
 .close {
     color: #aaa;
     float: right;
@@ -70,4 +81,74 @@
     color: black;
     text-decoration: none;
     cursor: pointer;
+}
+
+/* General Button Styles */
+button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+
+/* Navigation Button Styles */
+.nav-button {
+    display: inline-block;
+    font-size: 16px;
+    padding: 10px 20px;
+    margin: 0 5px;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    background-color: #007bff;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.nav-button:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+/* Style for Form Elements */
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    font-weight: bold;
+    display: block; /* Labels as block elements */
+    margin-bottom: 5px; /* Space between label and input */
+}
+
+/* Input and Select Fields */
+input[type="text"],
+select {
+    width: 100%; /* Full width for input fields */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Submit Button */
+button[type="submit"] {
+    width: 100%; /* Full width for submit button */
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button[type="submit"]:hover {
+    background-color: #0056b3;
 }

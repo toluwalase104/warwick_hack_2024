@@ -17,7 +17,7 @@ Resource Submissions
         data-aos-offset="200">
         
         <div class="container">
-            <h1 class="display-4 text-center">Request Aid</h1>
+            <h1 class="display-4 text-center">Locate Me</h1>
             <p class="lead text-center">Provide details to find immediate local help</p>
 
             <!-- Form for GPS -->
@@ -56,6 +56,10 @@ Resource Submissions
                                 <label class="form-check-label ms-2" for="food">Food</label>
                             </div>
                             <div class="form-check d-flex align-items-center">
+                              <input type="checkbox" class="form-check-input" id="water" value="Water">
+                              <label class="form-check-label ms-2" for="water">Water</label>
+                            </div>
+                            <div class="form-check d-flex align-items-center">
                                 <input type="checkbox" class="form-check-input" id="medicine" value="Medicine">
                                 <label class="form-check-label ms-2" for="medicine">First Aid</label>
                             </div>
@@ -66,14 +70,6 @@ Resource Submissions
                             <div class="form-check d-flex align-items-center">
                                 <input type="checkbox" class="form-check-input" id="clothes" value="Clothes">
                                 <label class="form-check-label ms-2" for="clothes">Clothes</label>
-                            </div>
-                            <div class="form-check d-flex align-items-center">
-                                <input type="checkbox" class="form-check-input" id="money" value="Money">
-                                <label class="form-check-label ms-2" for="money">Money</label>
-                            </div>
-                            <div class="form-check d-flex align-items-center">
-                                <input type="checkbox" class="form-check-input" id="transport" value="Transport">
-                                <label class="form-check-label ms-2" for="transport">Transport</label>
                             </div>
                         </div>
 
@@ -97,5 +93,3 @@ Resource Submissions
     <br><br><br><br><br><br>
 </div>
 {% endblock %}
-
-
