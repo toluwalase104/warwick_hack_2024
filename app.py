@@ -27,6 +27,7 @@ def calendar():
 def advice():
     return render_template("advice.html")
 
+
 # Sending data page
 @app.route("/resourceRequests", methods=["POST", "GET"])
 def resourceRequests():
