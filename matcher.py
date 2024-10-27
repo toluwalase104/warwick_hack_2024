@@ -1,15 +1,37 @@
 import multiprocessing
 import database as db
 import ai_handler
-import smtplib
 import time
 
-# ORGANISATION_EMAIL = "crisisCompass@outlook.com"
-# ORGANISATION_EMAIL_PASSWORD = "compassCrisis123!"
+import smtplib
+import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText 
+from email.mime.application import MIMEApplication
+
+ORGANISATION_EMAIL = "crisisCompass@outlook.com"
+ORGANISATION_EMAIL_PASSWORD = "compassCrisis123!"
+
+def send_email(subject, body, recipientEmailAddress, senderEmailAddress, senderPassword):
+    msg = MIMEMultipart() 
+    msg["From"] = senderEmailAddress 
+    msg["To"] = recipientEmailAddress 
+    msg["Subject"] = subject 
+
+    msg.attach(MIMEText(body, "plain"))
+
+    try:
+        with smtplib.SMTP("smtp.office365.com", 587) as server: 
+            server.starttls() 
+            server.login(senderEmailAddress, senderPassword) 
+            server.send_message(msg)
+            print("Sent successfully") 
+    except Exception as e: 
+        print(f"Failed to send: {e}")
 
 # NOT WORKING WITH SMTPLIB?
 # SHOULD ONLY BE CALLED INSIDE A FUNCTION THAT CALLS THE DATABASE AND CLOSES IT
-def send_match_email(conn, victim_id: int, donor_id: int):
+def send_match_emails(conn, victim_id: int, donor_id: int):
     print("Now sending e-mails")
     # user_email = db.get_victim_email(victim_id)
 
@@ -17,24 +39,23 @@ def send_match_email(conn, victim_id: int, donor_id: int):
     # TODO Remove
     # emails = db.get_victim_email(conn, victim_id), db.get_donor_email(conn, donor_id)
     emails = "isaacbode@outlook.com","isaacbode@outlook.com"
-    
+
     print("Email addresses = ", emails)
 
     for i in range(2):
-        session = smtplib.SMTP("smtp-mail.outlook.com", 587)
-        session.starttls()
-        session.login("crisisCompass@outlook.com", "compassCrisis123!")
-
         if i == 0:
             message = "Our organisation has successfully found a matching donor for you, we hope that this serves you as well as possible."
         else:
             message = "Your donation has been matched to a recipient, thank you so much for your efforts."
 
-        print(f"Sending message = {message}\nTo {emails[i]}\nFrom {"crisisCompass@outlook.com"}")
-        session.sendmail("crisisCompass@outlook.com", emails[i], message)
-
-        session.quit()
-
+        send_email(
+            f"Successful Resource Allocation {"Donor found" if i == 0 else "Recipient found"}",
+            message,
+            emails[i],
+            ORGANISATION_EMAIL,
+            ORGANISATION_EMAIL_PASSWORD
+        )
+        
 def match_donors_and_recipients(conn = None):
     opened_connection = False
     # Initialize and connect to the database
@@ -89,6 +110,7 @@ def match_donors_and_recipients(conn = None):
     for i in range( min(1, len(requests)) ):
         # ai_handler.run_query(0, requests, provisions) # Trying claude
         # # Trying openai
+        # Multi-processing allows the uagent to be terminated after a fixed-period of time
         process = multiprocessing.Process(target=ai_handler.run_query, args=(1, [requests[i]], provisions))
         print("Starting process")
         process.start()
@@ -150,4 +172,5 @@ def match_donors_and_recipients(conn = None):
     print("\nDatabase connection closed.")
 
 if __name__ == "__main__":
-    match_donors_and_recipients()
+    # match_donors_and_recipients()
+    send_match_emails(None, 0, 0)
