@@ -1,0 +1,72 @@
+{% extends 'base.html' %}
+
+<!-- Title -->
+{% block title %}
+Community Calendar
+{% endblock %}
+
+{% block content %}
+<!-- Hero image -->
+<div class="hero-image position-relative" style="width: 100vw; height: 50vh;">
+    <!-- The image -->
+    <img src="/static/images/header.png" alt="Hero Image" style="object-fit: cover; width: 100%; height: 100%; filter: grayscale(100%); position: absolute; top: 0; left: 0;">
+
+    <!-- Semi-transparent grayscale overlay -->
+    <div class="position-absolute top-0 start-0 w-100 h-100" style="background-color: rgba(255, 255, 255, 0.3);"></div>
+
+    <!-- Text and button on top of the image and overlay -->
+    <div class="mask position-absolute top-0 start-0 w-100 h-100" style="z-index: 1;">
+        <div class="d-flex justify-content-center align-items-center h-100">
+            <div class="container text-center">
+                <h1 class="display-4 mb-2 text-white" data-aos="fade-down" data-aos-delay="1000" data-aos-easing="ease-in-out">
+                  Crisis Compass <br> Community Calendar
+                </h1>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Border below hero image -->
+<div class="border-bottom"></div>
+
+<!-- Main content -->
+<div id="mainContent" style="height: 100%;">
+    <br><br>
+    <!-- Society description -->
+
+    <div id="calendar-container">
+        <div id="calendar-header">
+            <button id="prev-month">Previous</button>
+            <h2 id="month-year"></h2>
+            <button id="next-month">Next</button>
+        </div>
+        <div id="calendar"></div>
+    </div>
+    <br><br>
+    <div id="event-modal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Add Event</h2>
+            <form id="event-form">
+                <label for="event-title">Event Title:</label>
+                <input type="text" id="event-title" required>
+                <label for="event-location">Location:</label>
+                <input type="text" id="event-location" required>
+                <label for="event-type">Disaster Type:</label>
+                <select id="event-type">
+                    <option value="">--Select--</option>
+                    <option value="earthquake">Earthquake</option>
+                    <option value="tornado">Tornado</option>
+                    <option value="flood">Flood</option>
+                    <option value="hurricane">Hurricane</option>
+                </select>
+                <input type="hidden" id="event-date">
+                <button type="submit">Add Event</button>
+            </form>
+        </div>
+    </div>
+
+
+    <br><br><br><br><br><br>
+</div>
+{% endblock %}

@@ -10,21 +10,10 @@ app = Flask(__name__)
 def home():
     return render_template("home.html")
 
-# Chatbot feature
-@app.route('/api/chat', methods=['POST'])
-def chat():
-    user_message = request.json.get('message')
-    
-    # Basic logic for responses (this can be expanded)
-    if user_message:
-        if "help" in user_message.lower():
-            reply = "I see you need help! Can you describe the issue in detail?"
-        else:
-            reply = "I'm here to help! Please tell me more."
-    else:
-        reply = "Please send a message."
-
-    return jsonify({"reply": reply})
+# calendar page
+@app.route("/calendar", methods=["POST", "GET"])
+def calendar():
+    return render_template("calendar.html")
 
 # Advice page
 @app.route("/advice", methods=["POST", "GET"])
@@ -120,31 +109,40 @@ def liveTracker():
     colors = plt.cm.tab20.colors[:len(labels)]
 
     # Create a smaller figure for the PNG output
-    fig, ax = plt.subplots(figsize=(6, 6))  # Adjust size for a smaller PNG output
+    fig, ax = plt.subplots(figsize=(6, 6))
+
+    # Plot pie chart with cleaner settings
     wedges, texts, autotexts = ax.pie(
-        sizes, 
-        labels=labels, 
-        autopct='%1.1f%%',  
-        startangle=140, 
-        colors=colors, 
-        pctdistance=0.85,   
-        wedgeprops=dict(width=0.4)  
+        sizes,
+        labels=labels,
+        autopct='%1.1f%%',
+        startangle=140,
+        colors=colors,
+        pctdistance=0.85,
+        wedgeprops=dict(width=0.4)
     )
 
-    # Create legend and move it below the chart
+    # Adjust font sizes for labels and percentages for clarity
+    for autotext in autotexts:
+        autotext.set_fontsize(10)
+    for text in texts:
+        text.set_fontsize(12)
+
+    # Create and position the legend below the chart
     plt.legend(
-        wedges, [f"{label} ({size})" for label, size in zip(labels, sizes)], 
+        wedges, 
+        [f"{label} ({size})" for label, size in zip(labels, sizes)], 
         title="Items Needed", 
         loc="upper center", 
-        bbox_to_anchor=(0.5, -0.1),  # Positions legend below the pie chart
-        ncol=2,  # Display in two columns if you have many items
-        frameon=False  # Optionally remove legend border for a cleaner look
+        bbox_to_anchor=(0.5, 0.0),  # Slightly lower for more spacing
+        ncol=2,
+        frameon=False  # Clean legend look
     )
 
-    # Adjust layout to make space for the legend below
-    fig.subplots_adjust(bottom=0.3)
+    # Apply tight layout and save figure
+    fig.tight_layout()
+    plt.subplots_adjust(bottom=0.3)  # Ensure enough space below chart
 
-    # Save the figure
     plt.savefig('./static/images/donations.png', format='png', dpi=300, transparent=True, bbox_inches='tight', pad_inches=0.1)
     plt.close()
 
