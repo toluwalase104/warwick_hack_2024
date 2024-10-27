@@ -93,18 +93,25 @@ def run_query(ai_id: int, recipient_information: list[tuple[int, str, str]], don
             ctx.logger.info(f"[Received response from ...{sender[-8:]}]:")
             ctx.logger.info(msg.text)
 
-            with open("response.txt", "a") as f:
-                f.write(msg.text + "\n")   
             time.sleep(5)          
+            # If there is no message generated don't write anything
+            if len(msg.text) == 0: 
+                return
+            with open("response.txt", "a") as f:
+                f.write(msg.text + "\n") 
+
     else:
         @agent.on_message(model = Response)
         async def handle_response(ctx: Context, sender: str, msg: Response):
             ctx.logger.info(f"[Received response from ...{sender[-8:]}]:")
             ctx.logger.info(msg.text)
 
+            time.sleep(5)          
+            # If there is no message generated don't write anything
+            if len(msg.text) == 0: 
+                return
             with open("response.txt", "a") as f:
-                f.write(msg.text + "\n")       
-            time.sleep(5)
+                f.write(msg.text + "\n") 
 
     agent.run()
     """
