@@ -10,6 +10,11 @@ app = Flask(__name__)
 def home():
     return render_template("home.html")
 
+# Advice page
+@app.route("/advice", methods=["POST", "GET"])
+def advice():
+    return render_template("advice.html")
+
 @app.route("/GPS", methods=["POST","GET"])
 def GPS():
     if request.method == "POST":
