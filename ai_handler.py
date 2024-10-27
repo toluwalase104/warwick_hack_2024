@@ -73,7 +73,6 @@ def run_query(ai_id: int, recipient_information: list[tuple[int, str, str]], don
 
     print(agent.address)
 
-    """
     fund_agent_if_low(agent.wallet.address())
 
     # When the fetch agent starts up it sends a prompt
@@ -108,6 +107,7 @@ def run_query(ai_id: int, recipient_information: list[tuple[int, str, str]], don
             time.sleep(5)
 
     agent.run()
+    """
     """
 
 

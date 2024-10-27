@@ -3,6 +3,8 @@ function submitGPSForm() {
     const address = document.getElementById('address').value;
     const itemsNeeded = Array.from(document.querySelectorAll('.form-check-input:checked')).map(input => input.value);
     
+    console.log(country);
+
     // Example of sending data via POST request
     fetch('/GPS', {
         method: 'POST',
@@ -17,7 +19,11 @@ function submitGPSForm() {
             // Optionally, reset the form or redirect
             document.getElementById('gpsForm').reset();
         } else {
-            alert('Error during submission.');
+            response.json().then(errorData => {
+                alert(`Error during submission: ${errorData.message || 'Unknown error'}`);
+            }).catch(() => {
+                alert('Error during submission and failed to parse error details.');
+            });
         }
     })
     .catch(error => {
