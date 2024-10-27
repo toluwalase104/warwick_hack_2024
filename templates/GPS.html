@@ -20,7 +20,7 @@ Request Aid
             <p class="lead text-center">Provide details to find immediate local help</p>
 
             <!-- Form for GPS -->
-            <form id="gpsForm" autocomplete="off">
+            <form id="gpsForm" method="POST" action="/GPS" autocomplete="off">
                 <div id="locationDetails">
                     <center>
                         <div class="form-group col-md-6 mx-auto">
@@ -33,7 +33,10 @@ Request Aid
                                     placeholder="Select Country" 
                                     required
                                     autocomplete="off"
+                                    onfocus="showDropdown()" 
+                                    onkeyup="filterCountries()"
                                 >
+                                <div class="dropdown-menu" id="countryDropdown" style="display: none;"></div>
                             </div>
                         </div>
                         <br>
@@ -69,40 +72,98 @@ Request Aid
                         </div>
 
                         <br>
-                        <button type="button" class="btn btn-lg mt-4 mb-4 btn-outline-dark active hvr-glow hvr-pulse hvr-shutter-out-horizontal" 
-                           style="background:#f59120; border-width: 2px; border-color: #000000; border-radius: 10px;" 
-                           onclick="submitGPSForm()">
-                           Submit
+                        <button type="submit" 
+                                class="btn btn-lg mt-4 mb-4 btn-outline-dark active hvr-glow hvr-pulse hvr-shutter-out-horizontal w-50" 
+                                style="background:#f59120; border-width: 2px; border-color: #000000; border-radius: 10px;">
+                            Submit
                         </button>
                     </center>
                 </div>
             </form>
-            
+
             <!-- Container to display locations (initially hidden) -->
             <center>
-                <div id="locations" style="display: none; margin-top: 20px;">
+                <div id="locations" style="display: {% if pois %} block {% else %} none {% endif %}; margin-top: 20px;">
                     <h3>Nearby Places:</h3>
                     <ul style="list-style-type: none; padding: 0; text-align: center;">
-                        <!-- This will be populated with the locations -->
-                        <li style="margin: 5px 0;">
-                            <span>Location Name Here</span>
-                        </li>
-                        <li style="margin: 5px 0;">
-                            <span>Another Location Name Here</span>
-                        </li>
-                        <li style="margin: 5px 0;">
-                            <span>Third Location Name Here</span>
-                        </li>
-                        <!-- Add more list items as needed -->
+                        <!-- Dynamically render the nearby places -->
+                        {% for place in pois %}
+                            <li style="margin: 5px 0;">
+                                <span>{{ place }}</span>
+                            </li>
+                        {% endfor %}
                     </ul>
                 </div>
             </center>
-            
-            
-            
         </div>
     </div>
 
     <br><br><br><br><br>
 </div>
+
+<script>
+    document.getElementById('gpsForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent default form submission
+
+        const country = document.getElementById('country').value;
+        const address = document.getElementById('address').value;
+        const itemsNeeded = Array.from(document.querySelectorAll('.form-check-input:checked')).map(input => input.value);
+
+        // Fetch places data by posting to the GPS endpoint
+        fetch('/GPS', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                country: country,
+                address: address,
+                itemsNeeded: itemsNeeded
+            })
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+            throw new Error('Network response was not ok.');
+        })
+        .then(data => {
+            if (data.pois) {
+                displayPlaces(data.pois);
+            } else {
+                console.error('No places found:', data);
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+
+    // Function to display places in the HTML
+    function displayPlaces(places) {
+        const locationsContainer = document.getElementById('locations');
+        locationsContainer.innerHTML = '';  // Clear previous locations
+
+        const title = document.createElement('h3');
+        title.innerText = "Nearby Places:";
+        locationsContainer.appendChild(title);
+
+        const list = document.createElement('ul');
+        list.style.listStyleType = 'none';  // Remove bullet points
+        list.style.textAlign = 'center';     // Center the text
+
+        places.forEach(place => {
+            const listItem = document.createElement('li');
+            listItem.innerText = place;  // Set the place name
+            listItem.style.margin = '5px 0';  // Add vertical spacing
+            list.appendChild(listItem);
+        });
+        
+        locationsContainer.appendChild(list);
+
+        // Show the locations
+        locationsContainer.style.display = 'block';  // Show the locations
+    }
+</script>
+
 {% endblock %}

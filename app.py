@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify
 import database
 import matplotlib.pyplot as plt
 from matcher import match_donors_and_recipients
+import os
 
 import time
 import multiprocessing
@@ -256,10 +257,23 @@ def GPS():
 
         print("Parsed POIs:", pois)  # For debugging; you can remove this line later
         # Respond to the client with the POIs
-        return jsonify({"message": "Data received and processed successfully!", "pois": pois}), 200
+
+        filePath = os.path.join(os.getcwd(), 'google_places.txt')
+
+        try:
+            with open(filePath, "r") as file:
+                lines = file.readlines()
+
+            pois = [line.split('\t')[0].strip() for line in lines if line.strip()]
+            return render_template("GPS.html", pois=pois)
+        except Exception as e:
+            return jsonify({"error": str(e)}), 500
+
+
+        #return jsonify({"message": "Data received and processed successfully!", "pois": pois}), 200
     
     # Render the GPS form if GET request
-    return render_template("GPS.html")
+    return render_template("GPS.html", pois=[])
 
 # Run the Flask app
 if __name__ == "__main__":
