@@ -1,14 +1,10 @@
 from flask import Flask, render_template, request, jsonify 
 import database
 import matplotlib.pyplot as plt
-<<<<<<< HEAD
 from matcher import match_donors_and_recipients
 
-=======
-import asyncio
 import time
 import multiprocessing
->>>>>>> refs/remotes/origin/main
 
 app = Flask(__name__)
 
