@@ -10,8 +10,8 @@ import multiprocessing
 app = Flask(__name__)
 
 #importing the agents
-from geolocation import run_geolocation_agent
-from google_places import run_google_places_agent
+from agents.geolocation import run_geolocation_agent
+from agents.google_places import run_google_places_agent
 
 # Home page
 @app.route("/", methods=["POST", "GET"])

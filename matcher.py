@@ -1,6 +1,6 @@
 import multiprocessing
 import database as db
-import ai_handler
+import agents.ai_handler
 import time
 
 import smtplib
@@ -109,7 +109,7 @@ def match_donors_and_recipients(conn = None):
         # ai_handler.run_query(0, requests, provisions) # Trying claude
         # # Trying openai
         # Multi-processing allows the uagent to be terminated after a fixed-period of time
-        process = multiprocessing.Process(target=ai_handler.run_query, args=(1, [requests[i]], provisions))
+        process = multiprocessing.Process(target=agents.ai_handler.run_query, args=(1, [requests[i]], provisions))
         print("Starting process")
         process.start()
         print("Letting process run for 15 seconds")
