@@ -52,7 +52,6 @@ This project proposes a solution to enhance the effectiveness of community-drive
 
 - **Real-time GPS Resources**:
    - Use a users address and required resource type, which is geocoded to find nearby resources.
-   - A map centers on the user's location, showing markers for available resources within a specified radius.
 
 - **Feedback Form**:
   - A space for users to share their feedback to developers.
