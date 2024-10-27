@@ -30,7 +30,17 @@ Community Calendar
     <div id="calendar-container">
         <div id="calendar-header">
             <button id="prev-month" class="nav-button">Previous</button>
-            <h2 id="month-year"></h2>
+            
+            <center>
+                <h2 class="h2 mt-5 mb-5 text-white"
+                data-aos="fade-right"
+                data-aos-easing="ease-in-out"
+                data-aos-offset="250"
+                data-aos-delay="100"
+                id="month-year">
+                </h2>
+            </center>
+
             <button id="next-month" class="nav-button">Next</button>
         </div>
         <div id="calendar"></div>
@@ -51,12 +61,16 @@ Community Calendar
                 </div>
                 <div class="form-group">
                     <label for="event-type">Disaster Type:</label>
-                    <select id="event-type">
+                    <select id="event-type" required>
                         <option value="">--Select--</option>
                         <option value="earthquake">Earthquake</option>
                         <option value="tornado">Tornado</option>
                         <option value="flood">Flood</option>
                         <option value="hurricane">Hurricane</option>
+                        <option value="wildfire">Wildfire</option>
+                        <option value="tsunami">Tsunami</option>
+                        <option value="volcanic-eruption">Volcanic Eruption</option>
+                        <option value="landslide">Landslide</option>
                     </select>
                 </div>
                 <input type="hidden" id="event-date">

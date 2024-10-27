@@ -72,8 +72,12 @@ document.getElementById("event-form").onsubmit = function(event) {
     events[date].push({ title, location, type });
     createCalendar(); // Recreate the calendar to show new event
     document.getElementById("event-modal").style.display = "none";
-};
 
+    // Clear the form fields after submission
+    document.getElementById("event-title").value = "";
+    document.getElementById("event-location").value = "";
+    document.getElementById("event-type").value = ""; // Reset the dropdown
+};
 // Navigate to previous month
 document.getElementById("prev-month").onclick = function() {
     currentDate.setMonth(currentDate.getMonth() - 1);
