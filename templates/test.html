@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Location Map Test
+{% endblock %}
+
+{% block content %}
+<h2>Location Map Test</h2>
+<div id="map" style="display: none;"></div> <!-- Initially hidden -->
+{% endblock %}
+
+<script>
+    // Fetch and display the map after the content is loaded
+    document.addEventListener("DOMContentLoaded", () => {
+        showMapWithLocations(); // Call the function to show the map
+    });
+</script>
