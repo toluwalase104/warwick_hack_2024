@@ -16,6 +16,26 @@ from google_places import run_google_places_agent
 def home():
     return render_template("home.html")
 
+# calendar page
+@app.route("/calendar", methods=["POST", "GET"])
+def calendar():
+    return render_template("calendar.html")
+
+# Advice page
+@app.route("/advice", methods=["POST", "GET"])
+def advice():
+    return render_template("advice.html")
+
+@app.route("/GPS", methods=["POST","GET"])
+def GPS():
+    if request.method == "POST":
+        data = request.json  # Get the JSON data sent in the request
+        # Process the received data as needed
+        print(data)
+
+        return jsonify({"message": "Data received successfully!"}), 200
+    return render_template("GPS.html")
+
 
 # Sending data page
 @app.route("/resourceRequests", methods=["POST", "GET"])
@@ -93,21 +113,41 @@ def liveTracker():
     labels = list(allOfResources.keys())
     sizes = list(allOfResources.values())
     colors = plt.cm.tab20.colors[:len(labels)]
-    fig, ax = plt.subplots()
+
+    # Create a smaller figure for the PNG output
+    fig, ax = plt.subplots(figsize=(6, 6))
+
+    # Plot pie chart with cleaner settings
     wedges, texts, autotexts = ax.pie(
-    sizes, 
-    labels=labels, 
-    autopct='%1.1f%%',  # shows percentage on hover
-    startangle=140, 
-    colors=colors, 
-    pctdistance=0.85,   # distance of text from center
-    wedgeprops=dict(width=0.4)  # makes the pie chart have a donut shape
+        sizes,
+        labels=labels,
+        autopct='%1.1f%%',
+        startangle=140,
+        colors=colors,
+        pctdistance=0.85,
+        wedgeprops=dict(width=0.4)
     )
 
-    plt.legend(wedges, [f"{label} ({size})" for label, size in zip(labels, sizes)], 
-           title="Items Needed", 
-           loc="center left", 
-           bbox_to_anchor=(1, 0, 0.5, 1))
+    # Adjust font sizes for labels and percentages for clarity
+    for autotext in autotexts:
+        autotext.set_fontsize(10)
+    for text in texts:
+        text.set_fontsize(12)
+
+    # Create and position the legend below the chart
+    plt.legend(
+        wedges, 
+        [f"{label} ({size})" for label, size in zip(labels, sizes)], 
+        title="Items Needed", 
+        loc="upper center", 
+        bbox_to_anchor=(0.5, 0.0),  # Slightly lower for more spacing
+        ncol=2,
+        frameon=False  # Clean legend look
+    )
+
+    # Apply tight layout and save figure
+    fig.tight_layout()
+    plt.subplots_adjust(bottom=0.3)  # Ensure enough space below chart
 
     plt.savefig('./static/images/donations.png', format='png', dpi=300, transparent=True, bbox_inches='tight', pad_inches=0.1)
     plt.close()

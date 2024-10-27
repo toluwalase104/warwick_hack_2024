@@ -3,9 +3,6 @@ from collections import defaultdict
 import pandas as pd
 import matplotlib.pyplot as plt
 import geopandas as gpd
-from flask import Flask
-
-app = Flask(__name__)
 
 def connect_and_initialize(db_path="database.db", schema_path="schema.sql"):
     """
@@ -21,10 +18,8 @@ def connect_and_initialize(db_path="database.db", schema_path="schema.sql"):
     conn = sqlite3.connect(db_path)
     conn.row_factory = sqlite3.Row  # Allows row access by column name
     cursor = conn.cursor()
-    with app.open_resource(schema_path) as f:
+    with open(schema_path, 'r') as f:
         schema = f.read()
-        if isinstance(schema, bytes):
-            schema = schema.decode('utf-8')  # Decode to string if it's bytes
     cursor.executescript(schema)
     conn.commit()
     return conn
@@ -207,7 +202,7 @@ def get_unmatched_victims_with_resources(conn):
     query = """
         SELECT victims.*, requested_resources.resource_type
         FROM victims
-        JOIN requested_resources ON victims.id = requested_resources.victim_id
+        LEFT JOIN requested_resources ON victims.id = requested_resources.victim_id
         WHERE victims.completed = 0
     """
     cursor.execute(query)
@@ -251,7 +246,7 @@ def get_unmatched_donors_with_resources(conn):
     query = """
         SELECT donors.*, donor_resources.resource_type
         FROM donors
-        JOIN donor_resources ON donors.id = donor_resources.donor_id
+        LEFT JOIN donor_resources ON donors.id = donor_resources.donor_id
         WHERE donors.completed = 0
     """
     
@@ -586,17 +581,106 @@ def plot_helped_countries_heatmap(conn):
     # Fill NaN values in 'count' with 0 for countries with no data
     merged["count"] = merged["count"].fillna(0)
 
-    # Check for unmatched countries to identify potential mismatches
-    unmatched = merged[merged["count"] == 0]
-    print("Unmatched countries with no data:", unmatched.index.tolist())
-
     # Save the plot to a file instead of showing it
     fig, ax = plt.subplots(1, 1, figsize=(15, 10))
-    merged.plot(column="count", cmap="OrRd", linewidth=0.8, ax=ax, edgecolor="0.8", legend=True)
-    ax.set_title("Resources Distributed by Country")
+    merged.plot(column="count", cmap="OrRd", linewidth=0.8, ax=ax, edgecolor="white", legend=True)
+
+    # Set the title color to white
+    ax.set_title("Resources Distributed by Country", color='white')
+
+    # Set x and y axis labels color to white
+    ax.tick_params(colors='white')
+
+    # Update legend text color to white
+    legend = ax.get_legend()
+    if legend:
+        for text in legend.get_texts():
+            text.set_color("white")
+
+    # Set the border (spine) colors to white
+    for spine in ax.spines.values():
+        spine.set_edgecolor("white")
+
+    # Save the plot with a transparent background
     plt.savefig("./static/images/helped_countries_heatmap.png", format='png', dpi=300, transparent=True)
     plt.close()
 
+def get_victim_email(conn, victim_id):
+    """
+    Retrieves the contact email of a victim based on the victim ID.
+
+    Parameters:
+    - conn: SQLite database connection.
+    - victim_id: The ID of the victim.
+
+    Returns:
+    - The contact email of the victim if found, otherwise None.
+    """
+    cursor = conn.cursor()
+    query = "SELECT contact FROM victims WHERE id = ?"
+    cursor.execute(query, (victim_id,))
+    result = cursor.fetchone()
+    
+    return result["contact"] if result else None
+
+def get_donor_email(conn, donor_id):
+    """
+    Retrieves the contact email of a donor based on the donor ID.
+
+    Parameters:
+    - conn: SQLite database connection.
+    - donor_id: The ID of the donor.
+
+    Returns:
+    - The contact email of the donor if found, otherwise None.
+    """
+    cursor = conn.cursor()
+    query = "SELECT contact FROM donors WHERE id = ?"
+    cursor.execute(query, (donor_id,))
+    result = cursor.fetchone()
+    
+    return result["contact"] if result else None
+
+if __name__ == "__main__":
+    # Step 1: Connect to the database
+    conn = connect_and_initialize()  # Initializes the database and creates tables if needed
+
+    # Step 2: Add test data for victims and donors
+    print("Adding test victims...")
+    victim_id_1 = add_victim(conn, "Alice Johnson", "alice@example.com", "12345", "123 Main St", "USA", "Needs shelter")
+    victim_id_2 = add_victim(conn, "Bob Smith", "bob@example.com", "54321", "456 Elm St", "Canada", "Needs food")
+    
+
+    add_requested_resource(conn, victim_id_1, "Shelter")
+    add_requested_resource(conn, victim_id_2, "Food")
+
+    print("Adding test donors...")
+    donor_id_1 = add_donor(conn, "Charlie Brown", "charlie@example.com", "67890", "789 Oak St", "USA", "Provides shelter")
+    donor_id_2 = add_donor(conn, "Diana Prince", "diana@example.com", "13579", "101 Maple St", "Canada", "Provides food")
+
+
+    add_donor_resource(conn, donor_id_1, "Shelter")
+    add_donor_resource(conn, donor_id_2, "Food")
+    
+    # Step 3: Test get_victim_email function
+    print("\nTesting get_victim_email function:")
+    email_victim_1 = get_victim_email(conn, victim_id_1)
+    email_victim_2 = get_victim_email(conn, victim_id_2)
+    print(f"Email for victim {victim_id_1} (Alice): {email_victim_1}")  # Expected: alice@example.com
+    print(f"Email for victim {victim_id_2} (Bob): {email_victim_2}")    # Expected: bob@example.com
+
+    # Step 4: Test get_donor_email function
+    print("\nTesting get_donor_email function:")
+    email_donor_1 = get_donor_email(conn, donor_id_1)
+    email_donor_2 = get_donor_email(conn, donor_id_2)
+    print(f"Email for donor {donor_id_1} (Charlie): {email_donor_1}")   # Expected: charlie@example.com
+    print(f"Email for donor {donor_id_2} (Diana): {email_donor_2}")     # Expected: diana@example.com
+
+    # Step 5: Close the connection
+    close_connection(conn)
+    print("\nDatabase connection closed.")
+
+"""
 if __name__ == "__main__":
     # Connect to the database and initialize schema (assuming connect_and_initialize is defined)
     conn = connect_and_initialize()
@@ -612,40 +696,28 @@ if __name__ == "__main__":
     add_requested_resource(conn, victim_id2, "Shelter")
     add_requested_resource(conn, victim_id3, "Clothes")
     add_requested_resource(conn, victim_id4, "Food")
-    # add_requested_resource(conn, victim_id4, "Shelter")
-
-    # Add donors from different countries
-    donor_id1 = add_donor(conn, "Earnest", "earnest@example.com", "12345", "123 Street", "USA", "Offers food for 8")
-    donor_id2 = add_donor(conn, "Fiona", "fiona@example.com", "54321", "456 Avenue", "Canada", "Offers shelter for 5")
-    donor_id3 = add_donor(conn, "George", "george@example.com", "67890", "789 Boulevard", "Mexico", "Offers medium-sized clothes")
-    donor_id4 = add_donor(conn, "Helen", "helen@example.com", "13579", "101 Road", "USA", "Offers canned-foods and shelter")
-
-    # Add requested resources for each victim
-    add_donor_resource(conn, donor_id1, "Food")
-    add_donor_resource(conn, donor_id2, "Shelter")
-    add_donor_resource(conn, donor_id3, "Clothes")
-    add_donor_resource(conn, donor_id4, "Food")
-    # add_donor_resource(conn, victim_id4, "Shelter")
+    add_requested_resource(conn, victim_id4, "Shelter")
 
     # Mark some victims as helped (completed)
-    # mark_as_matched(conn, victim_id1, donor_id1)  # Assuming donor_id=1 is available
-    # mark_as_matched(conn, victim_id2, donor_id2)  # Assuming donor_id=2 is available
-    # mark_as_matched(conn, victim_id4, donor_id=3)  # Assuming donor_id=3 is available
+    mark_as_matched(conn, victim_id1, donor_id=1)  # Assuming donor_id=1 is available
+    mark_as_matched(conn, victim_id2, donor_id=2)  # Assuming donor_id=2 is available
+    mark_as_matched(conn, victim_id4, donor_id=3)  # Assuming donor_id=3 is available
 
     # Run the function to get helped countries' counts
-    # result = get_helped_countries_counts(conn)
+    result = get_helped_countries_counts(conn)
 
     # Expected result should be:
     # USA -> 3 (Alice's Food + Diana's Food + Diana's Shelter)
     # Canada -> 1 (Bob's Shelter)
-    # print("Helped Countries Counts:", result)
+    print("Helped Countries Counts:", result)
 
-    # plot_helped_countries_heatmap(conn)
-    # plot_to_help_countries_heatmap(conn)
+    plot_helped_countries_heatmap(conn)
+    plot_to_help_countries_heatmap(conn)
 
 
     # Close the connection
     close_connection(conn)
+"""
 """
 if __name__ == "__main__":
     # Initialize and connect to the database

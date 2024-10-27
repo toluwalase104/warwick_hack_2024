@@ -20,6 +20,9 @@
         <!-- Live tracker css -->
         <link rel="stylesheet" href="/static/css/liveTracker.css">
 
+        <!-- Calendar css -->
+        <link rel="stylesheet" href="/static/css/calendar.css">
+
         <!-- Bootstrap CSS -->
         <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
         
@@ -55,40 +58,59 @@
                 <a class="navbar-brand" href="{{ url_for('home') }}">
                     <img src="/static/images/logo.png" height="30" alt="WFS Warwick University Warwick Finance Societies Logo">
                 </a>
-
+        
                 <!-- For responsiveness -->
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon" style="color: #ffffff;"></span>
                 </button>
-
+        
                 <!-- Actual links -->
                 <div class="collapse navbar-collapse justify-content-center" id="navbarSupportedContent">
                     <ul class="navbar-nav">
                         <li class="nav-item mx-3 mx-md-3 mx-lg-4">
-                        <a class="btn active nav-link text-white hvr-underline-from-center hvr-glow hvr-grow hvr-bob" href="{{ url_for('home') }}">Home</a>
+                            <a class="btn active nav-link text-white hvr-underline-from-center hvr-glow hvr-grow hvr-bob" href="{{ url_for('home') }}">Home</a>
                         </li>
                         <li class="nav-item mx-3 mx-md-3 mx-lg-4">
-                        <a class="btn active nav-link text-white hvr-underline-from-center hvr-glow hvr-grow hvr-bob" href="{{ url_for('resourceRequests') }}">Resource Submissions</a>
+                            <a class="btn active nav-link text-white hvr-underline-from-center hvr-glow hvr-grow hvr-bob" href="{{ url_for('resourceRequests') }}">Resource Submissions</a>
                         </li>
                         <li class="nav-item mx-3 mx-md-3 mx-lg-4">
-                        <a class="btn active nav-link text-white hvr-underline-from-center hvr-glow hvr-grow hvr-bob" href="{{ url_for('liveTracker') }}">Resource Live Tracker</a>
+                            <a class="btn active nav-link text-white hvr-underline-from-center hvr-glow hvr-grow hvr-bob" href="{{ url_for('liveTracker') }}">Resource Live Tracker</a>
                         </li>
-                        
-                        <li class="nav-item mx-3 mx-md-3 mx-lg-4">
-                            <a class="btn active nav-link text-white hvr-underline-from-center hvr-glow hvr-grow hvr-bob" href="{{ url_for('charities') }}">Disaster Charities</a>
-                        </li>
-
+        
                         <li class="nav-item mx-3 mx-md-3 mx-lg-4">
                             <a class="btn active nav-link text-white hvr-underline-from-center hvr-glow hvr-grow hvr-bob" href="{{ url_for('GPS') }}">Request Aid</a>
                         </li>
-
+        
                         <li class="nav-item mx-3 mx-md-3 mx-lg-4">
-                        <a class="btn active nav-link text-white hvr-underline-from-center hvr-glow hvr-grow hvr-bob" href="https://www.gdacs.org/">Live Disasters</a>
+                            <a class="btn active nav-link text-white hvr-underline-from-center hvr-glow hvr-grow hvr-bob" href="https://www.gdacs.org/">Live Disasters</a>
                         </li>
+
+                        <!-- Community Dropdown -->
+                        <li class="nav-item dropdown mx-3 mx-md-3 mx-lg-4">
+                            <a class="btn nav-link dropdown-toggle text-white hvr-underline-from-center hvr-glow hvr-grow hvr-bob" href="#" id="communityDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                Community
+                            </a>
+                            <ul class="dropdown-menu" aria-labelledby="communityDropdown" style="background-color: #103f0e;">
+                                <li>
+                                    <a class="dropdown-item text-white" style="background-color: #103f0e;" href="{{ url_for('advice') }}">Advice</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item text-white" style="background-color: #103f0e;" href="{{ url_for('charities') }}">Disaster Charities</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item text-white" style="background-color: #103f0e;" href="{{ url_for('calendar') }}">Community Calendar</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item text-white" style="background-color: #103f0e;" href="mailto:crisisCompass@outlook.com?subject=Feedback%20About%20the%20System">Feedback</a>
+                                </li>
+                            </ul>
+                        </li>
+
                     </ul>
                 </div>
             </div>
         </nav>
+        
 
         <!-- Base code that's included in other HTML pages -->
         {% block content %}
@@ -132,6 +154,9 @@
     <!-- JS components -->
     <script src="/static/javascript/base.js"></script>
 
+    <!-- Calendar JS -->
+    <script src="/static/javascript/calendar.js"></script>
+
     <!-- 3D effects JS -->
     <script src="/static/javascript/3dEffects.js"></script>
 
@@ -146,4 +171,6 @@
 
     <!-- Countries JS -->
     <script src="/static/javascript/countries.js"></script>
+
+    
 </html>

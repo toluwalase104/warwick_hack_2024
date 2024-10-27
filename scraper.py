@@ -11,7 +11,7 @@ class WebsiteScraperResponse(Model):
 
 agent = Agent(
     name="scraper",
-    mailbox="f95b94a9-ca11-4fdc-8594-31406841c3d7"
+    mailbox="584f8b1d-a886-41e2-84e3-d56fdd15e169"
 )
 
 fund_agent_if_low(agent.wallet.address())
