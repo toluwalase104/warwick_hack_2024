@@ -17,7 +17,7 @@ real_countries = [
 # List of possible resource types for victims and donors
 resource_types = ["Food", "First Aid", "Shelter", "Clothes", "Money", "Transport"]
 
-def create_victims(conn, num_victims=100):
+def create_victims(conn, num_victims=50):
     """Insert multiple victim records into the database."""
     cursor = conn.cursor()
     victims = []
@@ -65,7 +65,7 @@ def create_requested_resources(conn, num_resources_per_victim=2):
     conn.commit()
     print(f"Requested resources assigned to {len(victim_ids)} victims.")
 
-def create_donors(conn, num_donors=50):
+def create_donors(conn, num_donors=25):
     """Insert multiple donor records into the database."""
     cursor = conn.cursor()
     donors = []
