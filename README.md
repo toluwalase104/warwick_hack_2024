@@ -44,6 +44,10 @@ This project proposes a solution to enhance the effectiveness of community-drive
   - To keep track of scheduled relief efforts, community events, and local support activities.
   - Helps victims and volunteers stay informed about upcoming events, such as distribution days or health camps.
 
+6. **Real-time GPS Resources**:
+   - User Location and Resource Query: Users input their address and desired resource type, which is geocoded and queried for nearby resources.
+   - Map Visualization: A map centers on the user’s location, displaying markers for available resources within a set radius.
+
 ---
 
 This platform is designed to empower communities in times of crisis by facilitating resource sharing, connecting people in need with those able to help, and enhancing the efficiency and transparency of relief efforts. With AI-driven matching and live tracking, we aim to bridge the gap between needs and resources, ensuring swift and effective disaster response.

@@ -1,51 +1,58 @@
+import multiprocessing
 import database as db
 import ai_handler
 import smtplib
 import time
 
+# ORGANISATION_EMAIL = "crisisCompass@outlook.com"
+# ORGANISATION_EMAIL_PASSWORD = "compassCrisis123!"
 
-ORGANISATION_EMAIL = "crisisCompass@outlook.com"
-ORGANISATION_EMAIL_PASSWORD = "compassCrisis123!"
-
+# NOT WORKING WITH SMTPLIB?
 # SHOULD ONLY BE CALLED INSIDE A FUNCTION THAT CALLS THE DATABASE AND CLOSES IT
 def send_match_email(conn, victim_id: int, donor_id: int):
+    print("Now sending e-mails")
     # user_email = db.get_victim_email(victim_id)
 
     # donor_email = db.get_donor_email(donor_id)
-
-    emails = db.get_victim_email(conn, victim_id), db.get_donor_email(conn, donor_id)
+    # TODO Remove
+    # emails = db.get_victim_email(conn, victim_id), db.get_donor_email(conn, donor_id)
+    emails = "isaacbode@outlook.com","isaacbode@outlook.com"
     
+    print("Email addresses = ", emails)
+
     for i in range(2):
-        session = smtplib.SMTP("smtp.outlook.com", 587)
+        session = smtplib.SMTP("smtp-mail.outlook.com", 587)
         session.starttls()
-        session.login(ORGANISATION_EMAIL, ORGANISATION_EMAIL_PASSWORD)
+        session.login("crisisCompass@outlook.com", "compassCrisis123!")
 
         if i == 0:
             message = "Our organisation has successfully found a matching donor for you, we hope that this serves you as well as possible."
         else:
             message = "Your donation has been matched to a recipient, thank you so much for your efforts."
 
-        print(f"Sending message = {message}\nTo {emails[i]}\nFrom {ORGANISATION_EMAIL}")
-        session.sendmail(ORGANISATION_EMAIL, emails[i], message)
+        print(f"Sending message = {message}\nTo {emails[i]}\nFrom {"crisisCompass@outlook.com"}")
+        session.sendmail("crisisCompass@outlook.com", emails[i], message)
 
         session.quit()
 
-def match_donors_and_recipients():
+def match_donors_and_recipients(conn = None):
+    opened_connection = False
     # Initialize and connect to the database
-    conn = db.connect_and_initialize()
+    if conn == None:
+        conn = db.connect_and_initialize()
+        opened_connection = True
 
-    print("Retrieving all victims:")
-    all_victims = db.get_all_victims(conn)
-    for victim in all_victims:
-        print(dict(victim))
+    # print("Retrieving all victims:")
+    # all_victims = db.get_all_victims(conn)
+    # for victim in all_victims:
+    #     print(dict(victim))
 
-    # 6. Retrieve all donors
-    print("\nRetrieving all donors:")
-    all_donors = db.get_all_donors(conn)
-    for donor in all_donors:
-        print(dict(donor))
-
-    
+    # # 6. Retrieve all donors
+    # print("\nRetrieving all donors:")
+    # all_donors = db.get_all_donors(conn)
+    # for donor in all_donors:
+    #     print(dict(donor))
+   
     # The variable ``requests`` holds the victim id, their requestewd resources and additional information about their circumstances
     requests : list[tuple[int, str, str]] = []
 
@@ -81,7 +88,15 @@ def match_donors_and_recipients():
     # TODO Remove clip in production, should allow for the handling of all requests 
     for i in range( min(1, len(requests)) ):
         # ai_handler.run_query(0, requests, provisions) # Trying claude
-        ai_handler.run_query(1, [requests[i]], provisions) # Trying openai
+        # # Trying openai
+        process = multiprocessing.Process(target=ai_handler.run_query, args=(1, [requests[i]], provisions))
+        print("Starting process")
+        process.start()
+        print("Letting process run for 15 seconds")
+        time.sleep(15)
+        process.terminate()
+        print("Process terminated")
+        # ai_handler.run_query(1, [requests[i]], provisions) 
         
         # Gives api some time to rest
         time.sleep(3)
@@ -95,13 +110,16 @@ def match_donors_and_recipients():
         print(lines)
         line_count = 0
         for line in lines:
+            print("Now considering the line -> ", line)
             line = line.replace("Donor", "").replace("[", "").replace("]", "")
             line = line.split(",")
-            try:
-                line = list(map(lambda x: int(x), line))
 
+            try:
+                print("Starting try statement")
+                line = list(map(lambda x: int(x), line))
+                print(line)
                 while len(line) > 0 and line[0] in used:
-                    line.pop(0)
+                    print("Removing the used value = ", line.pop(0))
 
                 if len(line) > 0:
                     # Map the user id with the matching 
@@ -116,7 +134,7 @@ def match_donors_and_recipients():
     
     for match in matches:
         db.mark_as_matched(conn, match[0], match[1])
-        send_match_email(conn, match[0], match[1])
+        # send_match_email(conn, match[0], match[1])
 
 
     # 4. Check match status for victims and donors
@@ -126,8 +144,9 @@ def match_donors_and_recipients():
     print(f"Is Bob White matched? {db.is_donor_matched(conn, 3)}")  # Expected: True
     print(f"Is Carol Green matched? {db.is_donor_matched(conn, 4)}\n")  # Expected: False
 
-    # Close the database connection
-    db.close_connection(conn)
+    # Close the database connection, only if you opened it
+    if opened_connection:
+        db.close_connection(conn)
     print("\nDatabase connection closed.")
 
 if __name__ == "__main__":
