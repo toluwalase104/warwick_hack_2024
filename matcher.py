@@ -9,21 +9,21 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText 
 from email.mime.application import MIMEApplication
 
-ORGANISATION_EMAIL = "crisisCompass@outlook.com"
-ORGANISATION_EMAIL_PASSWORD = "compassCrisis123!"
+# ORGANISATION_EMAIL = "crisiscompass0@gmail.com"
+# ORGANISATION_EMAIL_PASSWORD = "compassCrisis123!"
 
-def send_email(subject, body, recipientEmailAddress, senderEmailAddress, senderPassword):
+def send_email(subject, body, recipientEmailAddress):
     msg = MIMEMultipart() 
-    msg["From"] = senderEmailAddress 
+    msg["From"] = "crisiscompass0@gmail.com" 
     msg["To"] = recipientEmailAddress 
     msg["Subject"] = subject 
 
     msg.attach(MIMEText(body, "plain"))
 
     try:
-        with smtplib.SMTP("smtp.office365.com", 587) as server: 
+        with smtplib.SMTP("smtp.gmail.com", 587) as server: 
             server.starttls() 
-            server.login(senderEmailAddress, senderPassword) 
+            server.login("crisiscompass0@gmail.com", "compassCrisis123!") 
             server.send_message(msg)
             print("Sent successfully") 
     except Exception as e: 
@@ -38,7 +38,7 @@ def send_match_emails(conn, victim_id: int, donor_id: int):
     # donor_email = db.get_donor_email(donor_id)
     # TODO Remove
     # emails = db.get_victim_email(conn, victim_id), db.get_donor_email(conn, donor_id)
-    emails = "isaacbode@outlook.com","isaacbode@outlook.com"
+    emails = "isaacbode104@gmail.com","isaacbode104@gmail.com"
 
     print("Email addresses = ", emails)
 
@@ -51,11 +51,9 @@ def send_match_emails(conn, victim_id: int, donor_id: int):
         send_email(
             f"Successful Resource Allocation {"Donor found" if i == 0 else "Recipient found"}",
             message,
-            emails[i],
-            ORGANISATION_EMAIL,
-            ORGANISATION_EMAIL_PASSWORD
+            emails[i]
         )
-        
+
 def match_donors_and_recipients(conn = None):
     opened_connection = False
     # Initialize and connect to the database
