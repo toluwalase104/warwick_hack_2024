@@ -205,8 +205,8 @@ def GPS():
         proc = multiprocessing.Process(target=run_geolocation_agent, args=(full_address))
         print("Starting geolocation agent")
         proc.start()
-        print("Sleeping for 10 seconds")
-        time.sleep(10)
+        print("Sleeping for 20 seconds")
+        time.sleep(20)
         proc.terminate()
         print("Terminated geolocation agent")
 
@@ -227,11 +227,11 @@ def GPS():
         # loop.run_until_complete(run_google_places_agent(full_address))
         # loop.close()
 
-        proc = multiprocessing.Process(target=run_google_places_agent, args=(latitude, longitude))
+        proc = multiprocessing.Process(target=run_google_places_agent, args=(latitude, longitude, item))
         print("Starting google places agent")
         proc.start()
-        print("Sleeping for 10 seconds")
-        time.sleep(10)
+        print("Sleeping for 20 seconds")
+        time.sleep(20)
         proc.terminate()
         print("Terminated google places agent")
 

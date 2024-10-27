@@ -36,7 +36,7 @@ class POIResponse(Model):
 
 
 
-async def run_google_places_agent(latitude, longitude, item):
+def run_google_places_agent(latitude, longitude, item):
 
     query = "shelter"
     if item == "medicine":
@@ -80,15 +80,21 @@ async def run_google_places_agent(latitude, longitude, item):
     @agent.on_message(POIResponse)
     async def handle_response(ctx: Context, sender: str, msg: POIResponse):
         ctx.logger.info(f"Received {len(msg.data)} POIs from: {sender}")
-        
-        # Write the received POIs to google_places.txt
-        with open("google_places.txt", "w") as f:
-            for place in msg.data:
-                lat = place.location.latitude
-                lon = place.location.longitude
-                f.write(f"{place.location_name}\t{lat}\t{lon}\n")
-                ctx.logger.info(f"Wrote {place.location_name} at ({lat}, {lon}) to google_places.txt")
+        if len(msg.data) > 0:
+            print(f"Received {len(msg.data)} POIs")
+            # Write the received POIs to google_places.txt
+            with open("google_places.txt", "w") as f:
+                for place in msg.data:
+                    lat = place.location.latitude
+                    lon = place.location.longitude
+                    f.write(f"{place.location_name}\t{lat}\t{lon}\n")
+                    print(f"Wrote {place.location_name} at ({lat}, {lon}) to google_places.txt")
+        else:
+            print("No POIs found")
+            with open("google_places.txt", "w") as f:
+                f.write("")
+            print("Wrote 'No POIs found' to google_places.txt")
 
     agent.run()
 
-# run_google_places_agent(43.0895577,-79.0849436, "food") # Uncomment this line to test the agent locally
+# run_google_places_agent(52.4084048,-1.510218, "shelter") # Uncomment this line to test the agent locally

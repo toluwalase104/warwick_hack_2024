@@ -43,11 +43,11 @@ def run_geolocation_agent(address):
         ctx.logger.info(f"Received response from {sender}:")
         ctx.logger.info(f"Latitude: {msg.latitude}, Longitude: {msg.longitude}")
         with open("geolocation.txt", "w") as f:
+            print(f"Latitude: {msg.latitude}, Longitude: {msg.longitude}")
             f.write(f"{msg.latitude},{msg.longitude}")
             # the first one is latitude and the second one is longitude
-        raise ValueError("Test error to stop agent")
     
     agent.run()
 
 
-# run_geolocation_agent(address) # Uncomment this line to test the agent locally
+# run_geolocation_agent("Broadgate, Coventry CV1 1FD, United Kingdom") # Uncomment this line to test the agent locally
