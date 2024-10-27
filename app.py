@@ -1,24 +1,20 @@
 from flask import Flask, render_template, request, jsonify 
 import database
 import matplotlib.pyplot as plt
+import asyncio
+import time
+import multiprocessing
 
 app = Flask(__name__)
 
+#importing the agents
+from geolocation import run_geolocation_agent
+from google_places import run_google_places_agent
 
 # Home page
 @app.route("/", methods=["POST", "GET"])
 def home():
     return render_template("home.html")
-
-@app.route("/GPS", methods=["POST","GET"])
-def GPS():
-    if request.method == "POST":
-        data = request.json  # Get the JSON data sent in the request
-        # Process the received data as needed
-        print(data)
-
-        return jsonify({"message": "Data received successfully!"}), 200
-    return render_template("GPS.html")
 
 
 # Sending data page
@@ -131,5 +127,97 @@ def liveTracker():
 def charities():
     return render_template("charities.html")
 
+"""
+-----------------------------------------------------
+GPS route to process geolocation and POI retrieval --
+-----------------------------------------------------
+"""
+@app.route("/GPS", methods=["POST", "GET"])
+def GPS():
+    if request.method == "POST":
+        # Get the JSON data sent in the request
+        data = request.json  
+
+        # Extract variables from received data
+        country = data.get("country")
+        address = data.get("address")
+        items = data.get("items", [])  # Default to an empty list if 'items' isn't provided
+
+        # Determine the main item needed
+        item = "shelter"  # Default to shelter
+        if items:
+            if "shelter" in items:
+                item = "shelter"
+            elif "medicine" in items:
+                item = "medicine"
+            elif "water" in items:
+                item = "water"
+            elif "food" in items:
+                item = "food"
+            elif "clothes" in items:
+                item = "clothes"
+
+        full_address = f"{address}, {country}"
+        print(f"Full address: {full_address}")
+        print(f"Important item needed: {item}")
+
+
+        # Call the geolocation agent TODO
+        # run_geolocation_agent(full_address) # should show a message
+
+        proc = multiprocessing.Process(target=run_geolocation_agent, args=(full_address))
+        print("Starting geolocation agent")
+        proc.start()
+        print("Sleeping for 10 seconds")
+        time.sleep(10)
+        proc.terminate()
+        print("Terminated geolocation agent")
+
+        # loop = asyncio.new_event_loop()
+        # asyncio.set_event_loop(loop)  # Set the new loop as the current event loop
+        # loop.run_until_complete(run_geolocation_agent(full_address))
+            
+
+        # Extract latitude and longitude from geolocation.txt
+        with open("geolocation.txt", "r") as f:
+            coordinates = f.read().split(",")
+            latitude = float(coordinates[0])
+            longitude = float(coordinates[1])
+        print(f"ADDRESS: Latitude: {latitude}, Longitude: {longitude}")
+
+        # Call the google-places agent with the latitude and longitude TODO
+        # run_google_places_agent(latitude, longitude)
+        # loop.run_until_complete(run_google_places_agent(full_address))
+        # loop.close()
+
+        proc = multiprocessing.Process(target=run_google_places_agent, args=(latitude, longitude))
+        print("Starting google places agent")
+        proc.start()
+        print("Sleeping for 10 seconds")
+        time.sleep(10)
+        proc.terminate()
+        print("Terminated google places agent")
+
+        # Extract the POIs from google_places.txt and convert to list of dictionaries
+        pois = []
+        with open("google_places.txt", "r") as f:
+            for line in f:
+                data = line.strip().split("\t")
+                if len(data) == 3: # sanity check
+                    poi = {
+                        "name": data[0],
+                        "latitude": float(data[1]),
+                        "longitude": float(data[2])
+                    }
+                    pois.append(poi)
+
+        print("Parsed POIs:", pois)  # For debugging; you can remove this line later
+        # Respond to the client with the POIs
+        return jsonify({"message": "Data received and processed successfully!", "pois": pois}), 200
+    
+    # Render the GPS form if GET request
+    return render_template("GPS.html")
+
+# Run the Flask app
 if __name__ == "__main__":
     app.run(debug=True)
