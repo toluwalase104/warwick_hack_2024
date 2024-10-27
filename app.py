@@ -134,7 +134,7 @@ def liveTracker():
         [f"{label} ({size})" for label, size in zip(labels, sizes)], 
         title="Items Needed", 
         loc="upper center", 
-        bbox_to_anchor=(0.5, -0.15),  # Slightly lower for more spacing
+        bbox_to_anchor=(0.5, 0.0),  # Slightly lower for more spacing
         ncol=2,
         frameon=False  # Clean legend look
     )
