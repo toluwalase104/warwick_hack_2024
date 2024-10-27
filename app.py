@@ -1,7 +1,8 @@
 from flask import Flask, render_template, request, jsonify 
 import database
 import matplotlib.pyplot as plt
-import asyncio
+from matcher import match_donors_and_recipients
+
 import time
 import multiprocessing
 
@@ -58,6 +59,8 @@ def resourceRequests():
 
                 response = {"status": "success", "message": "Applicant and resources added successfully."}
 
+                # match_donors_and_recipients(conn)
+
             elif data.get("role") == "donor":
                 # Insert the donor into the database
                 donor_id = database.add_donor(conn, name, contact, postcode, address, country, description=description)
@@ -69,8 +72,12 @@ def resourceRequests():
 
                 response = {"status": "success", "message": "Donor and resources added successfully."}
 
+                # match_donors_and_recipients(conn)
+
             else:
                 response = {"status": "error", "message": "Invalid role provided."}
+            
+            match_donors_and_recipients(conn)
 
             conn.close()  # Close the connection after use
             return jsonify(response), 200
