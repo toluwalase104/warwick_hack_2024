@@ -1,8 +1,8 @@
+import multiprocessing
 import database as db
 import ai_handler
 import smtplib
 import time
-
 
 # ORGANISATION_EMAIL = "crisisCompass@outlook.com"
 # ORGANISATION_EMAIL_PASSWORD = "compassCrisis123!"
@@ -88,7 +88,15 @@ def match_donors_and_recipients(conn = None):
     # TODO Remove clip in production, should allow for the handling of all requests 
     for i in range( min(1, len(requests)) ):
         # ai_handler.run_query(0, requests, provisions) # Trying claude
-        ai_handler.run_query(1, [requests[i]], provisions) # Trying openai
+        # # Trying openai
+        process = multiprocessing.Process(target=ai_handler.run_query, args=(1, [requests[i]], provisions))
+        print("Starting process")
+        process.start()
+        print("Letting process run for 15 seconds")
+        time.sleep(15)
+        process.terminate()
+        print("Process terminated")
+        # ai_handler.run_query(1, [requests[i]], provisions) 
         
         # Gives api some time to rest
         time.sleep(3)

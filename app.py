@@ -2,9 +2,7 @@ from flask import Flask, render_template, request, jsonify
 import database
 import matplotlib.pyplot as plt
 from matcher import match_donors_and_recipients
-# import threading
-import multiprocessing
-import time
+
 
 app = Flask(__name__)
 
@@ -84,14 +82,8 @@ def resourceRequests():
 
             else:
                 response = {"status": "error", "message": "Invalid role provided."}
-
-            proc = multiprocessing.Process(target=match_donors_and_recipients, args=(conn,))
-            print("Starting process")
-            proc.start()
-            print("Sleeping for 30 seconds")
-            time.sleep(30)
-            proc.terminate()
-            print("Process terminated")
+            
+            match_donors_and_recipients(conn)
 
             conn.close()  # Close the connection after use
             return jsonify(response), 200
