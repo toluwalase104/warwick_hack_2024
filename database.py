@@ -581,14 +581,27 @@ def plot_helped_countries_heatmap(conn):
     # Fill NaN values in 'count' with 0 for countries with no data
     merged["count"] = merged["count"].fillna(0)
 
-    # Check for unmatched countries to identify potential mismatches
-    unmatched = merged[merged["count"] == 0]
-    print("Unmatched countries with no data:", unmatched.index.tolist())
-
     # Save the plot to a file instead of showing it
     fig, ax = plt.subplots(1, 1, figsize=(15, 10))
-    merged.plot(column="count", cmap="OrRd", linewidth=0.8, ax=ax, edgecolor="0.8", legend=True)
-    ax.set_title("Resources Distributed by Country")
+    merged.plot(column="count", cmap="OrRd", linewidth=0.8, ax=ax, edgecolor="white", legend=True)
+
+    # Set the title color to white
+    ax.set_title("Resources Distributed by Country", color='white')
+
+    # Set x and y axis labels color to white
+    ax.tick_params(colors='white')
+
+    # Update legend text color to white
+    legend = ax.get_legend()
+    if legend:
+        for text in legend.get_texts():
+            text.set_color("white")
+
+    # Set the border (spine) colors to white
+    for spine in ax.spines.values():
+        spine.set_edgecolor("white")
+
+    # Save the plot with a transparent background
     plt.savefig("./static/images/helped_countries_heatmap.png", format='png', dpi=300, transparent=True)
     plt.close()
 
