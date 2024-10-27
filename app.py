@@ -10,6 +10,22 @@ app = Flask(__name__)
 def home():
     return render_template("home.html")
 
+# Chatbot feature
+@app.route('/api/chat', methods=['POST'])
+def chat():
+    user_message = request.json.get('message')
+    
+    # Basic logic for responses (this can be expanded)
+    if user_message:
+        if "help" in user_message.lower():
+            reply = "I see you need help! Can you describe the issue in detail?"
+        else:
+            reply = "I'm here to help! Please tell me more."
+    else:
+        reply = "Please send a message."
+
+    return jsonify({"reply": reply})
+
 # Advice page
 @app.route("/advice", methods=["POST", "GET"])
 def advice():

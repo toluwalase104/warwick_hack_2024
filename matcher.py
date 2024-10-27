@@ -1,6 +1,34 @@
 import database as db
 import ai_handler
+import smtplib
 import time
+
+
+ORGANISATION_EMAIL = "crisisCompass@outlook.com"
+ORGANISATION_EMAIL_PASSWORD = "compassCrisis123!"
+
+# SHOULD ONLY BE CALLED INSIDE A FUNCTION THAT CALLS THE DATABASE AND CLOSES IT
+def send_match_email(conn, victim_id: int, donor_id: int):
+    # user_email = db.get_victim_email(victim_id)
+
+    # donor_email = db.get_donor_email(donor_id)
+
+    emails = db.get_victim_email(conn, victim_id), db.get_donor_email(conn, donor_id)
+    
+    for i in range(2):
+        session = smtplib.SMTP("smtp.outlook.com", 587)
+        session.starttls()
+        session.login(ORGANISATION_EMAIL, ORGANISATION_EMAIL_PASSWORD)
+
+        if i == 0:
+            message = "Our organisation has successfully found a matching donor for you, we hope that this serves you as well as possible."
+        else:
+            message = "Your donation has been matched to a recipient, thank you so much for your efforts."
+
+        print(f"Sending message = {message}\nTo {emails[i]}\nFrom {ORGANISATION_EMAIL}")
+        session.sendmail(ORGANISATION_EMAIL, emails[i], message)
+
+        session.quit()
 
 def match_donors_and_recipients():
     # Initialize and connect to the database
@@ -50,7 +78,8 @@ def match_donors_and_recipients():
     if len(unmatched_donors) == 0 or len(unmatched_victims) == 0:
         return
     
-    for i in range( min(2, len(requests)) ):
+    # TODO Remove clip in production, should allow for the handling of all requests 
+    for i in range( min(1, len(requests)) ):
         # ai_handler.run_query(0, requests, provisions) # Trying claude
         ai_handler.run_query(1, [requests[i]], provisions) # Trying openai
         
@@ -87,6 +116,8 @@ def match_donors_and_recipients():
     
     for match in matches:
         db.mark_as_matched(conn, match[0], match[1])
+        send_match_email(conn, match[0], match[1])
+
 
     # 4. Check match status for victims and donors
     print("\nChecking match statuses:")
